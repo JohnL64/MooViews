@@ -1,0 +1,120 @@
+body {
+
+}
+#header {
+  display:flex;
+  justify-content: center;
+}
+
+h1 {
+  /* color: black; */
+  border: solid;
+  background-color: rgb(245, 245, 17);
+  border-radius: 10px;
+  display: inline-flex;
+  padding: 5px;
+  margin-left: 10px;
+  font-size: 50px;
+}
+
+h3 {
+  font-size: 30px;
+  /* border: solid yellow; */
+  color: white;
+  display: inline;
+  /* justify-content: center; */
+}
+
+#app {
+  /* border: solid green;
+  display: flex;
+  justify-content: space-evenly; */
+}
+
+.movieBox {
+  border: solid grey;
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items:center;
+  background-color: black;
+  min-width: 400px;
+  min-height: 550px;
+  /* margin: 0 40px; */
+  /* width: 513px */
+}
+
+p span {
+  font-weight: 900;
+  color:rgb(44, 44, 44);
+  margin: 0px;
+  /* border: solid; */
+}
+
+p {
+  color: rgb(90, 90, 90);
+  margin: 0px;
+}
+
+#addMovie {
+  display: flex;
+  justify-content: center;
+  border: solid;
+  padding: 20px;
+  background-color: black;
+}
+
+button {
+  padding: 15px;
+  font-weight: 700;
+}
+
+.movieInfo {
+  border: 2px solid lightgray;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 10px 60px;
+  background-color: white;
+  margin-bottom: 15px;
+}
+
+img {
+  margin-bottom: 20px;
+}
+
+#moviesContainer {
+  border: solid green;
+  display: flex;
+  /* justify-content: space-evenly; */
+}
+
+#movieSearch {
+  border:solid;
+  display: flex;
+  justify-content: center;
+}
+
+#movieSearch form {
+  border:solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 25px;
+}
+
+#movie-query {
+  
+}
+
+h4 {
+  font-size: 30px;
+}
+
+
+/* label {
+  font-size
+} */
+
