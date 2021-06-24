@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { send } = require('process');
-const db = require('./model.js');
+const cors = require('cors');
+const userRouter = require('./routers/userRouter')
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 // if NODE_ENV is production run this code
 if (process.env.NODE_ENV === 'production') {
@@ -17,6 +19,17 @@ if (process.env.NODE_ENV === 'production') {
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html/'));
 });
+
+app.use('/user', userRouter);
+
+app.use((err, req, res, next) => {
+  const defaultErr = {
+    status: 400,
+    message: { err: 'Express error handler caught unknown middleware error' }
+  }
+  const errorObj = Object.assign(defaultErr, err);
+  res.status(errorObj.status).json(errorObj.message);
+})
 
 // server will listen on port '3000'
 app.listen(3000);
