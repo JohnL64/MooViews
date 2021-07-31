@@ -13,8 +13,12 @@ userController.createAccount = (req, res, next) => {
 
   db.query(createAccountQuery, values, 
     (err, userAdded) => {
-      if (err) return next({ message: 'Error has occured at userController.createAccount' })
+      if (err) {
+        // res.locals.validAccount = false;
+        return next({ message: 'Error has occured at userController.createAccount' })
+      }
       console.log(userAdded);
+      res.locals.validAccount = true;
       res.cookie('userID', userAdded.rows[0]._id);
       return next();
     })
@@ -34,9 +38,9 @@ userController.verifyAccount = (req, res, next) => {
       if (err) return next({ message: 'Error has occured at userController.verifyAccount' });
       // console.log('testinggggggg', verifiedUser)
       if (verifiedUser.rows.length === 0) {
-        res.locals.verified = false;
+        res.locals.validAccount = false;
       } else {
-        res.locals.verified = true;
+        res.locals.validAccount = true;
         res.cookie('userID', verifiedUser.rows[0]._id);
       }
       return next();

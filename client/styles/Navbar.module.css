@@ -1,0 +1,59 @@
+.navbar {
+  /* border: solid coral 5px; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: black;
+  width: 100%;
+}
+
+/* * {
+  border: solid pink;
+} */
+
+.navlink {
+  text-decoration: none;
+  color: white;
+}
+
+.navMooViews {
+  display: flex;
+  font-size: 1.8rem; 
+  font-weight: 900;
+}
+
+
+.views {
+  color: lightpink;
+}
+
+.views,
+.moo {
+  margin: 0;
+}
+
+.searchBar {
+  margin: .7% 0;
+  border: solid lightpink 2px;
+  border-radius: 5px;
+  width: 30%;
+  background-color: white;
+}
+
+.searchInput {
+  height: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+  border-radius: 5px;
+  /* margin: 10px; */
+}
+
+.searchInput:focus {
+  border-color: lightpink;
+}
+
+.searchResult {
+  border: none;
+}
+

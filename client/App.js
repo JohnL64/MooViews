@@ -1,26 +1,30 @@
-import Home from './containers/Home.jsx';
 import React, { useState, useEffect } from 'react';
-import Login from './components/Login.jsx';
-import Signup from './components/Signup.jsx';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Home from './containers/Home.jsx';
+import Login from './containers/Login.jsx';
+import Signup from './containers/Signup.jsx';
+import Navbar from './components/Navbar.jsx';
+import './styles/index.css';
 
 function App() {
   return (
     <Router>
       <div className='app'>
+        <Navbar />
         <Switch>
           <Route exact path='/'>
-            { document.cookie.length > 0 && <Home /> }
-            { !document.cookie.length > 0 && <Login /> }
+            {/* { document.cookie.length > 0 && <Home /> }
+            { !document.cookie.length > 0 && <Login /> } */}
+            <Home />
           </Route>
           <Route path='/signup'>
             <Signup />
           </Route>
-          <Route path='/home'>
-            <Home />
+          <Route path='/login'>
+            <Login />
           </Route>
         </Switch>
-    </div>
+      </div>
     </Router>
   )
 }

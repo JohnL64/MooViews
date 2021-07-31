@@ -1,0 +1,12 @@
+body {
+  border: solid;
+  padding: 0;
+  margin: 0;
+  font-family: Roboto;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
