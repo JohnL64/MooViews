@@ -10,9 +10,9 @@ const SearchResult = ({ searchResult }) => {
   )
   const topResults = [];
   for (let i = 0; i < upToEight; i++) {
-    console.log(searchResult[i].release_date[01])
-    let year = searchResult[i].release_date.slice(0, 4);
-    let test = 'Testing to check something'
+    // console.log(searchResult[i].release_date[01])
+    // let year = searchResult[i].release_date.slice(0, 4);
+    // let test = 'Testing to check something'
     topResults.push(
       <div className={css.result} key={searchResult[i].id}>
         <p>{searchResult[i].original_title}</p>

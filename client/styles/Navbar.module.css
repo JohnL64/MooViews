@@ -1,7 +1,7 @@
 .navbar {
   /* border: solid coral 5px; */
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   color: white;
   background-color: black;
@@ -14,12 +14,19 @@
 
 .navlink {
   text-decoration: none;
+  margin-right: 3%;
+}
+
+.end {
+  text-decoration: none;
 }
 
 .navMooViews {
   display: flex;
   font-size: 1.8rem; 
   font-weight: 900;
+  margin-right: 3%;
+  /* border: solid white 1px; */
 }
 
 
@@ -33,7 +40,8 @@
 }
 
 .searchBar {
-  margin: .7% 0;
+  margin: .7% 3% .85% 0;
+  /* margin: .7% 0; */
   border-radius: 5px;
   width: 30%;
   background-color: black;
@@ -58,31 +66,24 @@
 .searchResult {
   width: 30%;
   box-sizing: border-box;
-  border: solid black;
   border-radius: 5px;
   background-color: black;
   position: absolute;
   z-index: 1;
 }
 
-.searchResult p {
-  /* border: solid white; */
-}
-
 .result {
-  margin: 5% 0;
+  margin: 3% 0;
+  /* border: solid white 1px; */
 }
 
 .result p {
-  /* border: solid white; */
   padding-left: 2%;
   margin: 0;
 }
 
 .date {
-  /* border: solid white; */
-  font-size: 0.85rem;
-  /* padding-left: 2%; */
-  /* margin: 30px; */
+  font-size: 0.80rem;
   margin-top: 40px;
+  color: darkgrey;
 }
