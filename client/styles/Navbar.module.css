@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.navbar a {
+  color: white;
+}
+
 /* * {
   border: solid pink;
 } */

@@ -3,21 +3,25 @@ const db = require('../model');
 const userController = {};
 
 userController.createAccount = (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, username, password } = req.body;
   const createAccountQuery = `
-  INSERT INTO users (username, password)
-  VALUES ($1, $2)
+  INSERT INTO users (email, username, password)
+  VALUES ($1, $2, $3)
   RETURNING _id`
 
-  const values = [username, password];
-
+  const values = [ email, username, password ];
+  console.log('________', email, username)
   db.query(createAccountQuery, values, 
     (err, userAdded) => {
       if (err) {
         // res.locals.validAccount = false;
-        return next({ message: 'Error has occured at userController.createAccount' })
+        console.log('\n Error :', err.constraint);
+        let errorType = 'Email is already in use';
+        if (err.constraint === 'users_username_key') errorType = 'Username is already in use'
+        console.log(errorType);
+        return next({ message: 'Error has occured at userController.createAccount', errorType })
       }
-      console.log(userAdded);
+      console.log(userAdded + '\n');
       res.locals.validAccount = true;
       res.cookie('userID', userAdded.rows[0]._id);
       return next();
@@ -38,10 +42,9 @@ userController.verifyAccount = (req, res, next) => {
       if (err) return next({ message: 'Error has occured at userController.verifyAccount' });
       // console.log('testinggggggg', verifiedUser)
       if (verifiedUser.rows.length === 0) {
-        res.locals.validAccount = false;
+        res.locals.errorType = 'Username or password is invalid';
       } else {
-        res.locals.validAccount = true;
-        res.cookie('userID', verifiedUser.rows[0]._id);
+        res.cookie('userID', verifiedUser.rows[0]._id, { httpOnly: true });
       }
       return next();
     })

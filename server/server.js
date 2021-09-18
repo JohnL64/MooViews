@@ -28,10 +28,9 @@ app.use((err, req, res, next) => {
     message: { err: 'Express error handler caught unknown middleware error' }
   }
   const errorObj = Object.assign(defaultErr, err);
-  res.status(errorObj.status).json(errorObj.message);
+  res.status(errorObj.status).json(errorObj);
 })
 
 // server will listen on port '3000'
 app.listen(3000);
-
 
