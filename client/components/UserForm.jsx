@@ -42,8 +42,8 @@ const UserForm = ({ action }) => {
 
   return (
     <div className={css.outerForm}>
-      { action === 'verifyAccount' && <h1>Sign in to Account</h1> }
-      { action === 'createAccount' && <h1>Create Account</h1> }
+      { action === 'verifyAccount' && <h1>Sign In To Account</h1> }
+      { action === 'createAccount' && <h1>Create An Account</h1> }
       <form className={css.innerForm} onSubmit={validAccount}>
         {/* { action === 'createAccount' && <label htmlFor="email">Email: </label> } */}
         { action === 'createAccount' && <input type='email' id="email" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} /> }
@@ -55,7 +55,8 @@ const UserForm = ({ action }) => {
         { action === 'verifyAccount' && <button id={css.submitBtn}>Log In</button> }
       </form>
       { userError && <p>{userError}</p>}
-      { action === 'verifyAccount' && <p className={css.signupLink}>Dont have an account? <Link to='/signup'>Sign Up</Link></p> }
+      { action === 'verifyAccount' && <p className={css.loginSignupLink}>Dont have an account? <Link to='/signup'>Sign Up</Link></p> }
+      { action === 'createAccount' && <p className={css.loginSignupLink}>Dont have an account? <Link to='/login'>Log In</Link></p> }
     </div>
   )
 }

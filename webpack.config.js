@@ -42,6 +42,7 @@ module.exports = {
     ],
   },
   devServer: {
+    historyApiFallback: true,
     publicPath: '/build/',
     contentBase: path.join(__dirname, 'client'),
     proxy: {

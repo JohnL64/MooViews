@@ -23,8 +23,8 @@ function App() {
             <Signup />
           </Route>
           <Route path='/login'>
-            {/* <Login /> */}
-            <Home />
+            <Login />
+            {/* <Home /> */}
           </Route>
         </Switch>
       </div>

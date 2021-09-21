@@ -77,10 +77,10 @@ body {
 }
 
 
-.signupLink {
+.loginSignupLink {
   margin-bottom: 45px;
 }
 
-.signupLink a {
+.loginSignupLink a {
   color: rgb(250, 140, 157)
 }
