@@ -1,10 +1,10 @@
 import React from 'react';
 import UserForm from '../components/UserForm.jsx';
-import '../styles/LoginSignup.module.css';
+import css from '../styles/LoginSignup.module.css';
 
 const Signup = () => {
   return (
-    <div className="signup">
+    <div className={css.userForm}>
       <UserForm action='createAccount' />
     </div>
   );
