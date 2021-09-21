@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-
+import css from '../styles/LoginSignup.module.css';
 const Home = (props) => {
   return (
-    <h1>Your Movie List</h1>
+    <div>
+      <h1>Your Movie List</h1>
+    </div>
   )
 }
 

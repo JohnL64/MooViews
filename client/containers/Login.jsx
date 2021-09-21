@@ -8,7 +8,6 @@ const Login = () => {
   return (
     <div className={css.userForm}>
       <UserForm action='verifyAccount' />
-      <Link className={css.signupLink} to='/signup'>Not a user sign up</Link>
     </div>
   )
 }

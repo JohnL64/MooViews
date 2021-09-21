@@ -41,7 +41,7 @@ const Navbar = () => {
 
   return (
     <nav className={css.navbar}>
-      <Link className={css.navMooViews} to='home'><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link>
+      <Link className={css.navMooViews} to='/'><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link>
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
           <input type='text' className={css.searchInput} onChange={onSearch}></input>
           { (focused && searchResult) && <SearchResult searchResult={searchResult} /> }

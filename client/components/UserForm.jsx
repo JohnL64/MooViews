@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import css from '../styles/LoginSignup.module.css';
+import { Link } from 'react-router-dom';
 
 const UserForm = ({ action }) => {
   // useError to store and track the possible error when verifying or creating account. useError is used to display the error message received from the database
@@ -39,18 +41,21 @@ const UserForm = ({ action }) => {
   }
 
   return (
-    <div className="userForm">
-      <form onSubmit={validAccount}>
-        { action === 'createAccount' && <label htmlFor="email">Email: </label> }
-        { action === 'createAccount' && <input type='email' id="email" required value={email} onChange={(e) => setEmail(e.target.value)} /> }
-        <label htmlFor="username">Username: </label>
-        <input type='text' id="username" required value={username} onChange={(e) => setUsername(e.target.value)} />
-        <label htmlFor="password">Password: </label>
-        <input type='password' id="password" required value={password}  onChange={(e) => setPassword(e.target.value)} />
-        { action === 'createAccount' && <button>Sign Up</button> }
-        { action === 'verifyAccount' && <button>Login</button> }
+    <div className={css.outerForm}>
+      { action === 'verifyAccount' && <h1>Sign in to Account</h1> }
+      { action === 'createAccount' && <h1>Create Account</h1> }
+      <form className={css.innerForm} onSubmit={validAccount}>
+        {/* { action === 'createAccount' && <label htmlFor="email">Email: </label> } */}
+        { action === 'createAccount' && <input type='email' id="email" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} /> }
+        {/* <label htmlFor="username">Username: </label> */}
+        <input type='text' id="username" required value={username} placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
+        {/* <label htmlFor="password">Password: </label> */}
+        <input type='password' id="password" required value={password} placeholder='Password'  onChange={(e) => setPassword(e.target.value)} />
+        { action === 'createAccount' && <button id={css.submitBtn}>Sign Up</button> }
+        { action === 'verifyAccount' && <button id={css.submitBtn}>Log In</button> }
       </form>
       { userError && <p>{userError}</p>}
+      { action === 'verifyAccount' && <p className={css.signupLink}>Dont have an account? <Link to='/signup'>Sign Up</Link></p> }
     </div>
   )
 }
