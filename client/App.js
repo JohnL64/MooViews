@@ -15,8 +15,8 @@ function App() {
           <Route exact path='/'>
             {/* { document.cookie.length > 0 && <Home /> }
             { !document.cookie.length > 0 && <Login /> } */}
-            {/* <Home /> */}
-            <Login />
+            <Home />
+            {/* <Login /> */}
             {/* <Signup /> */}
           </Route>
           <Route path='/signup'>

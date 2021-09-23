@@ -1,5 +1,4 @@
 .navbar {
-  /* border: solid coral 5px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,9 +11,6 @@
   color: white;
 }
 
-/* * {
-  border: solid pink;
-} */
 
 .navlink {
   text-decoration: none;
@@ -30,7 +26,6 @@
   font-size: 1.8rem; 
   font-weight: 900;
   margin-right: 3%;
-  /* border: solid white 1px; */
 }
 
 
@@ -45,7 +40,6 @@
 
 .searchBar {
   margin: .7% 3% .85% 0;
-  /* margin: .7% 0; */
   border-radius: 5px;
   width: 30%;
   background-color: black;
@@ -60,7 +54,6 @@
   box-sizing: border-box;
   font-size: 1rem;
   border-radius: 5px;
-  /* margin: 10px; */
 }
 
 .searchInput:focus {
@@ -78,7 +71,6 @@
 
 .result {
   margin: 3% 0;
-  /* border: solid white 1px; */
 }
 
 .result p {
@@ -90,4 +82,8 @@
   font-size: 0.80rem;
   margin-top: 40px;
   color: darkgrey;
+}
+
+.noResults {
+  margin-left: 2%;
 }

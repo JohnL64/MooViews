@@ -2,12 +2,15 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
-const userRouter = require('./routers/userRouter')
+const userRouter = require('./routers/userRouter');
+const movieRouter = require('./routers/movieRouter');
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/movie', movieRouter);
+app.use('/user', userRouter);
 
 // if NODE_ENV is production run this code
 if (process.env.NODE_ENV === 'production') {
@@ -20,7 +23,6 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html/'));
 });
 
-app.use('/user', userRouter);
 
 app.use((err, req, res, next) => {
   const defaultErr = {
