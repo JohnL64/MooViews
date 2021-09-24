@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import css from '../styles/Navbar.module.css';
 
 const SearchResult = ({ searchResult }) => {
-  let upToEight = 8;
-  if (searchResult.length < 8) upToEight = searchResult.length;
   const topResults = [];
-  for (let i = 0; i < upToEight; i++) {
+  for (let i = 0; i < searchResult.length; i++) {
     topResults.push(
       <div className={css.result} key={searchResult[i].id}>
         <p>{searchResult[i].title}</p>

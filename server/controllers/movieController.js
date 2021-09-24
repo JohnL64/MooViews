@@ -11,12 +11,17 @@ const movieController = {};
 movieController.search = (req, res, next) => {
   // function to change the dates of the movie data receieved from api
   function changeDates(results) {
-    const updatedResults = results.filter(movie => {
-      if (movie.release_date) {
-        movie.release_date = movie.release_date.slice(0, 4);
-        return movie;
+    // new list of movies to be returned
+    const updatedResults = [];
+    // iterate through the movies returned from movie API
+    for (let i = 0; i < results.length; i += 1) {
+      // making sure data only for 8 movies are sent back with dates changed
+      if (updatedResults.length > 7) break;
+      if (results[i].release_date) {
+        results[i].release_date = results[i].release_date.slice(0, 4);
+        updatedResults.push(results[i]);
       }
-    })
+    }
     return updatedResults;
   }
 
