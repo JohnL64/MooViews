@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'react-router-dom';
 import css from '../styles/Home.module.css';
 
-const NowPlaying = () => {
+const Preview = () => {
   return (
     <div>
 
@@ -10,4 +10,4 @@ const NowPlaying = () => {
   )
 }
 
-export default NowPlaying;
+export default Preview;

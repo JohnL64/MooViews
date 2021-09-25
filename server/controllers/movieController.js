@@ -38,4 +38,34 @@ movieController.search = (req, res, next) => {
     })
 }
 
+
+movieController.preview = (req, res, next) => {
+  const { content } = req.query;
+  console.log(content);
+
+  function twelveAndImageUpdate(results) {
+    const onlyTwelve = [];
+    for (let i = 0; i < results.length; i += 1) {
+      if (i > 11) break;
+      results[i].poster_path = `https://image.tmdb.org/t/p/w185/${results[i].poster_path}`
+      onlyTwelve.push(results[i]);
+    }
+    return onlyTwelve;
+  }
+
+  if (content === "home") {
+  fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.results)
+
+      res.locals.preview = twelveAndImageUpdate(data.results);
+      return next();
+    })
+    .catch(err => {
+      return next({ message: 'Error has occured in movieController.preview' });
+    })
+  }
+}
+
 module.exports = movieController;

@@ -23,6 +23,11 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html/'));
 });
 
+// handle page refreshes for pages that are not the home page as well as direct manual url requests
+app.get('/*', (req, res) => {
+  return res.status(200).sendFile(path.join(__dirname, '../client/index.html/'));
+});
+
 
 app.use((err, req, res, next) => {
   const defaultErr = {
