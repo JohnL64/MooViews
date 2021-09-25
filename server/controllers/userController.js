@@ -2,6 +2,8 @@ const db = require('../model');
 
 const userController = {};
 
+
+// CREATING ACCOUNT - query to database to store valid users data when creating an account
 userController.createAccount = (req, res, next) => {
   const { email, username, password } = req.body;
   const createAccountQuery = `
@@ -10,24 +12,22 @@ userController.createAccount = (req, res, next) => {
   RETURNING _id`
 
   const values = [ email, username, password ];
-  console.log('________', email, username)
+
   db.query(createAccountQuery, values, 
     (err, userAdded) => {
       if (err) {
-        // res.locals.validAccount = false;
-        console.log('\n Error :', err.constraint);
         let errorType = 'Email is already in use';
         if (err.constraint === 'users_username_key') errorType = 'Username is already in use'
-        console.log(errorType);
         return next({ message: 'Error has occured at userController.createAccount', errorType })
       }
-      console.log(userAdded + '\n');
       res.locals.validAccount = true;
       res.cookie('userID', userAdded.rows[0]._id);
       return next();
     })
 }
 
+
+// LOGGING IN - query to database to ensure the user given data matches with the data stored in DB
 userController.verifyAccount = (req, res, next) => {
   const { username, password } = req.body;
   const verifyUserQuery = `
@@ -40,7 +40,6 @@ userController.verifyAccount = (req, res, next) => {
   db.query(verifyUserQuery, values, 
     (err, verifiedUser) => {
       if (err) return next({ message: 'Error has occured at userController.verifyAccount' });
-      // console.log('testinggggggg', verifiedUser)
       if (verifiedUser.rows.length === 0) {
         res.locals.errorType = 'Username or password is invalid';
       } else {

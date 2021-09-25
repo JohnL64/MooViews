@@ -45,18 +45,15 @@ const UserForm = ({ action }) => {
       { action === 'verifyAccount' && <h1>Sign In To Account</h1> }
       { action === 'createAccount' && <h1>Create An Account</h1> }
       <form className={css.innerForm} onSubmit={validAccount}>
-        {/* { action === 'createAccount' && <label htmlFor="email">Email: </label> } */}
         { action === 'createAccount' && <input type='email' id="email" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} /> }
-        {/* <label htmlFor="username">Username: </label> */}
         <input type='text' id="username" required value={username} placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
-        {/* <label htmlFor="password">Password: </label> */}
         <input type='password' id="password" required value={password} placeholder='Password'  onChange={(e) => setPassword(e.target.value)} />
         { action === 'createAccount' && <button id={css.submitBtn}>Sign Up</button> }
         { action === 'verifyAccount' && <button id={css.submitBtn}>Log In</button> }
       </form>
       { userError && <p>{userError}</p>}
       { action === 'verifyAccount' && <p className={css.loginSignupLink}>Dont have an account? <Link to='/signup'>Sign Up</Link></p> }
-      { action === 'createAccount' && <p className={css.loginSignupLink}>Dont have an account? <Link to='/login'>Log In</Link></p> }
+      { action === 'createAccount' && <p className={css.loginSignupLink}>Have an account? <Link to='/login'>Log In</Link></p> }
     </div>
   )
 }
