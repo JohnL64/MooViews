@@ -35,7 +35,7 @@ const Navbar = () => {
           { (focused && searchResult) && <SearchResult searchResult={searchResult} /> }
           { error && <p>{error}</p>}
       </div>
-      <Link className={css.navlink} to='/trending'>Trending</Link>
+      <Link className={css.navlink} to='/upcoming'>Coming Soon</Link>
       <Link className={css.navlink} to='/top-rated'>Top Rated</Link>
       <Link className={css.end} to='login'>Sign In</Link>
     </nav>
