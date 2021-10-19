@@ -43,23 +43,24 @@ movieController.preview = (req, res, next) => {
   const { content } = req.query;
   console.log(content);
 
-  function twelveAndImageUpdate(results) {
-    const onlyTwelve = [];
+  function selectedMoviesAndUpdate(results) {
+    const selected = [];
     for (let i = 0; i < results.length; i += 1) {
-      if (i > 11) break;
-      results[i].poster_path = `https://image.tmdb.org/t/p/w185/${results[i].poster_path}`
-      onlyTwelve.push(results[i]);
+      if (i > 29) break;
+      // if (results[i].title.length > )
+      results[i].poster_path = `https://image.tmdb.org/t/p/w500/${results[i].poster_path}`
+      selected.push(results[i]);
     }
-    return onlyTwelve;
+    return selected;
   }
 
   if (content === "home") {
   fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`)
     .then(res => res.json())
     .then(data => {
-      console.log(data.results)
+      console.log(data.results.length)
 
-      res.locals.preview = twelveAndImageUpdate(data.results);
+      res.locals.preview = selectedMoviesAndUpdate(data.results);
       return next();
     })
     .catch(err => {

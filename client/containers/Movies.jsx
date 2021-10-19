@@ -22,6 +22,7 @@ const Movies = ({ content }) => {
 
   return (
     <div className={css.movies}>
+      {/*Once data is fetched and preview is updated Preview component will be rendered */}
       {preview && <Preview preview={preview} content={content} />}
       {/* <Popular /> */}
     </div>
