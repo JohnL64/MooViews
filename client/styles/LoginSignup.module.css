@@ -1,52 +1,26 @@
-body {
-  /* border: solid; */
-}
-
-/* .userForm * {
-  border: solid black 1px;
-} */
 .userForm {
-  /* border: solid coral; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 50% */
 }
 
 .userForm h1 {
-  /* border: solid darkkhaki 1px; */
   margin: 45px 0 0;
-  /* display: flex; */
-  /* color: pink; */
   text-align: center;
-  /* justify-content: center; */
-  /* display: inline-block; */
-  /* height: 100vh; */
 }
 
 .outerForm {
-  /* margin-top: 2.5%; */
   margin: 45px auto 0;
-  border: 1px solid lightgray;
-  /* width: 26%; */
+  border: 1px solid white;
   width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.outerForm * {
-  /* border: solid dodgerblue 1px; */
-  /* margin: 10px 0 0; */
+  background-color: rgb(27, 27, 27)
 }
 
 .innerForm {
   margin: 40px 0;
-  /* border: 2px solid purple; */
   width: 72%;
   display: flex;
   flex-direction: column;
@@ -58,11 +32,10 @@ body {
   margin: 1.5% 0;
   border: solid 1px lightgray;
   border-radius: 2px;
-  background-color: rgba(243, 243, 243, 0.692);
+  background-color: white;
   font-size: 12px;
   padding-left: 3%;
   outline: none;
-  /* border-color: lightgray; */
 }
 
 #submitBtn {

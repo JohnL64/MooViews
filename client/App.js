@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Movies from './containers/Movies.jsx';
 import Login from './containers/Login.jsx';
 import Signup from './containers/Signup.jsx';
-import Navbar from './components/Navbar.jsx';
+import Navbar from './components/Navbar/Navbar.jsx';
 import MovieInfo from './containers/MovieInfo.jsx';
 import './styles/index.css';
 

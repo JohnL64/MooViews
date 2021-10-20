@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import css from '../styles/Movies.module.css';
-import Preview from '../components/Preview.jsx';
+import Preview from '../components/Movies/Preview.jsx';
 // import Popular from '../components/Popular.jsx';
 
 const Movies = ({ content }) => {
@@ -10,9 +10,6 @@ const Movies = ({ content }) => {
   if (!content) content = 'home';
   // making a request to server to fetch now playing and popular movies from movie api after component is rendered for the first time
   useEffect(() => {
-    console.log(content)
-    console.log(typeof content)
-    // fetch(`/movie/search?keyword=${e.target.value}`)
     fetch(`/movie/content?content=${content}`)
       .then(res => res.json())
       .then(data => {

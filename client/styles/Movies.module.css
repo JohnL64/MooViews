@@ -119,3 +119,8 @@
   top: 42%;
   right: 0;
 }
+
+.backdropImg {
+  /* width: 275px; */
+  height: 275px;
+}
