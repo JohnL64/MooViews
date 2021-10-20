@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import css from '../styles/Navbar.module.css'
+import css from '../../styles/Navbar.module.css'
 import SearchResult from './SearchResult.jsx';
 
 const Navbar = () => {
-  // creating state to store the data that is returned from movie API that the user has requested.
+  // using state to store search results from movie api to ensure data is dispayed in SearchResult component
   const [searchResult, setSearchResult] = useState(null);
-  // creating state to check if the search input box is in focus. When focused and a user has but in any input the results will render if. If not focused the results will disappear but data will still be stored.
+  // using state to track whether search bar is focused and to determine if SearchResult component should be rendered
   const [focused, setFocused] = useState(false);
-  // if an error occurs, instead of the result the error message will be displayed.
+  // using state to ensure if an error does occur the error will be displayed
   const [error, setError] = useState(null);
 
-  // function that will be invoked when any change is found in the input box and will make a request to server with the input the user has entered
+  // function to be invoked when any change occurs in the search input box and will make a request to server with the given keyword from user
   const onSearch = (e) => {
-    // with this conditional, requests to the server will be made when there is at least one character inputted by the user. So if user removes all characters inputted this will not make a request until at least a single value is given.
-    if (e.target.value !== '') {
     fetch(`/movie/search?keyword=${e.target.value}`)
       .then(res => res.json())
       .then(data => {
@@ -23,7 +21,6 @@ const Navbar = () => {
       .catch(err => {
         setError(err);
       })
-    }
   }
 
 
@@ -35,7 +32,7 @@ const Navbar = () => {
           { (focused && searchResult) && <SearchResult searchResult={searchResult} /> }
           { error && <p>{error}</p>}
       </div>
-      <Link className={css.navlink} to='/trending'>Trending</Link>
+      <Link className={css.navlink} to='/upcoming'>Coming Soon</Link>
       <Link className={css.navlink} to='/top-rated'>Top Rated</Link>
       <Link className={css.end} to='login'>Sign In</Link>
     </nav>

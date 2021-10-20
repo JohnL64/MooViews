@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import css from '../styles/Navbar.module.css';
+import css from '../../styles/Navbar.module.css';
 
 const SearchResult = ({ searchResult }) => {
   const topResults = [];

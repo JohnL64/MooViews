@@ -4,19 +4,32 @@ import css from '../styles/LoginSignup.module.css';
 import { Link } from 'react-router-dom';
 
 const UserForm = ({ action }) => {
-  // useError to store and track the possible error when verifying or creating account. useError is used to display the error message received from the database
+  // Using state to track possible errors when verifying or creating an account. If an error occurs this state will store the error and render it to the page
   const [userError, setUserError] = useState('');
-  // email, username, password are used to save and dipslay user inputs in given fields. Also used when sending data to server
+  // Using state to store user inputted email, username, and password to display changes to the correct input field and to send user data to server.
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('')
-  // history is used to be able to navigate to different pages in the application
+
+  // Created variables and conditional statements to dynamically render the form title and the text inside the button
+  let formTitle;
+  let submitButton;
+  if (action === 'verifyAccount') {
+    formTitle = 'Sign In To Account';
+    submitButton = 'Log In';
+  }
+  else {
+    formTitle = 'Create An Account';
+    submitButton = 'Sign Up';
+  }
+
+  // Method used to navigate to a different react route (container component)
   const history = useHistory();
 
-  // method invoked when button in form is clicked
+  // Method invoked when login/signup button is clicked
   const validAccount = (e) => {
     e.preventDefault();
-    // makes requests to the server to create or verify accounts
+    // makes requests to the server to create or verify accounts. If succesful redirect to Movies page
     fetch(`/user/${action}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -26,9 +39,8 @@ const UserForm = ({ action }) => {
       return res.json()
     })
     .then(data => {
-      // if incoming data from the response has a errorType property throw error where the second argument will be an object with the default cause property and its value being the value saved in the errorType prop in the response object
+      // if error occurs on the server side run code in catch method
       if (data.errorType) throw new Error('Error', { cause: data.errorType });
-      // when errorType prop is absent which means the creation or verfication of an account was successful redirect user to the home page
       history.push('/');
     })
     .catch(err => {
@@ -42,14 +54,12 @@ const UserForm = ({ action }) => {
 
   return (
     <div className={css.outerForm}>
-      { action === 'verifyAccount' && <h1>Sign In To Account</h1> }
-      { action === 'createAccount' && <h1>Create An Account</h1> }
+      <h1>{formTitle}</h1>
       <form className={css.innerForm} onSubmit={validAccount}>
         { action === 'createAccount' && <input type='email' id="email" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} /> }
         <input type='text' id="username" required value={username} placeholder='Username' onChange={(e) => setUsername(e.target.value)} />
         <input type='password' id="password" required value={password} placeholder='Password'  onChange={(e) => setPassword(e.target.value)} />
-        { action === 'createAccount' && <button id={css.submitBtn}>Sign Up</button> }
-        { action === 'verifyAccount' && <button id={css.submitBtn}>Log In</button> }
+        <button id={css.submitBtn}>{submitButton}</button>
       </form>
       { userError && <p>{userError}</p>}
       { action === 'verifyAccount' && <p className={css.loginSignupLink}>Dont have an account? <Link to='/signup'>Sign Up</Link></p> }
