@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import MoviePreviewInfo from './MoviePreviewInfo.jsx';
 import css from '../../styles/Movies.module.css';
 import { AiFillStar, AiOutlineInfoCircle } from 'react-icons/ai';
-import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Preview = ({ preview, content }) => {
@@ -51,7 +50,7 @@ const Preview = ({ preview, content }) => {
         </Link>
         <p className={css.moviePreviewRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
         <p className={css.moviePreviewTitle}><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></p>
-        <button className={css.previewInfo} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle className={css.infoCircle} size='25px' color='white'/></button>
+        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle className={css.infoCircle} size='25px' color='white'/></button>
       </div>
     ) 
   }
@@ -79,7 +78,7 @@ const Preview = ({ preview, content }) => {
           </button> }
 
       </div>
-      { movieToShowInfo && <MoviePreviewInfo backdrop={movieToShowInfo.backdrop} releaseDate={movieToShowInfo.releaseDate} id={movieToShowInfo.id} title={movieToShowInfo.title} overview={movieToShowInfo.overview}  />}
+      { movieToShowInfo && <MoviePreviewInfo close={setMovieToShowInfo} backdrop={movieToShowInfo.backdrop} releaseDate={movieToShowInfo.releaseDate} id={movieToShowInfo.id} title={movieToShowInfo.title} overview={movieToShowInfo.overview}  />}
     </div>
   )
 }
