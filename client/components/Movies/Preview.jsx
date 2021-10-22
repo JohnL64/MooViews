@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MoviePreviewInfo from './MoviePreviewInfo.jsx';
-import css from '../../styles/Movies.module.css';
+import css from '../../styles/Preview.module.css';
 import { AiFillStar, AiOutlineInfoCircle } from 'react-icons/ai';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 

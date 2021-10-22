@@ -15,11 +15,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path='/'>
-            {/* { document.cookie.length > 0 && <Home /> }
-            { !document.cookie.length > 0 && <Login /> } */}
             <Movies />
-            {/* <Login /> */}
-            {/* <Signup /> */}
           </Route>
           <Route path='/top-rated'>
             <Movies content='topRated'/>
@@ -32,7 +28,6 @@ function App() {
           </Route>
           <Route path='/login'>
             <Login />
-            {/* <Home /> */}
           </Route>
           <Route path='/movie-info/:movie'>
             <MovieInfo />
