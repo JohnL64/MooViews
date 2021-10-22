@@ -6,27 +6,18 @@
 
 .outerPreview {
   margin-top: 40px;
-  /* border: solid lightyellow 2px; */
 }
 
 .innerPreview {
   display: flex;
-  /* justify-content: space-between; */
-  /* border: solid white 2px; */
-  /* width: 979px; */
   width: 979px;
-  /* overflow-x: scroll; */
   position: relative;
 }
 
-/* .innerPreview::-webkit-scrollbar {
-  display: none;
-} */
 
 .moviePreview {
   min-height: 390px;
   background-color: rgb(27, 27, 27);
-  /* border: solid white 1px; */
   margin-right: 15px;
   color: white;
   border-radius: 8px;
@@ -35,13 +26,10 @@
 .lastMoviePreview {
   min-height: 390px;
   background-color: rgb(27, 27, 27);
-  /* border: solid white 1px; */
   color: white;
-  /* border: solid yellow 1px; */
+
 }
-/* .moviePreview p {
-  color: white;
-} */
+
 
 .previewImage {
   height: 275px;
@@ -51,7 +39,6 @@
   display: flex;
   align-items: center;
   max-width: 165px;
-  /* border: solid white 1px; */
   margin: 12px auto 12px;  
 }
 
@@ -64,7 +51,6 @@
   color: white;
   max-width: 165px;
   min-height: 40px;
-  /* border: solid white 1px; */
   margin: 0 auto;  
   overflow: hidden;
   -webkit-line-clamp: 2;
@@ -77,8 +63,6 @@
 
 .previewInfoBtn {
   display: flex;
-  /* min-width: 165px; */
-  /* border: solid white 1px; */
   background-color: transparent;
   border: none;
   margin: 10px auto 15px;
@@ -90,13 +74,12 @@
 
 .previous,
 .next {
-  /* padding: 0 auto; */
   visibility: hidden;
   position: absolute;
+  top: 42%;
   height: 60px;
   width: 60px;
   background-color: rgba(7, 7, 7, 0.541);
-  /* opacity: 0.5; */
   border-radius: 50%;
   border-color: white;
 }
@@ -111,27 +94,16 @@
   visibility: visible;
 }
 
-.previous {
-  top: 42%;
-}
-
 .next {
-  top: 42%;
   right: 0;
 }
 
 .backdropImg {
   width: 500px;
-  /* width: 75%; */
-  /* height: 275px; */
 }
 
 .previewInfoBox {
-  /* border: solid white 2px; */
-  /* position: fixed; */
   z-index: 1;
-  /* width: 100vh;
-  height: 100vh; */
   background-color: rgba(0, 0, 0, 0.8);
   position:absolute;
   top:0px;
@@ -146,9 +118,7 @@
 .previewInfoContent {
   background-color: rgb(20, 20, 20);
   border-radius: 15px;
-  /* width: 600px; */
   padding: 0 25px;
-  /* margin: ; */
   position: relative;
   max-height: 625px;
 }
@@ -163,7 +133,6 @@
   border-radius: 50%;
   right: 10px;
   top: -45px;
-  /* border: solid white 2px; */
 }
 
 .previewClose:hover {
@@ -173,8 +142,6 @@
 .previewOverview {
   box-sizing: border-box;
   color: rgb(187, 187, 187);
-  /* font-size: 1.05rem;
-  font-weight: 100; */
   font-size: 16px;
   max-height: 195px;
   max-width: 500px;
@@ -183,20 +150,17 @@
   scrollbar-color: pink;
   line-height: 1.4;
   padding-right: 8px;
-  /* border: yellow solid 1px; */
 }
 
 .previewOverview::-webkit-scrollbar {
   margin-left: 8px;
   border-radius: 10px;
-  /* border: white solid 2px; */
   width: 9px;
   background-color: rgb(102, 102, 102);
 }
 
 .previewOverview::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  /* border: white solid 2px; */
   background-color: rgb(37, 37, 37);
 }
 

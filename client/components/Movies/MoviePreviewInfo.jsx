@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import css from '../../styles/Movies.module.css';
+import css from '../../styles/Preview.module.css';
 import { IoClose } from 'react-icons/io5';
 
 const MoviePreviewInfo = ({ close, backdrop, releaseDate, id, title, overview }) => {
+  // using state to store general inforamtion of selected movie (data received from the server). After receiving the data state will be updated and will display the movie preview information.
   const [previewGeneralInfo, setPreviewGeneralInfo] = useState(null);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    fetch(`/movie/content?content=generalInfo&id=${id}`)
+    fetch(`/movie/movie-preview-info?content=generalInfo&id=${id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data.generalInfo.rating);
+        if (data.status) throw new Error('Error', { cause: data.message });
         setPreviewGeneralInfo(data.generalInfo);
+      })
+      .catch(err => {
+        console.log(err.cause)
+        setError('An error has occured when loading general information for selected movie. Please try again or try again at a later time')
       })
   }, [])
 
   return (
     <div className={css.previewInfoBox} onClick={() => close(null)}>
+      {error && <p>{error}</p>}
       { previewGeneralInfo &&
         <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
           <span className={css.previewClose} onClick={() => close(null)}> 

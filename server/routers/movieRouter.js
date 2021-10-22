@@ -7,7 +7,15 @@ router.get('/search', movieController.search, (req, res) => {
   res.status(200).json(res.locals);
 })
 
-router.get('/content', movieController.preview, (req, res) => {
+router.get('/content', movieController.preview, movieController.main, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
+router.get('/movie-preview-info', movieController.preview, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
+router.get('/main', movieController.main, (req, res) => {
   res.status(200).json(res.locals);
 })
 
