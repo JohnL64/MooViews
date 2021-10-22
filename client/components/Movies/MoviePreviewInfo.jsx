@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import css from '../../styles/Movies.module.css';
-import { GrClose } from 'react-icons/gr';
-import { BsDot } from 'react-icons/bs';
+import { IoClose } from 'react-icons/io5';
 
-const MoviePreviewInfo = ({ backdrop, releaseDate, id, title, overview }) => {
+const MoviePreviewInfo = ({ close, backdrop, releaseDate, id, title, overview }) => {
   const [previewGeneralInfo, setPreviewGeneralInfo] = useState(null);
   useEffect(() => {
     fetch(`/movie/content?content=generalInfo&id=${id}`)
@@ -15,16 +14,16 @@ const MoviePreviewInfo = ({ backdrop, releaseDate, id, title, overview }) => {
   }, [])
 
   return (
-    <div className={css.previewInfoBox}>
+    <div className={css.previewInfoBox} onClick={() => close(null)}>
       { previewGeneralInfo &&
-        <div className={css.previewInfoContent}>
-          <span className={css.previewClose}>
-            <GrClose />
-            <p>{title}</p>
-            <p>{previewGeneralInfo.rating}, {previewGeneralInfo.runtime},  {releaseDate}</p>
-            <img className={css.backdropImg} src={backdrop}/>
-            <p>{overview}</p>
+        <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
+          <span className={css.previewClose} onClick={() => close(null)}> 
+            <IoClose size='27px' color='white'/>
           </span>
+            <p className={css.previewInfoTitle}>{title}</p>
+            <p className={css.allPreviewGeneralInfo}> <span className={css.previewGeneralInfo}>{previewGeneralInfo.rating},</span> <span className={css.previewGeneralInfo}>{previewGeneralInfo.runtime},</span> <span className={css.previewGeneralInfo}>{releaseDate}</span> </p>
+            <img className={css.backdropImg} src={backdrop}/>
+            <p className={css.previewOverview}>{overview}</p>
         </div> }
     </div>
   )

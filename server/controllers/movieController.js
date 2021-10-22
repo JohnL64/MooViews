@@ -7,7 +7,7 @@ const { api_key } = process.env;
 const movieController = {};
 
 
-// MOVIE QUERY WITH KEYWORD - query to movie api to return movies that match with the user given keyword
+//-------- MOVIE QUERY WITH KEYWORD --------- query to movie api to return movies that match with the user given keyword
 movieController.search = (req, res, next) => {
   // function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
   function changeDates(results) {
@@ -34,7 +34,7 @@ movieController.search = (req, res, next) => {
     })
 }
 
-// MOVIE AND MOVIE DETAILS QUERIES FOR PREVIEW
+//-------- MOVIE AND MOVIE DETAILS QUERIES FOR PREVIEW --------
 movieController.preview = (req, res, next) => {
   const { content, id } = req.query;
   // console.log(content, id);
