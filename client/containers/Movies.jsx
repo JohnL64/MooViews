@@ -18,10 +18,10 @@ const Movies = ({ content }) => {
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(() => {
-    fetch(`/movie/content?content=${content}&page=${page}`)
+    fetch(`/movie/preview?content=${content}`)
       .then(res => res.json())
       .then(data => {
-        console.log('MAIN ', data.main)
+        // console.log('MAIN ', data.main)
         if (data.status) throw new Error('Error', { cause: data.message });
         setPreview(data.preview);
       })
@@ -58,27 +58,27 @@ const Movies = ({ content }) => {
     //   })
   }, [])
 
-  // useEffect(() => {
-  //   fetch(`/movie/main?content=${content}&page=${page}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       if (data.status) throw new Error('Error', { cause: data.message });
-  //       // setPreview(data.preview);
-  //     })
-  //     .catch(err => {
-  //       console.log(err.cause)
-  //       setMainError('An error has occured when loading main content. Please try again or try again later');
-  //       console.log(err);
-  //     })
-  // }, [])
+  useEffect(() => {
+    fetch(`/movie/main?content=${content}&page=${page}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.main);
+        if (data.status) throw new Error('Error', { cause: data.message });
+        setMain(data.main);
+      })
+      .catch(err => {
+        console.log(err.cause)
+        setMainError('An error has occured when loading main content. Please try again or try again later');
+        console.log(err);
+      })
+  }, [])
 
   return (
     <div className={css.movies}>
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} content={content} />}
       {mainError && <p >{mainError}</p>}
-      {main && <Main content={content} setPage={setPage}/>}
+      {main && <Main main={main}content={content} setPage={setPage}/>}
     </div>
   )
 }

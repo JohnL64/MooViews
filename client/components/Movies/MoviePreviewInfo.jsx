@@ -8,7 +8,7 @@ const MoviePreviewInfo = ({ close, backdrop, releaseDate, id, title, overview })
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`/movie/movie-preview-info?content=generalInfo&id=${id}`)
+    fetch(`/movie/preview?content=generalInfo&id=${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.status) throw new Error('Error', { cause: data.message });

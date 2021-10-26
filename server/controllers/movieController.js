@@ -69,6 +69,9 @@ movieController.preview = (req, res, next) => {
   }
 }
 
+/*
+-------- QUERY FOR POPULAR MOVIES AND DETAILS OF EACH MOVIE FOR MAIN --------
+*/
 movieController.main = (req, res, next) => {
   const { content, page } = req.query;
   console.log('page ', page);
