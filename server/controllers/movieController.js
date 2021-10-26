@@ -8,7 +8,7 @@ const { api_key } = process.env;
 const movieController = {};
 
 
-//-------- MOVIE QUERY WITH KEYWORD --------- query to movie api to return movies that match with the user given keyword
+//-------- QUERY MOVIE WITH USER GIVEN KEYWORD --------- 
 movieController.search = (req, res, next) => {
   // function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
   function changeDates(results) {
@@ -36,25 +36,47 @@ movieController.search = (req, res, next) => {
 }
 
 
-//-------- MOVIE AND MOVIE DETAILS QUERIES FOR PREVIEW --------
-movieController.preview = (req, res, next) => {
+//-------- QUERIES MOVIES AND MOVIE DETAILS FOR PREVIEW --------
+movieController.preview = async (req, res, next) => {
   const { content, id } = req.query;
- 
+
+  let urlQuery;
+  let urQueryTwo;
+  let firstResult;
+  let secondResult;
+
   // Queries movies for preview in movies page
-  if (content === "home") {
-  fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`)
-    .then(res => res.json())
-    .then(data => {
-      res.locals.preview = movieApiMethods.moviesInfoUpdate(data.results);
-      return next();
-    })
-    .catch(err => {
-      return next({ message: 'Error has occured when querying data for home preview in movieController.preview' });
-    })
+  if (content !== "generalInfo") {
+    switch(content) {
+      case "home":
+        urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
+        urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2&region=US`;
+        break;
+    }
+
+    await fetch(urlQuery)
+      .then(res => res.json())
+      .then(data => {
+        firstResult = movieApiMethods.moviesInfoUpdate(data.results);
+      })
+      .catch(err => {
+        return next({ message: 'Error has occured when first querying data for home preview in movieController.preview' });
+      })
+
+    fetch(urlQueryTwo)
+      .then(res => res.json())
+      .then(secondData => {
+        secondResult = movieApiMethods.moviesInfoUpdate(secondData.results);
+        res.locals.preview = firstResult.concat(secondResult);
+        return next();
+      })
+      .catch(err => {
+        return next({ message: 'Error has occured when second querying data for home preview in movieController.preview' });
+      })
   }
 
   // Queries movie details for general information popup box
-  else if (content === 'generalInfo') {
+  else {
     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`)
       .then(res => res.json())
       .then(data => {

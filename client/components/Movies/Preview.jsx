@@ -7,7 +7,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const Preview = ({ preview, content }) => {
   // using state to keep track of what movies from preview should be displayed and to ensure next and previous movies functionality correctly updates and renders movies
-  const [displayed, setDisplayed] = useState([0, 4])
+  const [displayed, setDisplayed] = useState([0, 5])
   // using state to determine whether MoviePreviewInfo should be rendered. If info button is clicked this state would be updated to the necessary data for selected movie and to be passed down to MoviePreviewInfo component.
   const [movieToShowInfo, setMovieToShowInfo] = useState(null);
 
@@ -57,7 +57,7 @@ const Preview = ({ preview, content }) => {
 
   // function that is invoked when left or right chevrons buttons are clicked to display the next or previous list of movies
   function moviesPreviewChange(direction) {
-    direction === 'next' ? setDisplayed([displayed[0] + 5, displayed[1] + 5]): setDisplayed([displayed[0] - 5, displayed[1] - 5])
+    direction === 'next' ? setDisplayed([displayed[0] + 6, displayed[1] + 6]): setDisplayed([displayed[0] - 6, displayed[1] - 6])
   }
 
   return (
@@ -72,8 +72,8 @@ const Preview = ({ preview, content }) => {
 
         {moviesToPreview}
 
-        { displayed[0] !== 15 && 
-          <button className={css.next} onClick={ () => { if (displayed[0] !== 15) moviesPreviewChange('next') }}>
+        { displayed[0] !== 30 && 
+          <button className={css.next} onClick={ () => { if (displayed[0] !== 30) moviesPreviewChange('next') }}>
             <FaChevronRight size='40px' color='white'/>
           </button> }
 

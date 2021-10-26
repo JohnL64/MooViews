@@ -10,7 +10,8 @@
 
 .innerPreview {
   display: flex;
-  width: 979px;
+  justify-content: space-between;
+  width: 1200px;
   position: relative;
 }
 
@@ -18,18 +19,9 @@
 .moviePreview {
   min-height: 390px;
   background-color: rgb(27, 27, 27);
-  margin-right: 15px;
   color: white;
   border-radius: 8px;
 }
-
-.lastMoviePreview {
-  min-height: 390px;
-  background-color: rgb(27, 27, 27);
-  color: white;
-
-}
-
 
 .previewImage {
   height: 275px;
