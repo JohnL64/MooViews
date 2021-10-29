@@ -27,15 +27,17 @@ const Main = ({ main, content, setPage }) => {
   }
 
   // creating rows of movies to be rendered for Main. Each row includes two movies
-  for (let i = 0; i < main.length; i += 2) {
-    let row = [];
-    row.push(mainMovie(main[i]));
-    row.push(mainMovie(main[i + 1]));
-    mainContent.push(
-      <div className={css.mainMovieRow}>
-        {row}
-      </div>
-    );
+  if (main) {
+    for (let i = 0; i < main.length; i += 2) {
+      let row = [];
+      row.push(mainMovie(main[i]));
+      row.push(mainMovie(main[i + 1]));
+      mainContent.push(
+        <div className={css.mainMovieRow} key={i}>
+          {row}
+        </div>
+      );
+    }
   }
 
   // using variable and switch statement to dynamically render title for main content
@@ -53,10 +55,17 @@ const Main = ({ main, content, setPage }) => {
   }
   return ( 
     <div className={css.outerMain}>
-      <h2>{mainTitle}</h2>
-      <div className={css.innerMain}>
-        {mainContent}
-      </div>
+      {!main && 
+        <div className={css.loadingDots}>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div> }
+      { main && <h2>{mainTitle}</h2> }
+      { main && 
+        <div className={css.innerMain}>
+          {mainContent}
+        </div> }
     </div>
    );
 }

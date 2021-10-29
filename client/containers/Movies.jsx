@@ -50,7 +50,7 @@ const Movies = ({ content }) => {
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} content={content} />}
       {mainError && <p >{mainError}</p>}
-      {main && <Main main={main} content={content} setPage={setPage}/>}
+      {preview && <Main main={main} content={content} setPage={setPage}/>}
     </div>
   )
 }
