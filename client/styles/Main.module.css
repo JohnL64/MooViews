@@ -1,7 +1,129 @@
 .outerMain {
-
+  /* border: solid yellow 1px; */
+  /* width: 1200px; */
+  margin-top: 60px;
 }
 
 .innerMain {
-  
+  display: flex;
+  flex-wrap: wrap;
+  /* background-color: rgb(27, 27, 27); */
+  /* border: coral solid 1px;  */
+  width: 1200px; 
+  border-radius: 8px;
+}
+
+.mainMovieRow {
+  display: flex;
+  justify-content: space-between;
+  /* border: solid purple 1px; */
+  box-sizing: border-box;
+  width: 1200px;
+  margin-bottom: 10px;
+  /* border-radius: 15px; */
+}
+
+.mainMovie {
+  display: flex;
+  /* justify-content: space-between; */
+  /* padding: 10px 0; */
+  box-sizing: border-box;
+  /* margin-right: 10%; */
+  width: 596px;
+  /* width: %; */
+  color: black;
+  background-color: white;
+  /* margin-bottom: 15px; */
+  height: 225px;
+  border-radius: 8px;
+}
+
+.mainMovieInfo {
+  width: 100%;
+  /* border:yellow solid 2px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 225px;
+  position: relative;
+}
+
+.mainMovieInfo p {
+  /* border:black solid 1px; */
+  width: 410px;
+}
+
+.mainImage {
+  border-radius: 8px 0 0 8px;
+  height: 225px;
+}
+
+.mainMovieTitle {
+  margin: 12px 0 0;
+  font-size: 1.3rem;
+  /* border:solid black 1px; */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  color: rgb(255, 136, 156);
+}
+
+.mainTitleLink {
+  color: rgb(255, 136, 156);
+}
+
+.allGeneralMovieInfo {
+  color: rgb(80, 80, 80);
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.genInfo {
+  /* border: black solid 1px; */
+  margin-right: 5px;
+}
+
+.movieMainRating {
+  margin: 10px 0 0;
+  /* margin-left: 10px;
+  margin-right: 5px; */
+  /* border: solid salmon 1px; */
+  font-size: 1.0rem;
+  display: inline-flex;
+  /* display: none; */
+  align-items: center;
+}
+
+.starRating {
+  margin-right: 3px;
+}
+
+.mainOverview {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  /* height: 110px; */
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  /* border: solid black 1px; */
+}
+
+.fullDetails {
+  color: rgb(255, 136, 156);
+  margin: 0;
+  font-size: 0.9rem;
+  /* border: solid black 1px; */
+  text-align: right;
+  position: absolute;
+  bottom: 8px;
+}
+
+.fullDetailsLink {
+  color: rgb(255, 136, 156);;
 }
