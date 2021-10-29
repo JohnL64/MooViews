@@ -109,8 +109,22 @@ movieController.main = (req, res, next) => {
       for (let i = 0; i < data.results.length; i += 1) {
         data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
       }
-      // data.results[0] = await movieApiMethods.queryMovieDetails({ id: data.results[0].id})
       res.locals.main = data.results;
+
+      // let changed;
+      // for (let i = 0; i < data.results.length; i += 1) {
+      //   if (i < 3) data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
+      //   if (data.results[i].id === 635302) {
+      //     data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
+      //     changed = i
+      //   }
+      // }
+      // // console.log(data.results[changed]);
+      // let newArr = data.results.slice(0, 3);
+      // newArr.push(data.results[changed]);
+      // // console.log(newArr);
+      // res.locals.main = newArr;
+
       return next();
     })
     .catch(err => {

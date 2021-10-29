@@ -8,6 +8,10 @@
   margin-top: 40px;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
 .innerPreview {
   display: flex;
   justify-content: space-between;
@@ -17,7 +21,6 @@
 
 
 .moviePreview {
-  min-height: 390px;
   background-color: rgb(27, 27, 27);
   color: white;
   border-radius: 8px;
@@ -57,10 +60,14 @@
   display: flex;
   background-color: transparent;
   border: none;
-  margin: 10px auto 15px;
+  margin: 7px auto 10px;
+  padding: 10px;
 }
 
-.infoCircle:hover {
+.previewInfoBtn:hover {
+  display: flex;
+  background-color: rgba(128, 128, 128, 0.267);;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -170,4 +177,8 @@
 
 .previewGeneralInfo {
   margin-right: 5px;
+}
+
+p a:hover {
+  text-decoration: underline;
 }

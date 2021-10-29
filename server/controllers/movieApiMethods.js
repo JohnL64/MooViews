@@ -26,6 +26,12 @@ movieApiMethods.moviesInfoUpdate = (results) => {
     results.release_date = results.release_date.slice(0, 4);
     results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
     results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
+    let newGenreFormat = '';
+    for (let genre of results.genres) {
+      if (genre.name === 'Science Fiction') genre.name = 'Sci-Fi'
+      !newGenreFormat ? newGenreFormat += genre.name : newGenreFormat += `/${genre.name}`;
+    }
+    results.genres = newGenreFormat;
   }
   return results;
 }
@@ -50,8 +56,10 @@ movieApiMethods.findMpaaRating = (releaseDatesResults) => {
     if (location.iso_3166_1 === 'US') {
       // Searches the movie releases and ratings in US. Looks for the first release with a given MPAA rating and the value is used in Preview
       for (let release of location.release_dates) {
-        if (release.certification) rating = release.certification;
-        break;
+        if (release.certification) {
+          rating = release.certification;
+          break;
+        }
       }
       // If none of the releases have a rating 'Not Rated' will be used
       if (!rating) rating = 'Not Rated';

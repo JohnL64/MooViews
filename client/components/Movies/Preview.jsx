@@ -50,7 +50,7 @@ const Preview = ({ preview, content }) => {
         </Link>
         <p className={css.moviePreviewRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
         <p className={css.moviePreviewTitle}><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></p>
-        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle className={css.infoCircle} size='25px' color='white'/></button>
+        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle size='25px' color='white'/></button>
       </div>
     ) 
   }

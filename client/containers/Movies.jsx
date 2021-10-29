@@ -34,7 +34,7 @@ const Movies = ({ content }) => {
     fetch(`/movie/main?content=${content}&page=${page}`)
       .then(res => res.json())
       .then(mainData => {
-        console.log(mainData.main);
+        console.log('Main ', mainData.main);
         if (mainData.status) throw new Error('Error', { cause: mainData.message });
         setMain(mainData.main);
       })
@@ -50,7 +50,7 @@ const Movies = ({ content }) => {
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} content={content} />}
       {mainError && <p >{mainError}</p>}
-      {main && <Main main={main}content={content} setPage={setPage}/>}
+      {main && <Main main={main} content={content} setPage={setPage}/>}
     </div>
   )
 }
