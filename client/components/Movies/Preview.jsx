@@ -60,6 +60,9 @@ const Preview = ({ preview, content }) => {
     direction === 'next' ? setDisplayed([displayed[0] + 6, displayed[1] + 6]): setDisplayed([displayed[0] - 6, displayed[1] - 6])
   }
 
+  // disables scrolling when Mmodal is open 
+  movieToShowInfo ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'auto';
+
   return (
     <div className={css.outerPreview}>
       <h2>{previewTitle}</h2>
@@ -78,7 +81,7 @@ const Preview = ({ preview, content }) => {
           </button> }
 
       </div>
-      { movieToShowInfo && <MoviePreviewInfo close={setMovieToShowInfo} backdrop={movieToShowInfo.backdrop} releaseDate={movieToShowInfo.releaseDate} id={movieToShowInfo.id} title={movieToShowInfo.title} overview={movieToShowInfo.overview}  />}
+      { movieToShowInfo && <MoviePreviewInfo close={setMovieToShowInfo} movieToShowInfo={movieToShowInfo}  />}
     </div>
   )
 }

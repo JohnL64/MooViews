@@ -44,7 +44,7 @@ const Main = ({ main, content, setPage }) => {
   let mainTitle;
   switch(content) {
     case 'home': 
-      mainTitle = 'Popular';
+      mainTitle = 'Most Popular';
       break;
     case 'topRated': 
       mainTitle = 'Top Rated';

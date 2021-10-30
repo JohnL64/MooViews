@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import css from '../../styles/Preview.module.css';
 import { IoClose } from 'react-icons/io5';
 
-const MoviePreviewInfo = ({ close, backdrop, releaseDate, id, title, overview }) => {
+const MoviePreviewInfo = ({ close, movieToShowInfo }) => {
+  const { backdrop, releaseDate, id, title, overview } = movieToShowInfo;
   // using state to store general inforamtion of selected movie (data received from the server). After receiving the data state will be updated and will display the movie preview information.
   const [previewGeneralInfo, setPreviewGeneralInfo] = useState(null);
   const [error, setError] = useState(null);
