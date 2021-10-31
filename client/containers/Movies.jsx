@@ -43,14 +43,14 @@ const Movies = ({ content }) => {
         setMainError('An error has occured when loading main content. Please try again or try again later');
         console.log(err);
       })
-  }, [])
+  }, [page])
 
   return (
     <div className={css.movies}>
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} content={content} />}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} content={content} setPage={setPage}/>}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} content={content} page={page} setPage={setPage}/>}
     </div>
   )
 }

@@ -60,7 +60,7 @@ const Preview = ({ preview, content }) => {
     direction === 'next' ? setDisplayed([displayed[0] + 6, displayed[1] + 6]): setDisplayed([displayed[0] - 6, displayed[1] - 6])
   }
 
-  // disables scrolling when Mmodal is open 
+  // disables scrolling when modal is open 
   movieToShowInfo ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'auto';
 
   return (
