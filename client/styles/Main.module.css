@@ -231,3 +231,19 @@
   padding-top: 6px;
   margin-right: 3px;
 }
+
+.mainImageUnavailable {
+  color: black;
+  background-color: rgb(110, 110, 110);
+  width: 199px;
+  height: 225px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px 0 0 8px;
+}
+
+.mainImageUnavailable p {
+  /* border:solid white 1px; */
+  text-align: center;
+}

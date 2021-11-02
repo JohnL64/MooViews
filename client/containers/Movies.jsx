@@ -17,6 +17,14 @@ const Movies = ({ content }) => {
   // assigning content to home when users first visit our page
   if (!content) content = 'home';
 
+  // adds the movie's id to imagesUnavailable object when an error occurs trying to fetch an image with given src. Once the id is added to imagesUnavailable the image error will then be displayed
+  function imageErrorHandler(e, movieId, imageErrors, setImageErrors) {
+    e.target.onerror = null;
+    let newImageErrors = {...imageErrors};
+    newImageErrors[movieId] = true;
+    setImageErrors(newImageErrors);
+  }
+
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
     await fetch(`/movie/preview?content=${content}`)
@@ -48,9 +56,9 @@ const Movies = ({ content }) => {
   return (
     <div className={css.movies}>
       {previewError && <p>{previewError}</p>}
-      {preview && <Preview preview={preview} content={content} />}
+      {preview && <Preview preview={preview} content={content} imageErrorHandler={imageErrorHandler}/>}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} content={content} page={page} setPage={setPage}/>}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} content={content} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler}/>}
     </div>
   )
 }

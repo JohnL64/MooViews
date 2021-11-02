@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
 
-const Main = ({ main, setMain, setPreview, content, page, setPage }) => {
+const Main = ({ main, setMain, setPreview, content, page, setPage, imageErrorHandler }) => {
+  // using state to render a message when an error occurs trying to display an image for a movie. 
+  const [mainImageErrors, setMainImageErrors] = useState({});
   const mainContent = [];
   // creating movie to be displayed 
   function mainMovie(movie) {
     return (
       <div className={css.mainMovie} key={movie.id}>
-        <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path}/> </Link>
+        { !mainImageErrors[movie.id] && <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, mainImageErrors, setMainImageErrors)}/> </Link>}
+        { mainImageErrors[movie.id] && <div className={css.mainImageUnavailable}><p>Image is currently unavailable</p></div>}
+        {/* <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path}/> </Link> */}
         <div className={css.mainMovieInfo}>
           <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie-info/${movie.id}`}>{movie.title} </Link></p>
           <p className={css.allGeneralMovieInfo}> 
