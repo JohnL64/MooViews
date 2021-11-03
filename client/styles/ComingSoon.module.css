@@ -1,0 +1,14 @@
+.comingSoon {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
+  border: solid white 1px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.innerCS {
+  width: 50%;
+  border: solid yellow 2px;
+}

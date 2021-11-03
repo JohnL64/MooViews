@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Movies from './containers/Movies.jsx';
+import Home from './containers/Home.jsx';
 import Login from './containers/Login.jsx';
 import Signup from './containers/Signup.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import MovieInfo from './containers/MovieInfo.jsx';
+import ComingSoon from './containers/ComingSoon.jsx';
+import TopRated from './containers/TopRated.jsx';
 import './styles/index.css';
 
 
@@ -15,13 +17,13 @@ function App() {
         <Navbar />
         <Switch>
           <Route exact path='/'>
-            <Movies />
+            <Home />
           </Route>
           <Route path='/top-rated'>
-            <Movies content='topRated'/>
+            <TopRated />
           </Route>
-          <Route path='/upcoming'>
-            <Movies content='upcoming'/>
+          <Route path='/coming-soon'>
+            <ComingSoon />
           </Route>
           <Route path='/signup'>
             <Signup />

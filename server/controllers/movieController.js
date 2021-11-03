@@ -52,6 +52,9 @@ movieController.preview = async (req, res, next) => {
         urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
         urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2&region=US`;
         break;
+      case "upcoming":
+        urlQuery = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`;
+        urlQueryTwo = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=2&region=US`;
     }
 
     await fetch(urlQuery)
@@ -100,6 +103,7 @@ movieController.main = (req, res, next) => {
   let urlQuery;
 
   if (content === 'home') urlQuery = `https://api.themoviedb.org/3/movie/popular?api_key=${api_key}&language=en-US&page=${page}&region=US`;
+  else if (content === 'upcoming') urlQuery = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`;
 
   fetch(urlQuery)
     .then(res => res.json())
