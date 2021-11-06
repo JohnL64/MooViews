@@ -9,7 +9,9 @@
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 1.6rem;
+  border-left: solid rgb(255, 136, 156) 4px;
+  padding-left: 7px;
 }
 
 .innerPreview {
@@ -75,9 +77,10 @@ h2 {
 .next {
   visibility: hidden;
   position: absolute;
-  top: 42%;
-  height: 60px;
-  width: 60px;
+  top: 28%;
+  height: 55px;
+  width: 55px;
+  padding: auto;
   background-color: rgba(7, 7, 7, 0.541);
   border-radius: 50%;
   border-color: white;
@@ -104,11 +107,11 @@ h2 {
 .previewInfoBox {
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.8);
-  position:absolute;
-  top:0px;
-  right:0px;
-  bottom:0px;
-  left:0px;
+  position: fixed;
+  top: 0;
+  right:0;
+  bottom:0;
+  left:0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -136,6 +139,7 @@ h2 {
 
 .previewClose:hover {
   background-color: rgba(255, 255, 255, 0.219);
+  cursor: pointer;
 }
 
 .previewOverview {
@@ -181,4 +185,34 @@ h2 {
 
 p a:hover {
   text-decoration: underline;
+}
+
+.previewImageUnavailable {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.739);
+  width: 182px;
+  height: 275px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previewImageUnavailable p {
+  text-align: center;
+}
+
+.preInfoImageUnavailable {
+  /* border: white solid 1px; */
+  color: black;
+  background-color: rgba(255, 255, 255, 0.739);
+  width: 500px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preInfoImageUnavailable p {
+  font-size: 1.3rem;
+  text-align: center;
 }

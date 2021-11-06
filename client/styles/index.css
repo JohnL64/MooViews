@@ -12,4 +12,45 @@ a {
   /* color: white; */
 }
 
+.pageNavNextPrev,
+.pageNavBtn,
+.pageNavEllipsis {
+  font-size: 1rem;
+  border-radius: 5px;
+}
 
+.pageNavNextPrev,
+.pageNavBtn {
+  background-color: white;
+}
+
+.pageNavNextPrev:hover,
+.pageNavBtn:hover {
+  cursor: pointer;
+}
+
+.pageNavNextPrev {
+  margin: 0 6px;
+}
+
+.pageNavNextPrev:disabled,
+.pageNavNextPrev[disabled]{
+  margin: 0 12px;
+  background-color: white;
+  color: rgba(0, 0, 0, 0.63);
+  cursor: text;
+}
+
+.pageNavBtn {
+  padding: 4px 8px;
+  margin-right: 3px;
+}
+
+#currPageNumber {
+  background-color: pink;
+}
+
+.pageNavEllipsis {
+  padding-top: 6px;
+  margin-right: 3px;
+}

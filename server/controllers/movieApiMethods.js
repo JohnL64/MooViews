@@ -12,18 +12,19 @@ const movieApiMethods = {};
 
 
 // Modifies the format of the received movie data for specified movie details
-movieApiMethods.moviesInfoUpdate = (results) => {
+movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
   if (Array.isArray(results)) {
     for (let i = 0; i < results.length; i += 1) {
       results[i].poster_path = `https://image.tmdb.org/t/p/w500/${results[i].poster_path}`;
       results[i].backdrop_path = `https://image.tmdb.org/t/p/w780/${results[i].backdrop_path}`;
       results[i].release_date = results[i].release_date.slice(0, 4);
+      allResults.push(results[i]);
     }
   } 
   else {
     results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
     results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
-    results.release_date = results.release_date.slice(0, 4);
+    if (content !== 'comingSoon') results.release_date = results.release_date.slice(0, 4);
     results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
     results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
     let newGenreFormat = '';
@@ -73,13 +74,14 @@ movieApiMethods.queryMovieDetails = async (detailObj) => {
   let urlQuery = `https://api.themoviedb.org/3/movie/${detailObj.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`
 
   let movieDetails;
+  const { content } = detailObj;
 
   if (detailObj.credits) urlQuery += ',credits'
   
   await fetch(urlQuery)
     .then(res => res.json())
     .then(data => {
-      movieDetails = movieApiMethods.moviesInfoUpdate(data);
+      movieDetails = movieApiMethods.moviesInfoUpdate(data, content);
     })
     .catch(err => {
       movieDetails = "An error occured when querying for movie details for Main"
@@ -87,8 +89,69 @@ movieApiMethods.queryMovieDetails = async (detailObj) => {
   return movieDetails;
 }
 
-// 
+movieApiMethods.sortByRelease = (moviesArr) => {
+  const moviesByRelease = [];
+  const date = new Date();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year = date.getFullYear();
 
+  const dateObj = {};
+  const yearArr = [];
+  const monthArr = [];
+  const dayArr = [];
+
+  for (let i = 0; i < moviesArr.length; i += 1) {
+    const mYear = Number(moviesArr[i].release_date.slice(0, 4));
+    const mMonth = Number(moviesArr[i].release_date.slice(5, 7));
+    const mDay = Number(moviesArr[i].release_date.slice(8, 10));
+    if (mYear < year || (mYear === year && mMonth < month) || ((mYear === year && mMonth === month) && mDay <= day))continue;
+    if (!dateObj.hasOwnProperty(mYear)) {
+      yearArr.push(mYear);
+      dateObj[mYear] = {};
+    };
+    if (!dateObj[mYear].hasOwnProperty(mMonth)) {
+      monthArr.push(mMonth);
+      dateObj[mYear][mMonth] = {};
+    };
+    if (!dateObj[mYear][mMonth].hasOwnProperty(mDay)) {
+      dayArr.push(mDay);
+      dateObj[mYear][mMonth][mDay] = [];
+    };
+    dateObj[mYear][mMonth][mDay].push(moviesArr[i])
+  }
+
+  yearArr.sort((a, b) => a - b);
+  monthArr.sort((a, b) => a - b);
+  dayArr.sort((a, b) => a - b);
+
+  for (let i = 0; i < yearArr.length; i += 1) {
+    for (let y = 0; y < monthArr.length; y += 1) {
+      for (let n = 0; n <= dayArr.length; n += 1) {
+        if (dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
+          for (movie of dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
+            moviesByRelease.push(movie);
+          }
+        }
+      }
+    }
+  }
+
+  return moviesByRelease;
+}
+
+movieApiMethods.allPagesOfUpcoming = async (page) => {
+  let currPageResults;
+  await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`)
+    .then(res => res.json())
+    .then(data => {
+      currPageResults = data.results
+    })
+    .catch(err => {
+      currPageResults = "An error occured when querying for movies in all pages of upcoming movies request";
+    })
+  return currPageResults;
+}
 
 
 module.exports = movieApiMethods;
