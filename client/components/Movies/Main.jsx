@@ -3,7 +3,7 @@ import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
 
-const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler }) => {
+const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
   const [mainImageErrors, setMainImageErrors] = useState({});
   const mainContent = [];
@@ -64,40 +64,6 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler }) =
     setPage(pageNum);
   }
 
-  // dynamically renders the numbers to be displayed in page navigator depending on the current page a user is on
-  function createPageNavigator() {
-    const pageNumbers = [];
-
-    let firstNum;
-    let lastNum;
-    function regBtn(pageNum) {
-      return <button className={css.pageNavBtn} key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
-    };
-    function currBtn(pageNum) {
-      return <button className={css.pageNavBtn} id={css.currPageNumber} key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
-    };
-    if (page === 1) pageNumbers.push(currBtn(1));
-    else pageNumbers.push(regBtn(1));
-    if (page >= 6)  pageNumbers.push(<span className={css.pageNavEllipsis} key='e1'>...</span>)
-    if (page >= 6 && page < 26)  {
-      firstNum = page - 3;
-      lastNum = page + 3;
-    } else if (page < 6) {
-      firstNum = 2;
-      lastNum = 8;
-    } else if (page > 25) {
-      firstNum = 23;
-      lastNum = 29;
-    }
-    for (let i = firstNum; i <= lastNum; i += 1) {
-      if (i === page) pageNumbers.push(currBtn(i));
-      else pageNumbers.push(regBtn(i));
-    }
-    if (page < 25)  pageNumbers.push(<span className={css.pageNavEllipsis} key='e2'>...</span>);
-    if (page === 30) pageNumbers.push(currBtn(30));
-    else pageNumbers.push(regBtn(30));
-    return pageNumbers;
-  }
 
   return (
     <div className={css.outerMain}>
@@ -112,9 +78,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler }) =
       </div>
       {main &&
         <div className={css.pageNavigator}>
-          <button disabled={page === 1} className={css.pageNavNextPrev} onClick={() => renderNewPage(page - 1)}>Previous</button>
-          {createPageNavigator()}
-          <button disabled={page === 30} className={css.pageNavNextPrev} onClick={() => renderNewPage(page + 1)}>Next</button>
+          {createPageNavigator(page, 30, renderNewPage)}
         </div> }
     </div>
    );

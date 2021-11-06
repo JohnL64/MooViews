@@ -4,7 +4,7 @@ import Preview from '../components/Movies/Preview.jsx';
 import Main from '../components/Movies/Main.jsx';
 import 'regenerator-runtime/runtime.js';
 
-const Home = () => {
+const Home = ({ imageErrorHandler, createPageNavigator }) => {
   // using state to store movie data for preview and main. Also used to render components once data is received from server.
   const [preview, setPreview] = useState(null);
   const [main, setMain] = useState(null);
@@ -13,14 +13,6 @@ const Home = () => {
 
   const [mainError, setMainError] = useState('');
   const [previewError, setPreviewError] = useState('');
-
-  // adds the movie's id to imagesUnavailable object when an error occurs trying to fetch an image with given src. Once the id is added to imagesUnavailable the image error will then be displayed
-  function imageErrorHandler(e, movieId, imageErrors, setImageErrors) {
-    e.target.onerror = null;
-    let newImageErrors = {...imageErrors};
-    newImageErrors[movieId] = true;
-    setImageErrors(newImageErrors);
-  }
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
@@ -55,7 +47,7 @@ const Home = () => {
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} imageErrorHandler={imageErrorHandler}/>}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler}/>}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} createPageNavigator={createPageNavigator}/>}
     </div>
   )
 }
