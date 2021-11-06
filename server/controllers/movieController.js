@@ -42,8 +42,9 @@ movieController.preview = async (req, res, next) => {
 
   let urlQuery;
   let urQueryTwo;
-  let firstResult;
-  let secondResult;
+  // let firstResult;
+  // let secondResult;
+  const allResults = [];
 
   // Queries movies for preview in movies page
   if (content !== "generalInfo") {
@@ -58,9 +59,9 @@ movieController.preview = async (req, res, next) => {
     }
 
     await fetch(urlQuery)
-      .then(res => res.json())
+    .then(res => res.json())
       .then(data => {
-        firstResult = movieApiMethods.moviesInfoUpdate(data.results);
+        movieApiMethods.moviesInfoUpdate(data.results, content, allResults);
       })
       .catch(err => {
         return next({ message: 'Error has occured when first querying data for home preview in movieController.preview' });
@@ -69,8 +70,8 @@ movieController.preview = async (req, res, next) => {
     fetch(urlQueryTwo)
       .then(res => res.json())
       .then(secondData => {
-        secondResult = movieApiMethods.moviesInfoUpdate(secondData.results);
-        res.locals.preview = firstResult.concat(secondResult);
+        movieApiMethods.moviesInfoUpdate(secondData.results, content, allResults);
+        res.locals.preview = allResults;
         return next();
       })
       .catch(err => {
@@ -99,41 +100,54 @@ movieController.preview = async (req, res, next) => {
 */
 movieController.main = (req, res, next) => {
   const { content, page } = req.query;
-  console.log('page ', page);
-  let urlQuery;
+  console.log('Content ', content);
+  console.log('Page ', page);
+  console.log('Body', Object.keys(req.body).length < 1);
 
+  let urlQuery;
   if (content === 'home') urlQuery = `https://api.themoviedb.org/3/movie/popular?api_key=${api_key}&language=en-US&page=${page}&region=US`;
-  else if (content === 'upcoming') urlQuery = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`;
+  else if (content === 'comingSoon') urlQuery = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`;
 
   fetch(urlQuery)
     .then(res => res.json())
     .then(async data => {
-      // console.log(data);
-      // const mainContent = {};
-      for (let i = 0; i < data.results.length; i += 1) {
-        data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
+      if (content === 'comingSoon') {
+        let pages = data.total_pages;
+        for (let i = 2; i <= pages; i += 1) {
+          let currPageResults = await movieApiMethods.allPagesOfUpcoming(i);
+          for (movie of currPageResults) {
+            data.results.push(movie);
+          }
+        }
+        data.results = movieApiMethods.sortByRelease(data.results);
+      } 
+      if (content === 'comingSoon') {
+        for (let i = 0; i <= 19; i += 1) {
+          data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
+        }
+      } else {
+        for (let i = 0; i < data.results.length; i += 1) {
+          data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
+        }
       }
       res.locals.main = data.results;
-
-      // let changed;
-      // for (let i = 0; i < data.results.length; i += 1) {
-      //   if (i < 3) data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
-      //   if (data.results[i].id === 635302) {
-      //     data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id})
-      //     changed = i
-      //   }
-      // }
-      // // console.log(data.results[changed]);
-      // let newArr = data.results.slice(0, 3);
-      // newArr.push(data.results[changed]);
-      // // console.log(newArr);
-      // res.locals.main = newArr;
-
       return next();
     })
     .catch(err => {
       return next({ message: 'Error has occured when querying data for home main in movieController.preview' });
     })
+}
+
+movieController.changeCSpage = async (req, res, next) => {
+  console.log(req.body);
+  const movieStartInd = (page - 1) * 20;
+  const movieEndInd = (page * 20) - 1;
+  for (let i = movieStartInd; i <= movieEndInd; i += 1) {
+    req.body[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
+    if (typeof req.body[i] === 'string') return next({ message: 'Error had occured when querying movie details for different page for Coming Soon in movieController.changeCSpage'})
+  }
+  res.locals.updatedReqPage = req.body;
+  return next();
 }
 
 module.exports = movieController;

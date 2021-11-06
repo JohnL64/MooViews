@@ -77,9 +77,10 @@ h2 {
 .next {
   visibility: hidden;
   position: absolute;
-  top: 42%;
-  height: 60px;
-  width: 60px;
+  top: 28%;
+  height: 55px;
+  width: 55px;
+  padding: auto;
   background-color: rgba(7, 7, 7, 0.541);
   border-radius: 50%;
   border-color: white;

@@ -3,7 +3,7 @@ import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
 
-const Main = ({ main, setMain, setPreview, content, page, setPage, imageErrorHandler }) => {
+const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
   const [mainImageErrors, setMainImageErrors] = useState({});
   const mainContent = [];
@@ -57,20 +57,6 @@ const Main = ({ main, setMain, setPreview, content, page, setPage, imageErrorHan
     )
   }
 
-  // using variable and switch statement to dynamically render title for main content
-  let mainTitle;
-  switch(content) {
-    case 'home': 
-      mainTitle = 'Most Popular';
-      break;
-    case 'topRated': 
-      mainTitle = 'Top Rated';
-      break;
-    case 'upcoming': 
-      mainTitle = 'Coming Soon';
-      break;
-  }
-
   // changes state for preview, main, and page when a number is clicked in page navigator
   function renderNewPage(pageNum) {
     setPreview(null)
@@ -115,7 +101,7 @@ const Main = ({ main, setMain, setPreview, content, page, setPage, imageErrorHan
 
   return (
     <div className={css.outerMain}>
-      <h2>{mainTitle}</h2>
+      <h2>Most Popular</h2>
       <div className={css.innerMain}>
         {!main && 
           <div className={css.loadingMainMovieRow}>
