@@ -111,6 +111,7 @@ movieController.main = (req, res, next) => {
   fetch(urlQuery)
     .then(res => res.json())
     .then(async data => {
+      const datesObj = {};
       if (content === 'comingSoon') {
         let pages = data.total_pages;
         for (let i = 2; i <= pages; i += 1) {
@@ -124,6 +125,7 @@ movieController.main = (req, res, next) => {
       if (content === 'comingSoon') {
         for (let i = 0; i <= 19; i += 1) {
           let orgReleaseDate = data.results[i].release_date;
+          if (!datesObj.hasOwnProperty(orgReleaseDate)) datesObj[orgReleaseDate] = true;
           data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
           data.results[i].release_date = orgReleaseDate;
         }
@@ -133,6 +135,7 @@ movieController.main = (req, res, next) => {
         }
       }
       res.locals.main = data.results;
+      res.locals.dates = datesObj;
       return next();
     })
     .catch(err => {
@@ -143,14 +146,16 @@ movieController.main = (req, res, next) => {
 movieController.changeCSpage = async (req, res, next) => {
   const { allPages, firstMovie, lastMovie } = req.body;
   const content = req.query.content;
-  
+  const datesObj = {};
   for (let i = firstMovie; i <= lastMovie; i += 1) {
     let orgReleaseDate = allPages[i].release_date;
+    if (!datesObj.hasOwnProperty(orgReleaseDate)) datesObj[orgReleaseDate] = true;
     allPages[i] = await movieApiMethods.queryMovieDetails({ id: allPages[i].id, content: content})
     if (typeof allPages[i] === 'string') return next({ message: 'Error had occured when querying movie details for different page for Coming Soon in movieController.changeCSpage'})
     allPages[i].release_date = orgReleaseDate;
   }
   res.locals.updatedReqPage = allPages;
+  res.locals.dates = datesObj;
   return next();
 }
 

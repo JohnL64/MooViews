@@ -11,13 +11,17 @@
 
 .innerCS {
   width: 60%;
-  height: 100vh;
   background-color: white;
   border: solid yellow 2px;
+  color: black;
 }
 
 .CStitle {
   /* border: solid white 1px; */
   width: 60%;
   margin-top: 6vh;
+}
+
+.CSdate {
+  border: solid purple 2px;
 }

@@ -8,6 +8,7 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
   const [allPages, setAllPages] = useState(null);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
+  const [dates, setDates] = useState(null);
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
     if (!allPages) {
@@ -16,8 +17,9 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
       .then(data => {
         console.log(data);
         let currPageMovies = data.main.slice(0, 20);
-        setNumOfPages(Math.ceil(data.main.length / 20))
-        setComingSoon(currPageMovies)
+        setNumOfPages(Math.ceil(data.main.length / 20));
+        setDates(data.dates);
+        setComingSoon(currPageMovies);
         setAllPages(data.main);
       })
       .catch(err => {
@@ -44,6 +46,7 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
         .then(data => {
           console.log(data);
           let reqComingSoon = data.updatedReqPage.slice(firstMovie, lastMovie + 1);
+          setDates(data.dates);
           setComingSoon(reqComingSoon);
           setAllPages(data.updatedReqPage);
         })
@@ -54,10 +57,15 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
     }
   }, [page])
 
-  function comingSoonMovies(comingSoon) {
-    const movies = [];
+  function comingSoonMovies(comingSoon, datesObj) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November ", "December"];
+    const moviesByDates = [];
+    for (const key in datesObj) {
+      datesObj[key] = [];
+    }
     for (const movie of comingSoon) {
-      movies.push(
+      datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>
           <Link to={`/movie-info/${movie.id}`}><img src={movie.poster_path} /> </Link>
           <div className={css.movieInfo}>
@@ -73,7 +81,16 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
         </div>
       )
     }
-    return movies;
+    for (const key in datesObj) {
+      const date = monthNames[(Number(key.slice(5, 7)) - 1)] + Number(key.slice(8, 10));
+      moviesByDates.push(
+        <div className={css.CSdate} key={date}>
+          <h3 className={css.dateTitle}>{date}</h3>
+          {datesObj[key]}
+        </div>
+      )
+    }
+    return moviesByDates;
   }
 
   function renderNewPage(pageNum) {
@@ -86,7 +103,7 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
     <h2 className={css.CStitle}>Coming Soon</h2>
     { comingSoon &&
       <div className={css.innerCS}>
-        {comingSoonMovies(comingSoon)}
+        {comingSoonMovies(comingSoon, {...dates})}
       </div> }
     { comingSoon &&
       <div className={css.pageNavigator}>
