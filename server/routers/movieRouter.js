@@ -17,6 +17,9 @@ router.get('/main', movieController.main, (req, res) => {
   res.status(200).json(res.locals);
 })
 
+router.post('/changeCSpage', movieController.changeCSpage, (req, res) => {
+  res.status(200).json(res.locals);
+})
 // router.post('/verifyAccount', userController.verifyAccount, (req, res) => {
 //   res.status(200).json(res.locals)
 // })

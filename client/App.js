@@ -21,9 +21,6 @@ function App() {
 
   // dynamically renders the numbers to be displayed in page navigator depending on the current page a user is on
   function createPageNavigator(page, numOfPages, renderNewPage) {
-    // new parameters
-    // renderNewPage, page, numOfPages
-    //page, numOfPages, renderNewPage
     const pageNumbers = [];
     pageNumbers.push(<button disabled={page === 1} className='pageNavNextPrev' key='navPrevious' onClick={() => renderNewPage(page - 1)}>Previous</button>);
     let firstNum;
@@ -32,7 +29,7 @@ function App() {
       return <button className='pageNavBtn' key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
     };
     function currBtn(pageNum) {
-      return <button className='pageNavBtn' id='currPageNumber' key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
+      return <button className='pageNavBtn' id='currPageNumber' key={pageNum} >{pageNum}</button>
     };
     if (page === 1) pageNumbers.push(currBtn(1));
     else pageNumbers.push(regBtn(1));
@@ -78,7 +75,7 @@ function App() {
             <TopRated />
           </Route>
           <Route path='/coming-soon'>
-            <ComingSoon />
+            <ComingSoon imageErrorHandler={imageErrorHandler} createPageNavigator={createPageNavigator}/>
           </Route>
           <Route path='/signup'>
             <Signup />

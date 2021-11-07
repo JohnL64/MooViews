@@ -50,6 +50,10 @@ a {
   background-color: pink;
 }
 
+#currPageNumber:hover {
+  cursor: text;
+}
+
 .pageNavEllipsis {
   padding-top: 6px;
   margin-right: 3px;

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import css from '../styles/ComingSoon.module.css';
 
-const ComingSoon = () => {
+const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
   // Using state to store coming soon movie data retreived from server
   const [comingSoon, setComingSoon] = useState(null);
   const [allPages, setAllPages] = useState(null);
   const [page, setPage] = useState(1);
-  let numOfPages;
+  const [numOfPages, setNumOfPages] = useState(null);
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
     if (!allPages) {
@@ -16,31 +16,43 @@ const ComingSoon = () => {
       .then(data => {
         console.log(data);
         let currPageMovies = data.main.slice(0, 20);
+        setNumOfPages(Math.ceil(data.main.length / 20))
         setComingSoon(currPageMovies)
         setAllPages(data.main);
-        numOfPages = Math.ceil(data.main.length / 20)
       })
       .catch(err => {
         console.log(err);
       })
     } 
-    // else {
-    //   if (page)
-    //   fetch(`/movie/main?content=comingSoon&page=${page}`, {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify( { email, username, password })
-    //   })
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     // setComingSoon(data.main)
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   })
-    // }
-  }, [])
+    else {
+      let firstMovie = (page - 1) * 20;
+      let lastMovie = (page * 20) - 1;
+      if (page === numOfPages) {
+        let lastPageMovies = allPages.length % 20;
+        if (lastPageMovies) lastMovie = firstMovie + (lastPageMovies - 1);
+      }
+      if (allPages[lastMovie].hasOwnProperty('genres')) {
+        let onlySelectedPage = allPages.slice((page - 1) * 20, (page * 20) - 1);
+        setComingSoon(onlySelectedPage);
+      } else {
+        fetch(`/movie/changeCSpage?content=comingSoon&page=${page}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({allPages: allPages, firstMovie: firstMovie, lastMovie: lastMovie })
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          let reqComingSoon = data.updatedReqPage.slice(firstMovie, lastMovie + 1);
+          setComingSoon(reqComingSoon);
+          setAllPages(data.updatedReqPage);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      }
+    }
+  }, [page])
 
   function comingSoonMovies(comingSoon) {
     const movies = [];
@@ -64,13 +76,21 @@ const ComingSoon = () => {
     return movies;
   }
 
+  function renderNewPage(pageNum) {
+    setComingSoon(null);
+    setPage(pageNum);
+  }
 
   return ( 
   <div className={css.comingSoon}>
     <h2 className={css.CStitle}>Coming Soon</h2>
-    {comingSoon &&
+    { comingSoon &&
       <div className={css.innerCS}>
         {comingSoonMovies(comingSoon)}
+      </div> }
+    { comingSoon &&
+      <div className={css.pageNavigator}>
+        {createPageNavigator(page, numOfPages, renderNewPage)}
       </div> }
   </div> );
 }

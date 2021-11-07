@@ -123,7 +123,9 @@ movieController.main = (req, res, next) => {
       } 
       if (content === 'comingSoon') {
         for (let i = 0; i <= 19; i += 1) {
+          let orgReleaseDate = data.results[i].release_date;
           data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
+          data.results[i].release_date = orgReleaseDate;
         }
       } else {
         for (let i = 0; i < data.results.length; i += 1) {
@@ -139,14 +141,16 @@ movieController.main = (req, res, next) => {
 }
 
 movieController.changeCSpage = async (req, res, next) => {
-  console.log(req.body);
-  const movieStartInd = (page - 1) * 20;
-  const movieEndInd = (page * 20) - 1;
-  for (let i = movieStartInd; i <= movieEndInd; i += 1) {
-    req.body[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
-    if (typeof req.body[i] === 'string') return next({ message: 'Error had occured when querying movie details for different page for Coming Soon in movieController.changeCSpage'})
+  const { allPages, firstMovie, lastMovie } = req.body;
+  const content = req.query.content;
+  
+  for (let i = firstMovie; i <= lastMovie; i += 1) {
+    let orgReleaseDate = allPages[i].release_date;
+    allPages[i] = await movieApiMethods.queryMovieDetails({ id: allPages[i].id, content: content})
+    if (typeof allPages[i] === 'string') return next({ message: 'Error had occured when querying movie details for different page for Coming Soon in movieController.changeCSpage'})
+    allPages[i].release_date = orgReleaseDate;
   }
-  res.locals.updatedReqPage = req.body;
+  res.locals.updatedReqPage = allPages;
   return next();
 }
 
