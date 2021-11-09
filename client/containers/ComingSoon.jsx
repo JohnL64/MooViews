@@ -34,8 +34,15 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
         if (lastPageMovies) lastMovie = firstMovie + (lastPageMovies - 1);
       }
       if (allPages[lastMovie].hasOwnProperty('genres')) {
-        let onlySelectedPage = allPages.slice((page - 1) * 20, (page * 20) - 1);
-        setComingSoon(onlySelectedPage);
+        let selectedMovies = [];
+        const datesObj = {};
+        for (let i = firstMovie; i <= lastMovie; i += 1) {
+          let movie = allPages[i];
+          if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = true;
+          selectedMovies.push(movie);
+        }
+        setDates(datesObj);
+        setComingSoon(selectedMovies);
       } else {
         fetch(`/movie/changeCSpage?content=comingSoon&page=${page}`, {
           method: 'POST',
@@ -106,7 +113,7 @@ const ComingSoon = ({ imageErrorHandler, createPageNavigator }) => {
         {comingSoonMovies(comingSoon, {...dates})}
       </div> }
     { comingSoon &&
-      <div className={css.pageNavigator}>
+      <div className='pageNavigator'>
         {createPageNavigator(page, numOfPages, renderNewPage)}
       </div> }
   </div> );

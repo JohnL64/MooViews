@@ -34,7 +34,8 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     }
     results.genres = newGenreFormat;
   }
-  return results;
+  const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
+  return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
 }
 
 // Modifies the runtime to desired format

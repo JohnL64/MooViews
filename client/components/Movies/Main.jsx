@@ -77,7 +77,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
         { main && mainContent }
       </div>
       {main &&
-        <div className={css.pageNavigator}>
+        <div className='pageNavigator'>
           {createPageNavigator(page, 30, renderNewPage)}
         </div> }
     </div>
