@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import css from '../../styles/Navbar.module.css'
 import SearchResult from './SearchResult.jsx';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 const Navbar = () => {
   // using state to store search results from movie api to ensure data is dispayed in SearchResult component
@@ -34,9 +35,15 @@ const Navbar = () => {
       <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link>
       {/* <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)}><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link> */}
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
-          <input type='text' className={css.searchInput} onChange={onSearch}></input>
-          { (focused && searchResult) && <SearchResult searchResult={searchResult} /> }
-          { error && <p>{error}</p>}
+        <div className={css.inputAndIcon}>
+          <input type='text' placeholder="Search for movies" className={css.searchInput} onChange={onSearch}></input>
+          <AiOutlineSearch className={css.searchIcon} />
+        </div>
+        { (focused && searchResult) && 
+          <div className={css.outerSearchResult}>
+            <SearchResult searchResult={searchResult} />
+          </div> }
+        { error && <p>{error}</p>}
       </div>
       <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon', location)} to='/coming-soon'>Coming Soon</Link>
       <Link className={css.navlink} onClick={() => conditionalPageRefresh('/top-rated', location)} to='/top-rated'>Top Rated</Link>
