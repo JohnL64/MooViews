@@ -6,52 +6,104 @@
 
 .outerPreview {
   margin-top: 40px;
+  /******** properties for testing ********/
+  /* background-color: white; */
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
 }
 
 h2 {
   font-size: 1.6rem;
-  border-left: solid rgb(255, 136, 156) 4px;
-  padding-left: 7px;
+  border-left: solid rgb(255, 136, 156) .25rem;
+  padding-left: .45rem;
+  /******** properties for testing ********/
+  /* width: 92%; */
 }
 
 .innerPreview {
   display: flex;
   justify-content: space-between;
-  width: 1200px;
+  width: 1210px;
   position: relative;
+  /******** properties for testing ********/
+  /* box-sizing: border-box; */
+  /* width: 92%; */
+  /* border: solid yellow 2px; */
+  /* background-color: white; */
 }
 
+.innerPreview *{
+  /******** properties for testing ********/
+  /* box-sizing: border-box; */
+  /* width: 92%; */
+  /* border: solid yellow 1px; */
+  /* background-color: white; */
+}
 
 .moviePreview {
   background-color: rgb(27, 27, 27);
   color: white;
+  max-width: 183.33px;
   border-radius: 8px;
+  /******** properties for testing ********/
+  box-sizing: border-box;
+  /* width: 16%; */
+  /* border: white solid 2px; */
+  position: relative;
 }
 
 .previewImage {
+  box-sizing: border-box;
   height: 275px;
+  width: 183.33px;
+  /******** properties for testing ********/
+  /* width: 100%; */
+  /* height: 285px; */
+  /* width: 190px; */
+   /* height: 225px; */
+  /* width: 190px; */
+  /* border:solid white 1px; */
+}
+
+.moviePreviewRating,
+.moviePreviewTitle {
+  width: 90%;
+  /******** properties for testing ********/
+  /* width: 100%; */
+  /* height: 285px; */
+  /* width: 190px; */
+   /* height: 225px; */
+  /* width: 190px; */
+  /* box-sizing: border-box;
+  border:solid white 1px; */
 }
 
 .moviePreviewRating {
   display: flex;
   align-items: center;
-  max-width: 165px;
-  margin: 12px auto 12px;  
+  /* max-width: 165px; */
+  margin: .75rem auto; 
+  /******** properties for testing ********/
+  box-sizing: border-box;
+  /* border: white 1px solid;  */
 }
 
 .starRating {
-  margin-right: 5px;
+  margin-right: .35rem;
 }
 
 .moviePreviewTitle {
   display: -webkit-box;
   color: white;
-  max-width: 165px;
-  min-height: 40px;
-  margin: 0 auto;  
+  margin: 0 auto; 
+  min-height: 2.5rem; 
   overflow: hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  /******** properties for testing ********/
+  /* box-sizing: border-box; */
+  /* border: white 1px solid;  */
 }
 
 .moviePreviewTitle a {
@@ -62,8 +114,14 @@ h2 {
   display: flex;
   background-color: transparent;
   border: none;
-  margin: 7px auto 10px;
-  padding: 10px;
+  margin: .4rem auto 1rem;
+  /* padding: 10px; */
+  /******** properties for testing ********/
+  /* box-sizing: border-box; */
+  /* border: white 1px solid; */
+  padding: .65rem;
+  /* position: absolute;
+  bottom: 2px; */
 }
 
 .previewInfoBtn:hover {
@@ -73,17 +131,27 @@ h2 {
   cursor: pointer;
 }
 
+.infoBtnIcon {
+  font-size: 1.75rem;
+}
+
 .previous,
 .next {
   visibility: hidden;
   position: absolute;
   top: 28%;
-  height: 55px;
-  width: 55px;
+  height: 3.4375rem;
+  width: 3.4375rem;
   padding: auto;
   background-color: rgba(7, 7, 7, 0.541);
   border-radius: 50%;
   border-color: white;
+  z-index: 1;
+}
+
+.previousIcon,
+.nextIcon {
+  font-size: 1.875rem
 }
 
 .previous:hover,
@@ -215,4 +283,39 @@ p a:hover {
 .preInfoImageUnavailable p {
   font-size: 1.3rem;
   text-align: center;
+}
+
+@media screen and (max-width: 1400px) {
+  :root {
+    font-size: 15px;
+  }
+  .moviePreview {
+    max-width: 160px;
+  }
+  .innerPreview {
+    width: 1060px;
+  }
+  .previewImage {
+    height: 240px;
+    width: 160px;
+  }
+  .infoBtnIcon {
+    font-size: 1.55rem;
+  }
+}
+
+@media screen and (max-width: 1138px) {
+  :root {
+    font-size: 14px;
+  }
+  .moviePreview {
+    max-width: 146.66px;
+  }
+  .innerPreview {
+    width: 960px;
+  }
+  .previewImage {
+    height: 220px;
+    width: 146.66px;
+  }
 }
