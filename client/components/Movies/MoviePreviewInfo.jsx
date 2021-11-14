@@ -28,15 +28,13 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
       {error && <p>{error}</p>}
       { previewGeneralInfo &&
         <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
-          <span className={css.previewClose} onClick={() => close(null)}> 
-            <IoClose size='27px' color='white'/>
-          </span>
+            <IoClose className={css.previewClose} color='white' onClick={() => close(null)}/>
             <p className={css.previewInfoTitle}>{title}</p>
-            <p className={css.allPreviewGeneralInfo}> <span className={css.previewGeneralInfo}>{previewGeneralInfo.rating},</span> <span className={css.previewGeneralInfo}>{previewGeneralInfo.runtime},</span> <span className={css.previewGeneralInfo}>{releaseDate}</span> </p>
-            {/* <img className={css.backdropImg} src={backdrop}/> */}
+            <p className={css.allPreviewGeneralInfo}> 
+              <span className={css.previewGeneralInfo}>{previewGeneralInfo.rating},</span> <span className={css.previewGeneralInfo}>{previewGeneralInfo.runtime},</span> <span className={css.previewGeneralInfo}>{releaseDate}</span> 
+            </p>
             { !preInfoImageErrors[id] && <img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/>}
             { preInfoImageErrors[id] && <div className={css.preInfoImageUnavailable}><p>Image is currently unavailable</p></div>}
-            {/* <div className={css.preInfoImageUnavailable}><p>Image Currently Unavailable</p></div> */}
             <p className={css.previewOverview}>{overview}</p>
         </div> }
     </div>

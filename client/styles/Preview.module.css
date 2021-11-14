@@ -168,10 +168,6 @@ h2 {
   right: 0;
 }
 
-.backdropImg {
-  width: 500px;
-}
-
 .previewInfoBox {
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.8);
@@ -188,21 +184,44 @@ h2 {
 .previewInfoContent {
   background-color: rgb(20, 20, 20);
   border-radius: 15px;
-  padding: 0 25px;
+  /* padding: 0 25px; */
+  /* padding: 0 1.5625rem; */
   position: relative;
-  max-height: 625px;
+  /* max-height: 625px; */
+  /******** Props for testing ********/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
 }
+
+.backdropImg {
+  width: 92%;
+  /******** Props for testing ********/
+  /* margin: 0 auto; */
+  /* margin-left: 20px; */
+  /* display: block;
+  box-sizing: border-box; */
+  /* border: solid white 1px; */
+}
+
+
 
 .previewClose {
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  height: 40px;
-  width: 40px;
+  height: 1.4rem;
+  width: 1.4rem;
   border-radius: 50%;
-  right: 10px;
-  top: -45px;
+  right: 0.5rem;
+  top: -2.45rem;
+  padding: 0.4375rem;
+  /******** Props for testing ********/
+  /* height: auto;
+  width: 15%; */
+  /* font-size: 1rem; */
 }
 
 .previewClose:hover {
@@ -210,23 +229,29 @@ h2 {
   cursor: pointer;
 }
 
+.previewOverview,
+.previewInfoTitle,
+.allPreviewGeneralInfo {
+  width: 92%;
+}
+
 .previewOverview {
+  font-size: 0.9375rem;
   box-sizing: border-box;
   color: rgb(187, 187, 187);
-  font-size: 16px;
-  max-height: 195px;
-  max-width: 500px;
-  margin-bottom: 30px;
+  max-height: 5.35rem;
+  margin-bottom: 1.375rem;
   overflow-y: auto;
-  scrollbar-color: pink;
   line-height: 1.4;
-  padding-right: 8px;
+  padding-right: 0.5rem;
+  /******** Props for testing ********/
+  /* border: white solid 1px; */
 }
 
 .previewOverview::-webkit-scrollbar {
-  margin-left: 8px;
+  /* margin-left: 3rem; */
   border-radius: 10px;
-  width: 9px;
+  width: 0.5625rem;
   background-color: rgb(102, 102, 102);
 }
 
@@ -237,18 +262,23 @@ h2 {
 
 .previewInfoTitle {
   font-weight: 900;
-  font-size: 1.5rem;
-  margin-bottom: 0;
+  font-size: 1.4rem;
+  margin: 1.25rem 0 0;
+  display: -webkit-box; 
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .allPreviewGeneralInfo {
   color: rgb(126, 126, 126);
-  margin-top: 5px;
-  font-size: 15px;
+  /* margin-top: 5px; */
+  margin: 0 0 .625rem;
+  font-size: 0.8125rem;
 }
 
 .previewGeneralInfo {
-  margin-right: 5px;
+  margin-right: 0.3125rem;
 }
 
 p a:hover {
@@ -258,7 +288,7 @@ p a:hover {
 .previewImageUnavailable {
   color: black;
   background-color: rgba(255, 255, 255, 0.739);
-  width: 182px;
+  width: 183.33px;
   height: 275px;
   display: flex;
   justify-content: center;
@@ -273,7 +303,7 @@ p a:hover {
   /* border: white solid 1px; */
   color: black;
   background-color: rgba(255, 255, 255, 0.739);
-  width: 500px;
+  width: 92%;
   height: 260px;
   display: flex;
   justify-content: center;
@@ -281,7 +311,7 @@ p a:hover {
 }
 
 .preInfoImageUnavailable p {
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
   text-align: center;
 }
 
@@ -302,6 +332,13 @@ p a:hover {
   .infoBtnIcon {
     font-size: 1.55rem;
   }
+  .previewImageUnavailable {
+    height: 240px;
+    width: 160px;
+  }
+  .preInfoImageUnavailable {
+    height: 213.88px;
+  }
 }
 
 @media screen and (max-width: 1138px) {
@@ -317,5 +354,12 @@ p a:hover {
   .previewImage {
     height: 220px;
     width: 146.66px;
+  }
+  .previewImageUnavailable {
+    height: 220px;
+    width: 146.66px;
+  }
+  .preInfoImageUnavailable {
+    height: 161.22px;
   }
 }
