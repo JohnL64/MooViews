@@ -22,7 +22,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
             <span className={css.genInfo}>{movie.release_date},</span> 
             <span className={css.genInfo}>{movie.genres}</span>
           </p>
-          <p className={css.movieMainRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
+          <p className={css.mainMovieRating}><AiFillStar className={css.starRating} />{movie.vote_average}</p>
           <p className={css.mainOverview}>{movie.overview}</p>
           <p className={css.fullDetails}><Link className={css.fullDetailsLink} to={`/movie-info/${movie.id}`}>See full details</Link></p>
         </div>
