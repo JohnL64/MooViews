@@ -4,7 +4,7 @@ dotenv.config();
 const { api_key } = process.env;
 
 // Movie api's list of genres
-const genres = { 12: 'Adventure', 14: 'Fantasy', 16: 'Animation', 18: 'Drama', 27: 'Horror', 28: 'Action', 35: 'Comedy', 36: 'History', 37: 'Western', 53: 'Thriller', 80: 'Crime', 99: 'Documentary', 878: 'Science Fiction', 9648: 'Mystery', 10402: 'Music', 10749: 'Romance', 10751: 'Family', 10752: 'War', 10770: 'TV Movie' }
+const genresList = { 12: 'Adventure', 14: 'Fantasy', 16: 'Animation', 18: 'Drama', 27: 'Horror', 28: 'Action', 35: 'Comedy', 36: 'History', 37: 'Western', 53: 'Thriller', 80: 'Crime', 99: 'Documentary', 878: 'Science Fiction', 9648: 'Mystery', 10402: 'Music', 10749: 'Romance', 10751: 'Family', 10752: 'War', 10770: 'TV Movie' }
 
 //-------- METHODS TO CHANGE FORMAT OF MOVIE DATA AND CUSTOM API QUERIES --------
 
@@ -15,11 +15,14 @@ const movieApiMethods = {};
 movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
   if (Array.isArray(results)) {
     for (let i = 0; i < results.length; i += 1) {
-      results[i].poster_path = `https://image.tmdb.org/t/p/w500/${results[i].poster_path}`;
-      results[i].backdrop_path = `https://image.tmdb.org/t/p/w780/${results[i].backdrop_path}`;
-      results[i].release_date = results[i].release_date.slice(0, 4);
-      allResults.push(results[i]);
+      let movie = results[i];
+      movie.poster_path = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+      movie.backdrop_path = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+      movie.release_date = movie.release_date.slice(0, 4);
+      movie.genres = movieApiMethods.getGenres(movie.genre_ids);
+      if (allResults) allResults.push(movie);
     }
+    return results;
   } 
   else {
     results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
@@ -27,15 +30,10 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     if (content !== 'comingSoon') results.release_date = results.release_date.slice(0, 4);
     results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
     results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
-    let newGenreFormat = '';
-    for (let genre of results.genres) {
-      if (genre.name === 'Science Fiction') genre.name = 'Sci-Fi'
-      !newGenreFormat ? newGenreFormat += genre.name : newGenreFormat += `/${genre.name}`;
-    }
-    results.genres = newGenreFormat;
+    results.genres = movieApiMethods.getGenres(results.genres);
+    const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
+    return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
   }
-  const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
-  return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
 }
 
 // Modifies the runtime to desired format
@@ -69,6 +67,18 @@ movieApiMethods.findMpaaRating = (releaseDatesResults) => {
     }
   }
   return rating;
+}
+
+movieApiMethods.getGenres = (genres) => {
+  let newGenreFormat = '';
+  for (let genre of genres) {
+    let currGenre = '';
+    if (typeof genres[0] !== 'number') currGenre = genre.name;
+    else currGenre = genresList[genre];
+    if (currGenre === 'Science Fiction') currGenre = 'Sci-Fi'
+    !newGenreFormat ? newGenreFormat += currGenre : newGenreFormat += `/${currGenre}`;
+  }
+  return newGenreFormat;
 }
 
 movieApiMethods.queryMovieDetails = async (detailObj) => {

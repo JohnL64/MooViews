@@ -16,7 +16,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
-    await fetch(`/movie/preview?content=home`)
+    await fetch(`/movie/home?content=preview`)
       .then(res => res.json())
       .then(previewData => {
         console.log('Preview ', previewData.preview)
@@ -28,7 +28,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
         setPreviewError('An error has occured when loading preview content. Please try again or try again later')
       })
 
-    fetch(`/movie/main?content=home&page=${page}`)
+    fetch(`/movie/home?content=main&page=${page}`)
       .then(res => res.json())
       .then(mainData => {
         console.log('Main ', mainData.main);

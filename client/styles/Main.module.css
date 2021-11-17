@@ -43,10 +43,13 @@
   width: 49.75%;
   /* width: %; */
   color: black;
-  background-color: white;
+  background-color: black;
   /* margin-bottom: 15px; */
   height: var(--main-image-height);
-  border-radius: 8px;
+  /* border-radius: 8px; */
+  /******** Props for testing ********/
+  /* box-sizing: border-box; */
+  /* border: coral solid 1px;  */
 }
 
 .mainMovieInfo {
@@ -57,6 +60,8 @@
   align-items: center;
   /* height: 225px; */
   position: relative;
+  background-color: white;
+  border-radius: 0 8px 8px 0;
   /******** Props for testing ********/
   /* box-sizing: border-box;
   border: solid black 1px;  */
@@ -236,5 +241,8 @@
     --main-width: 920px;
     --main-image-height: 185px;
     --main-image-width: 123.33px;
+  }
+  .mainOverview {
+    -webkit-line-clamp: 4;
   }
 }

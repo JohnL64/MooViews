@@ -7,8 +7,8 @@ router.get('/search', movieController.search, (req, res) => {
   res.status(200).json(res.locals);
 })
 
-// queries data for Preview and MoviePreviewInfo content
-router.get('/preview', movieController.preview, (req, res) => {
+// queries data for all components in Home page
+router.get('/home', movieController.home, (req, res) => {
   res.status(200).json(res.locals);
 })
 

@@ -11,7 +11,7 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
   const[preInfoImageErrors, setPreInfoImageErrors ] = useState({})
 
   useEffect(() => {
-    fetch(`/movie/preview?content=generalInfo&id=${id}`)
+    fetch(`/movie/home?content=generalInfo&id=${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.status) throw new Error('Error', { cause: data.message });

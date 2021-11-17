@@ -17,8 +17,6 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
         <div className={css.mainMovieInfo}>
           <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie-info/${movie.id}`}>{movie.title} </Link></p>
           <p className={css.allGeneralMovieInfo}> 
-            <span className={css.genInfo}>{movie.MPAA_rating},</span> 
-            <span className={css.genInfo}>{movie.runtime},</span> 
             <span className={css.genInfo}>{movie.release_date},</span> 
             <span className={css.genInfo}>{movie.genres}</span>
           </p>

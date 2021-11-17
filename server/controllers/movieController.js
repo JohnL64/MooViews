@@ -36,27 +36,16 @@ movieController.search = (req, res, next) => {
 }
 
 
-//-------- QUERIES MOVIES AND MOVIE DETAILS FOR PREVIEW --------
-movieController.preview = async (req, res, next) => {
-  const { content, id } = req.query;
+//-------- QUERIES MOVIES AND MOVIE DETAILS FOR HOME --------
+movieController.home = async (req, res, next) => {
+  const { content, id, page } = req.query;
 
-  let urlQuery;
-  let urQueryTwo;
-  // let firstResult;
-  // let secondResult;
   const allResults = [];
 
-  // Queries movies for preview in movies page
-  if (content !== "generalInfo") {
-    switch(content) {
-      case "home":
-        urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
-        urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2&region=US`;
-        break;
-      case "upcoming":
-        urlQuery = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`;
-        urlQueryTwo = `https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=2&region=US`;
-    }
+  // Queries movies for preview in Home page
+  if (content === "preview") {
+        let urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
+        let urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2&region=US`;
 
     await fetch(urlQuery)
     .then(res => res.json())
@@ -64,7 +53,7 @@ movieController.preview = async (req, res, next) => {
         movieApiMethods.moviesInfoUpdate(data.results, content, allResults);
       })
       .catch(err => {
-        return next({ message: 'Error has occured when first querying data for home preview in movieController.preview' });
+        return next({ message: 'Error has occured when first querying data for home preview in movieController.home' });
       })
 
     fetch(urlQueryTwo)
@@ -75,11 +64,23 @@ movieController.preview = async (req, res, next) => {
         return next();
       })
       .catch(err => {
-        return next({ message: 'Error has occured when second querying data for home preview in movieController.preview' });
+        return next({ message: 'Error has occured when second querying data for home preview in movieController.home' });
       })
   }
 
-  // Queries movie details for general information popup box
+  else if (content === 'main') {
+    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${api_key}&language=en-US&page=${page}&region=US`)
+      .then(res => res.json())
+      .then(data => {
+        res.locals.main = movieApiMethods.moviesInfoUpdate(data.results, content);
+        return next();
+      })
+      .catch(err => {
+        return next({ message: 'Error has occured when first querying data for home main in movieController.home' });
+      })
+  }
+
+  // Queries movie details for general information modal
   else {
     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`)
       .then(res => res.json())
@@ -130,6 +131,9 @@ movieController.main = (req, res, next) => {
           data.results[i].release_date = orgReleaseDate;
         }
       } else {
+        // for (let i = 0; i < data.results.length; i += 1) {
+        //   data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
+        // }
         for (let i = 0; i < data.results.length; i += 1) {
           data.results[i] = await movieApiMethods.queryMovieDetails({ id: data.results[i].id, content: content})
         }
