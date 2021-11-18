@@ -12,16 +12,9 @@ router.get('/home', movieController.home, (req, res) => {
   res.status(200).json(res.locals);
 })
 
-// queries data for Main content
-router.get('/main', movieController.main, (req, res) => {
+// queries data for Coming Soon page
+router.get('/coming-soon', movieController.comingSoon, (req, res) => {
   res.status(200).json(res.locals);
 })
-
-router.post('/changeCSpage', movieController.changeCSpage, (req, res) => {
-  res.status(200).json(res.locals);
-})
-// router.post('/verifyAccount', userController.verifyAccount, (req, res) => {
-//   res.status(200).json(res.locals)
-// })
 
 module.exports = router;

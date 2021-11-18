@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
+import PageNavigator from '../PageNavigator.jsx';
 
 const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
@@ -76,7 +77,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
       </div>
       {main &&
         <div className='pageNavigator'>
-          {createPageNavigator(page, 30, renderNewPage)}
+          <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage}/>
         </div> }
     </div>
    );

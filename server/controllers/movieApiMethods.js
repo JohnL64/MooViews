@@ -22,8 +22,11 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
       movie.genres = movieApiMethods.getGenres(movie.genre_ids);
       if (allResults) allResults.push(movie);
     }
-    return results;
-  } 
+  } else if (content === 'comingSoon') {
+    results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
+    results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
+    results.genres = movieApiMethods.getGenres(results.genre_ids);
+  }
   else {
     results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
     results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
@@ -34,6 +37,7 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
     return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
   }
+  return results;
 }
 
 // Modifies the runtime to desired format
@@ -116,7 +120,7 @@ movieApiMethods.sortByRelease = (moviesArr) => {
     const mYear = Number(moviesArr[i].release_date.slice(0, 4));
     const mMonth = Number(moviesArr[i].release_date.slice(5, 7));
     const mDay = Number(moviesArr[i].release_date.slice(8, 10));
-    if (mYear < year || (mYear === year && mMonth < month) || ((mYear === year && mMonth === month) && mDay <= day))continue;
+    if (mYear < year || (mYear === year && mMonth < month) || ((mYear === year && mMonth === month) && mDay <= day)) continue;
     if (!dateObj.hasOwnProperty(mYear)) {
       yearArr.push(mYear);
       dateObj[mYear] = {};

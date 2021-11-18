@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import css from '../styles/Preview.module.css';
-import Preview from '../components/Movies/Preview.jsx';
-import Main from '../components/Movies/Main.jsx';
+import Preview from '../components/Home/Preview.jsx';
+import Main from '../components/Home/Main.jsx';
 import 'regenerator-runtime/runtime.js';
 
-const Home = ({ imageErrorHandler, createPageNavigator }) => {
+const Home = ({ imageErrorHandler }) => {
   // using state to store movie data for preview and main. Also used to render components once data is received from server.
   const [preview, setPreview] = useState(null);
   const [main, setMain] = useState(null);
@@ -47,7 +47,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} imageErrorHandler={imageErrorHandler}/>}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} createPageNavigator={createPageNavigator}/>}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} />}
     </div>
   )
 }
