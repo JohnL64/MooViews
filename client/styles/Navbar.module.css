@@ -16,10 +16,12 @@
 .navlink {
   text-decoration: none;
   margin-right: 3%;
+  padding: 0.4375rem 0.625rem;
+  border-radius: 3px;
 }
 
-.end {
-  text-decoration: none;
+.navlink:hover {
+  background-color: rgb(44, 44, 44);
 }
 
 .navMooViews {

@@ -47,7 +47,7 @@ const Navbar = () => {
       </div>
       <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon', location)} to='/coming-soon'>Coming Soon</Link>
       <Link className={css.navlink} onClick={() => conditionalPageRefresh('/top-rated', location)} to='/top-rated'>Top Rated</Link>
-      <Link className={css.end} onClick={() => conditionalPageRefresh('/login', location)} to='/login'>Sign In</Link>
+      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/login', location)} to='/login'>Sign In</Link>
     </nav>
   )
 }

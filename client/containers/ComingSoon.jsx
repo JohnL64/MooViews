@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import css from '../styles/ComingSoon.module.css';
 import PageNavigator from '../components/PageNavigator.jsx';
+import ExpandInfo from '../components/ExpandInfo.jsx';
 
 const ComingSoon = ({ imageErrorHandler }) => {
   // Using state to store coming soon movie data retreived from server
@@ -9,10 +10,11 @@ const ComingSoon = ({ imageErrorHandler }) => {
   const [renderPage, setRenderPage] = useState(false);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
+
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
     if (!comingSoon) {
-      fetch(`/movie/coming-soon?content=comingSoon&page=${page}`)
+      fetch(`/movie/coming-soon?content=comingSoon`)
         .then(res => res.json())
         .then(data => {
           console.log(data.comingSoon);
@@ -36,9 +38,6 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   function comingSoonMovies() {
     console.log(comingSoon.length, numOfPages)
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-
     const moviesByDates = [];
     const datesObj = {};
     let firstMovie = (page - 1) * 20;
@@ -53,7 +52,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
       if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = [];
       datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>
-          <Link to={`/movie-info/${movie.id}`}><img src={movie.poster_path} /> </Link>
+          <Link to={`/movie-info/${movie.id}`}><img src={movie.poster_path} className={css.CSimage} /> </Link>
           <div className={css.movieInfo}>
             <p className={css.movieTitle}>{movie.title}</p>
             <p className={css.generalMovieInfo}> 
@@ -61,6 +60,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
               <span className={css.genInfo}>{movie.genres}</span>
             </p>
             <p className={css.movieOverview}>{movie.overview}</p>
+            <ExpandInfo id={movie.id} />
           </div>
         </div>
       )
@@ -69,8 +69,8 @@ const ComingSoon = ({ imageErrorHandler }) => {
       const date = getMonthName((key.slice(5, 7)) - 1) + ' ' + Number(key.slice(8, 10));
       console.log(date);
       moviesByDates.push(
-        <div className={css.CSdate} key={date}>
-          <h3 className={css.dateTitle}>{date}</h3>
+        <div className={css.moviesByDay} key={date}>
+          <div className={css.outerDayTitle}><h3 className={css.dayTitle}>{date}</h3></div>
           {datesObj[key]}
         </div>
       )

@@ -1,19 +1,38 @@
 .comingSoon {
   box-sizing: border-box;
   /* height: 100vh; */
-  width: 100vw;
-  border: solid white 1px;
+  /* width: 60%; */
+  /* border: solid white 1px; */
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
 }
 
+.comingSoon *{
+  /* box-sizing: border-box;
+  border: solid yellow 3px; */
+}
+
 .innerCS {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 60%;
   background-color: white;
-  border: solid yellow 2px;
+  /* border: solid brown 5px; */
   color: black;
+  /*********** props for testing ****************/
+  /* margin-top: 2.5rem; */
+  border-radius: 3px;
+}
+
+.titleTest {
+   /*********** props for testing ****************/
+  box-sizing: border-box;
+  /* border: solid brown 2px; */
+  width: 96%;
+  font-size: 1.5rem;
 }
 
 .CStitle {
@@ -22,6 +41,46 @@
   margin-top: 6vh;
 }
 
-.CSdate {
-  border: solid purple 2px;
+.moviesByDay {
+  /*********** props for testing ****************/
+  /* border: solid brown 2px; */
+  box-sizing: border-box;
+  width: 96%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.outerDayTitle {
+  /*********** props for testing ****************/
+  height: 1.0rem;
+  width: 100%;
+  border-bottom: dotted 0.122rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.dayTitle {
+  position: absolute;
+  z-index: 2;
+  display: inline-block;
+  margin: 0;
+  background-color: white;
+  padding-right: 0.5rem;
+  /* width: 100%; */
+  /*********** props for testing ****************/
+  box-sizing: border-box;
+  /* border: purple solid 1px; */
+  font-size: 1.3rem;
+}
+
+.CSmovie {
+  /*********** props for testing ****************/
+  box-sizing: border-box;
+  /* border: solid purple 2px; */
+  /* width: 96%; */
+}
+
+.CSimage {
+  height: 275px;
 }

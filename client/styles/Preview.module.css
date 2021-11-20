@@ -20,6 +20,7 @@ h2 {
   font-size: 1.6rem;
   border-left: solid rgb(255, 136, 156) .25rem;
   padding-left: .45rem;
+  box-sizing: border-box;
   /******** properties for testing ********/
   /* width: 92%; */
 }

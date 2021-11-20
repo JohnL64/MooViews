@@ -26,17 +26,23 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
     results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
     results.genres = movieApiMethods.getGenres(results.genre_ids);
-  }
-  else {
-    results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
-    results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
-    if (content !== 'comingSoon') results.release_date = results.release_date.slice(0, 4);
-    results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
-    results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
-    results.genres = movieApiMethods.getGenres(results.genres);
-    const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
-    return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
-  }
+  } else if (content === 'expandInfo') {
+    results.runtime === 0 ? results.runtime = 'N/A' : results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
+    results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results);
+    results.credits = movieApiMethods.getTopCast(results.credits.cast, results.credits.crew);
+    const { runtime, MPAA_rating, credits } = results;
+    results = { runtime, MPAA_rating, credits };
+  } 
+  // else {
+  //   results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
+  //   results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
+  //   if (content !== 'comingSoon') results.release_date = results.release_date.slice(0, 4);
+  //   results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
+  //   results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
+  //   results.genres = movieApiMethods.getGenres(results.genres);
+  //   const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
+  //   return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
+  // }
   return results;
 }
 
@@ -85,24 +91,56 @@ movieApiMethods.getGenres = (genres) => {
   return newGenreFormat;
 }
 
-movieApiMethods.queryMovieDetails = async (detailObj) => {
-  let urlQuery = `https://api.themoviedb.org/3/movie/${detailObj.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`
-
-  let movieDetails;
-  const { content } = detailObj;
-
-  if (detailObj.credits) urlQuery += ',credits'
-  
-  await fetch(urlQuery)
-    .then(res => res.json())
-    .then(data => {
-      movieDetails = movieApiMethods.moviesInfoUpdate(data, content);
-    })
-    .catch(err => {
-      movieDetails = "An error occured when querying for movie details for Main"
-    })
-  return movieDetails;
+movieApiMethods.getTopCast = (castArr, crewArr) => {
+  // console.log(castArr[0].name);
+  // console.log(castArr);
+  let topCast = '';
+  let director = '';
+  let numOfDir = 0;
+  let directorTitle = 'Director';
+// console.log(topCast, director, directorTitle) 
+  if (castArr.length > 0) {
+    for (let i = 0; i < castArr.length; i += 1) {
+      if (i === 3) break;
+      // console.log(topCast, director, directorTitle);
+      topCast ? topCast += ', ' + castArr[i].name : topCast += castArr[i].name;
+    }
+  }
+  // console.log(topCast, director, directorTitle)  
+  if (crewArr.length > 0) {
+    for (let i = 0; i < crewArr.length; i += 1) {
+      if (crewArr[i].job === "Director") {
+        // console.log(topCast, director, directorTitle)
+        director ? director += ', ' + crewArr[i].name : director += crewArr[i].name;
+        numOfDir += 1;
+      }
+    }
+  }
+  if (!topCast) topCast = 'N/A';
+  if (!director) director = 'N/A';
+  if (numOfDir > 1) directorTitle = 'Directors';
+  // console.log(topCast, director, directorTitle)
+  return { topCast, director, directorTitle };
 }
+
+// movieApiMethods.queryMovieDetails = async (detailObj) => {
+//   let urlQuery = `https://api.themoviedb.org/3/movie/${detailObj.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`
+
+//   let movieDetails;
+//   const { content } = detailObj;
+
+//   if (detailObj.credits) urlQuery += ',credits'
+  
+//   await fetch(urlQuery)
+//     .then(res => res.json())
+//     .then(data => {
+//       movieDetails = movieApiMethods.moviesInfoUpdate(data, content);
+//     })
+//     .catch(err => {
+//       movieDetails = "An error occured when querying for movie details for Main"
+//     })
+//   return movieDetails;
+// }
 
 movieApiMethods.sortByRelease = (moviesArr) => {
   const moviesByRelease = [];

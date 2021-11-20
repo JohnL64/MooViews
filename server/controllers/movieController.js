@@ -1,6 +1,6 @@
 const fetch = require('isomorphic-fetch');
 const dotenv = require('dotenv');
-const movieApiMethods = require('./movieApiMethods');
+const movieApiMethods = require('../movieApiMethods');
 
 dotenv.config();
 const { api_key } = process.env;
@@ -101,32 +101,44 @@ movieController.home = async (req, res, next) => {
 -------- QUERIES UPCOMING MOVIES FOR COMING SOON --------
 */
 movieController.comingSoon = (req, res, next) => {
-  const { content, page } = req.query;
+  const { content, id } = req.query;
   console.log('Content ', content);
-  console.log('Page ', page);
-  console.log('Body', Object.keys(req.body).length < 1);
-
-  fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`)
-    .then(res => res.json())
-    .then(async data => {
-      // const datesObj = {};
-      const pages = data.total_pages;
-      for (let i = 0; i < data.results.length; i += 1) {
-        data.results[i] = movieApiMethods.moviesInfoUpdate(data.results[i], content);
-      }
-      for (let i = 2; i <= pages; i += 1) {
-        let currPageResults = await movieApiMethods.allPagesOfUpcoming(i);
-        for (movie of currPageResults) {
-          data.results.push(movieApiMethods.moviesInfoUpdate(movie, content));
+  // console.log('Page ', page);
+  if (content === 'comingSoon') {
+    fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`)
+      .then(res => res.json())
+      .then(async data => {
+        // const datesObj = {};
+        const pages = data.total_pages;
+        for (let i = 0; i < data.results.length; i += 1) {
+          data.results[i] = movieApiMethods.moviesInfoUpdate(data.results[i], content);
         }
-      }
-      data.results = movieApiMethods.sortByRelease(data.results);
-      res.locals.comingSoon = data.results;
+        for (let i = 2; i <= pages; i += 1) {
+          let currPageResults = await movieApiMethods.allPagesOfUpcoming(i);
+          for (movie of currPageResults) {
+            data.results.push(movieApiMethods.moviesInfoUpdate(movie, content));
+          }
+        }
+        data.results = movieApiMethods.sortByRelease(data.results);
+        res.locals.comingSoon = data.results;
+        return next();
+      })
+      .catch(err => {
+        return next({ message: 'Error has occured when querying data for ComingSoon in movieController.comingSoon' });
+      })
+  } else {
+    console.log(content, id);
+    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits`)
+    .then(res => res.json())
+    .then(data => {
+      // console.log(data.credits);
+      res.locals.expandInfo = movieApiMethods.moviesInfoUpdate(data, content);
       return next();
     })
     .catch(err => {
-      return next({ message: 'Error has occured when querying data for ComingSoon in movieController.comingSoon' });
+      return next({ message: 'Error has occured when querying data for ExpandInfo in movieController.comingSoon' });
     })
+  }
 }
 
 module.exports = movieController;
