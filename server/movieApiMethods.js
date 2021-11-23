@@ -23,8 +23,8 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
       if (allResults) allResults.push(movie);
     }
   } else if (content === 'comingSoon') {
-    results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
-    results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
+    if (results.overview === 'Coming Soon') results.overview = 'The plot is currently unknown.'
+    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
     results.genres = movieApiMethods.getGenres(results.genre_ids);
   } else if (content === 'expandInfo') {
     results.runtime === 0 ? results.runtime = 'N/A' : results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
@@ -72,7 +72,7 @@ movieApiMethods.findMpaaRating = (releaseDatesResults) => {
         }
       }
       // If none of the releases have a rating 'Not Rated' will be used
-      if (!rating) rating = 'Not Rated';
+      if (!rating || rating === 'NR') rating = 'Not Rated';
       break;
     }
   }

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import css from '../styles/ComingSoon.module.css';
+import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
 
 const ExpandInfo = ({ id }) => {
   const [expandInfo, setExpandInfo] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
 
-  let infoAction = 'Expand';
-  if (showInfo) infoAction = 'Collapse';
+  let infoAction = 'More Info';
+  let infoIcon = <AiFillCaretDown className={css.arrows} />
+  if (showInfo) {
+    infoAction = 'Hide Info';
+    infoIcon = <AiFillCaretUp className={css.arrows} />
+  }
 
   function expandInfoAction() {
     if (!expandInfo) {
@@ -25,10 +30,12 @@ const ExpandInfo = ({ id }) => {
   function createExpandInfo() {
     return (
       <div className={css.innerExpandInfo}>
-        <p>Rating: {expandInfo.MPAA_rating}</p>
-        <p>Runtime: {expandInfo.runtime}</p>
-        <p>Cast: {expandInfo.credits.topCast}</p>
-        <p>{expandInfo.credits.directorTitle + ': ' + expandInfo.credits.director}</p>
+        <p>
+          <span className={css.infoLabel}>{expandInfo.credits.directorTitle + ': '}</span> {expandInfo.credits.director}
+        </p>
+        <p><span>Cast:</span> {expandInfo.credits.topCast}</p>
+        <p><span>Rating:</span> {expandInfo.MPAA_rating}</p>
+        <p><span>Runtime:</span> {expandInfo.runtime}</p>
       </div>
     )
   }
@@ -36,7 +43,12 @@ const ExpandInfo = ({ id }) => {
   return ( 
   <div className={css.expandInfo}>
     {showInfo && createExpandInfo()}
-    <button onClick={expandInfoAction}>{infoAction}</button>
+    <div className={css.outerActionBtn}>
+      <button className={css.actionBtn} onClick={expandInfoAction}>
+        <span className={css.actionText}>{infoAction}</span>
+        {infoIcon}
+      </button>
+    </div>
   </div>
   );
 }

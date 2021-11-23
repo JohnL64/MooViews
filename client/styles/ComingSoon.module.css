@@ -1,17 +1,8 @@
 .comingSoon {
   box-sizing: border-box;
-  /* height: 100vh; */
-  /* width: 60%; */
-  /* border: solid white 1px; */
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
-}
-
-.comingSoon *{
-  /* box-sizing: border-box;
-  border: solid yellow 3px; */
 }
 
 .innerCS {
@@ -19,45 +10,39 @@
   flex-direction: column;
   align-items: center;
   width: 60%;
+  max-width: 810px;
+  min-width: 715px;
   background-color: white;
-  /* border: solid brown 5px; */
   color: black;
-  /*********** props for testing ****************/
-  /* margin-top: 2.5rem; */
   border-radius: 3px;
 }
 
-.titleTest {
-   /*********** props for testing ****************/
-  box-sizing: border-box;
-  /* border: solid brown 2px; */
-  width: 96%;
-  font-size: 1.5rem;
-}
-
 .CStitle {
-  /* border: solid white 1px; */
   width: 60%;
-  margin-top: 6vh;
+  margin-top: 3.5rem;
+  max-width: 810px;
+  min-width: 715px;
 }
 
 .moviesByDay {
-  /*********** props for testing ****************/
-  /* border: solid brown 2px; */
   box-sizing: border-box;
-  width: 96%;
+  width: 94%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.moviesByDay:nth-child(1) .outerDayTitle {
+  margin: 2.5rem 0 0.7rem 0;
+}
+
 .outerDayTitle {
-  /*********** props for testing ****************/
-  height: 1.0rem;
+  height: 0.70rem;
   width: 100%;
-  border-bottom: dotted 0.122rem;
-  margin: 2rem 0;
+  border-bottom: dotted 0.001rem rgba(90, 90, 90, 0.513);
+  margin: 0.7rem 0;
   position: relative;
+  color: rgb(90, 90, 90);
 }
 
 .dayTitle {
@@ -66,21 +51,193 @@
   display: inline-block;
   margin: 0;
   background-color: white;
-  padding-right: 0.5rem;
-  /* width: 100%; */
-  /*********** props for testing ****************/
+  padding-right: 0.25rem;
   box-sizing: border-box;
-  /* border: purple solid 1px; */
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 .CSmovie {
-  /*********** props for testing ****************/
   box-sizing: border-box;
-  /* border: solid purple 2px; */
-  /* width: 96%; */
+  display: flex;
+  padding: 0.8rem;
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+.CSmovie:nth-child(even) {
+  background-color: #f6f6f5;
+}
+
+.CSmovie:nth-child(odd) {
+  background-color: #fbfbfb;
+}
+
+.imageLink {
+  box-sizing: border-box;
+  width: 20%;
 }
 
 .CSimage {
-  height: 275px;
+  width: 8.75rem;
+  height: 13.125rem;
+  vertical-align: top;
+  box-shadow: 1.5px 1.5px rgb(182, 182, 182);
+}
+
+.movieInfo {
+  font-size: 0.85rem;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #666666;
+}
+
+.movieInfo p,
+.expandInfo,
+.titleLink {
+  width: 95%;
+  box-sizing: border-box;
+}
+
+.movieTitle {
+  font-size: 1.35em;
+  margin: 0.35rem 0 0.15rem 0;
+  color: rgb(255, 135, 153);
+}
+
+.movieTitle:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.generalMovieInfo {
+  margin: 0;
+  font-size: 0.8235em;
+  color: rgb(66, 66, 66)
+}
+
+.generalMovieInfo * {
+  margin-right: 0.3529em;
+}
+
+.genInfo {
+  box-sizing: border-box;
+}
+
+.movieOverview {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.expandInfo {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 1.2rem;
+}
+
+.innerExpandInfo {
+  box-sizing: border-box;
+}
+
+.innerExpandInfo p {
+  margin: 0 0 0.3rem;
+}
+
+.innerExpandInfo p span{
+  font-weight: 600;
+  color:#474747;
+}
+
+.actionBtn {
+  display: flex;
+  position: absolute;
+  right: 0.3rem;
+  bottom: 0.2rem;
+  align-items: flex-end;
+  background-color: transparent;
+  border: none;
+  font-weight: 550;
+  padding: 0;
+  color: rgb(255, 135, 153);
+}
+
+.actionBtn:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.actionText {
+  margin-right: 0.2rem;
+}
+
+.arrows {
+  color: black;
+}
+
+.CSimageUnavailable {
+  display: flex;
+  align-items: center;
+  height: 13.125rem;
+  background-color: rgb(206, 206, 206);
+}
+
+.movieIcon {
+  width: 8.75rem;
+  font-size: 3.5rem;
+}
+
+.loadingMainMovieBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  height: 15rem;
+  width: 60%;
+  max-width: 810px;
+  min-width: 715px;
+  border-radius: 3px;
+}
+
+.loadingDots {
+  width: 5em;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loadingDots div {
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  background-color: rgb(27, 27, 27);
+  animation: fade 0.8s ease-in-out alternate infinite;
+}
+
+.loadingDots div:nth-of-type(1) {
+  animation-delay: -0.4s;
+}
+
+.loadingDots div:nth-of-type(2) {
+  animation-delay: -0.2s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 1138px) {
+  .movieInfo {
+    font-size: 0.9107rem;
+  }
 }

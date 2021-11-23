@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import css from '../styles/ComingSoon.module.css';
 import PageNavigator from '../components/PageNavigator.jsx';
 import ExpandInfo from '../components/ExpandInfo.jsx';
+import { GiFilmProjector } from 'react-icons/gi';
+
 
 const ComingSoon = ({ imageErrorHandler }) => {
   // Using state to store coming soon movie data retreived from server
@@ -10,7 +12,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
   const [renderPage, setRenderPage] = useState(false);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
-
+  const [CSimageErrors, setCSimageErrors] = useState({});
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
     if (!comingSoon) {
@@ -49,15 +51,26 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
     for (let i = firstMovie; i <= lastMovie; i += 1) {
       const movie = comingSoon[i];
+      if (movie.poster_path === null) console.log(movie.title);
       if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = [];
       datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>
-          <Link to={`/movie-info/${movie.id}`}><img src={movie.poster_path} className={css.CSimage} /> </Link>
+          {(movie.poster_path && !CSimageErrors[movie.id]) &&
+            <Link to={`/movie-info/${movie.id}`} className={css.imageLink}>
+              <img src={movie.poster_path} className={css.CSimage} onError={(e) => imageErrorHandler(e, movie.id, CSimageErrors, setCSimageErrors)}/> 
+            </Link> }
+          {(!movie.poster_path || CSimageErrors[movie.id]) && 
+            <div className={css.CSimageUnavailable}>
+              <GiFilmProjector className={css.movieIcon} />
+            </div> }
           <div className={css.movieInfo}>
-            <p className={css.movieTitle}>{movie.title}</p>
+            <Link to={`/movie-info/${movie.id}`} className={css.titleLink}>
+              <p className={css.movieTitle}>{movie.title}</p>
+            </Link>
             <p className={css.generalMovieInfo}> 
-              <span className={css.genInfo}>{getMonthName(movie.release_date.slice(5, 7) - 1) + ' ' + movie.release_date.slice(8, 10) + ' ' + movie.release_date.slice(0, 4)},</span> 
-              <span className={css.genInfo}>{movie.genres}</span>
+              <span className={css.genInfo}>{getMonthName(movie.release_date.slice(5, 7) - 1) + ' ' + Number(movie.release_date.slice(8, 10)) + ', ' + movie.release_date.slice(0, 4)}</span> 
+              { movie.genres && <span>|</span> }
+              <span>{movie.genres}</span>
             </p>
             <p className={css.movieOverview}>{movie.overview}</p>
             <ExpandInfo id={movie.id} />
@@ -70,7 +83,9 @@ const ComingSoon = ({ imageErrorHandler }) => {
       console.log(date);
       moviesByDates.push(
         <div className={css.moviesByDay} key={date}>
-          <div className={css.outerDayTitle}><h3 className={css.dayTitle}>{date}</h3></div>
+          <div className={css.outerDayTitle}>
+            <h3 className={css.dayTitle}>{date}</h3>
+          </div>
           {datesObj[key]}
         </div>
       )
@@ -81,6 +96,18 @@ const ComingSoon = ({ imageErrorHandler }) => {
   function renderNewPage(pageNum) {
     setRenderPage(false);
     setPage(pageNum);
+  }
+
+  function createCSloadingBox() {
+    return (
+      <div className={css.loadingMainMovieBox}>
+          <div className={css.loadingDots}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+      </div>
+    )
   }
 
   return ( 
@@ -94,6 +121,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
       <div className='pageNavigator'>
         <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
       </div> }
+      { !renderPage && createCSloadingBox() }
   </div> );
 }
  
