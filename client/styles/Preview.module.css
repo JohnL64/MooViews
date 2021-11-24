@@ -274,14 +274,18 @@ h2 {
   -webkit-box-orient: vertical;
 }
 
+.previewInfoTitle a {
+  color: white;
+}
+
 .allPreviewGeneralInfo {
   color: rgb(126, 126, 126);
   /* margin-top: 5px; */
-  margin: 0 0 .625rem;
+  margin: 0 0 0.625rem;
   font-size: 0.8125rem;
 }
 
-.previewGeneralInfo {
+.allPreviewGeneralInfo span {
   margin-right: 0.3125rem;
 }
 

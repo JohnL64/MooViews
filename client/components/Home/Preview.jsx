@@ -18,13 +18,14 @@ const Preview = ({ preview, imageErrorHandler }) => {
 
 
   // creates an object that will store all necessary data for the selected movie and will be passed down into MoviePreviewInfo
-  function movieDataForInfo(backdrop, releaseDate, id, title, overview) {
+  function movieDataForInfo(backdrop, releaseDate, id, title, overview, genres) {
     const movieData = {
       backdrop,
       releaseDate,
       id,
       title,
-      overview
+      overview,
+      genres
     }
     setMovieToShowInfo(movieData);
   }
@@ -40,7 +41,7 @@ const Preview = ({ preview, imageErrorHandler }) => {
         { previewImageErrors[movie.id] && <div className={css.previewImageUnavailable}><p>Image is currently unavailable</p></div>}
         <p className={css.moviePreviewRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
         <p className={css.moviePreviewTitle}><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></p>
-        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle className={css.infoBtnIcon} color='white'/></button>
+        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview, movie.genres)}}><AiOutlineInfoCircle className={css.infoBtnIcon} color='white'/></button>
       </div>
     ) 
   }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import css from '../styles/TopRated.module.css'
+import css from '../styles/TopRated.module.css';
+
 const TopRated = () => {
   return ( 
     <div className={css.topRated}>

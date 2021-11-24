@@ -85,7 +85,7 @@
 }
 
 .movieInfo {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -97,7 +97,7 @@
 .movieInfo p,
 .expandInfo,
 .titleLink {
-  width: 95%;
+  width: 92%;
   box-sizing: border-box;
 }
 
@@ -114,7 +114,7 @@
 
 .generalMovieInfo {
   margin: 0;
-  font-size: 0.8235em;
+  font-size: 0.85em;
   color: rgb(66, 66, 66)
 }
 
@@ -157,7 +157,7 @@
   display: flex;
   position: absolute;
   right: 0.3rem;
-  bottom: 0.2rem;
+  bottom: 0.5rem;
   align-items: flex-end;
   background-color: transparent;
   border: none;
@@ -238,6 +238,6 @@
 
 @media screen and (max-width: 1138px) {
   .movieInfo {
-    font-size: 0.9107rem;
+    font-size: 0.9642rem;
   }
 }
