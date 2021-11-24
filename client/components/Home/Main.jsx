@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
+import PageNavigator from '../PageNavigator.jsx';
 
 const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
@@ -17,12 +18,10 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
         <div className={css.mainMovieInfo}>
           <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie-info/${movie.id}`}>{movie.title} </Link></p>
           <p className={css.allGeneralMovieInfo}> 
-            <span className={css.genInfo}>{movie.MPAA_rating},</span> 
-            <span className={css.genInfo}>{movie.runtime},</span> 
             <span className={css.genInfo}>{movie.release_date},</span> 
             <span className={css.genInfo}>{movie.genres}</span>
           </p>
-          <p className={css.movieMainRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
+          <p className={css.mainMovieRating}><AiFillStar className={css.starRating} />{movie.vote_average}</p>
           <p className={css.mainOverview}>{movie.overview}</p>
           <p className={css.fullDetails}><Link className={css.fullDetailsLink} to={`/movie-info/${movie.id}`}>See full details</Link></p>
         </div>
@@ -77,8 +76,8 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
         { main && mainContent }
       </div>
       {main &&
-        <div className={css.pageNavigator}>
-          {createPageNavigator(page, 30, renderNewPage)}
+        <div className='pageNavigator'>
+          <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage}/>
         </div> }
     </div>
    );

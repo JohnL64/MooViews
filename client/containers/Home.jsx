@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import css from '../styles/Preview.module.css';
-import Preview from '../components/Movies/Preview.jsx';
-import Main from '../components/Movies/Main.jsx';
+import Preview from '../components/Home/Preview.jsx';
+import Main from '../components/Home/Main.jsx';
 import 'regenerator-runtime/runtime.js';
 
-const Home = ({ imageErrorHandler, createPageNavigator }) => {
+const Home = ({ imageErrorHandler }) => {
   // using state to store movie data for preview and main. Also used to render components once data is received from server.
   const [preview, setPreview] = useState(null);
   const [main, setMain] = useState(null);
@@ -16,7 +16,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
-    await fetch(`/movie/preview?content=home`)
+    await fetch(`/movie/home?content=preview`)
       .then(res => res.json())
       .then(previewData => {
         console.log('Preview ', previewData.preview)
@@ -28,7 +28,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
         setPreviewError('An error has occured when loading preview content. Please try again or try again later')
       })
 
-    fetch(`/movie/main?content=home&page=${page}`)
+    fetch(`/movie/home?content=main&page=${page}`)
       .then(res => res.json())
       .then(mainData => {
         console.log('Main ', mainData.main);
@@ -47,7 +47,7 @@ const Home = ({ imageErrorHandler, createPageNavigator }) => {
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} imageErrorHandler={imageErrorHandler}/>}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} createPageNavigator={createPageNavigator}/>}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} />}
     </div>
   )
 }

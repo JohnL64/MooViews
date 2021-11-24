@@ -33,14 +33,14 @@ const Preview = ({ preview, imageErrorHandler }) => {
     const movie = preview[i];
     moviesToPreview.push(
       <div className={css.moviePreview} key={movie.id}>
-          { !previewImageErrors[movie.id] && 
-            <Link to={`/movie-info/${movie.id}`}>
-              <img className={css.previewImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, previewImageErrors, setPreviewImageErrors)}/>
-            </Link> }
-          { previewImageErrors[movie.id] && <div className={css.previewImageUnavailable}><p>Image is currently unavailable</p></div>}
+        { !previewImageErrors[movie.id] && 
+          <Link to={`/movie-info/${movie.id}`}>
+            <img className={css.previewImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, previewImageErrors, setPreviewImageErrors)}/>
+          </Link> }
+        { previewImageErrors[movie.id] && <div className={css.previewImageUnavailable}><p>Image is currently unavailable</p></div>}
         <p className={css.moviePreviewRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
         <p className={css.moviePreviewTitle}><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></p>
-        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle size='25px' color='white'/></button>
+        <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview)}}><AiOutlineInfoCircle className={css.infoBtnIcon} color='white'/></button>
       </div>
     ) 
   }
@@ -57,17 +57,16 @@ const Preview = ({ preview, imageErrorHandler }) => {
     <div className={css.outerPreview}>
       <h2>In Theaters</h2>
       <div className={css.innerPreview}>
-
         { displayed[0] !== 0 && 
           <button className={css.previous} onClick={() => { if (displayed[0] !== 0) moviesPreviewChange('previous') }}>
-            <FaChevronLeft size='30px' color='white'/>
+            <FaChevronLeft className={css.previousIcon} color='white'/>
           </button> }
 
         {moviesToPreview}
 
         { displayed[0] !== 30 && 
           <button className={css.next} onClick={ () => { if (displayed[0] !== 30) moviesPreviewChange('next') }}>
-            <FaChevronRight size='30px' color='white'/>
+            <FaChevronRight className={css.nextIcon} color='white'/>
           </button> }
 
       </div>
