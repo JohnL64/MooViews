@@ -12,6 +12,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
   const [renderPage, setRenderPage] = useState(false);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
+  const [comingSoonError, setComingSoonError] = useState(null);
   const [CSimageErrors, setCSimageErrors] = useState({});
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {

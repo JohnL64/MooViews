@@ -17,4 +17,9 @@ router.get('/coming-soon', movieController.comingSoon, (req, res) => {
   res.status(200).json(res.locals);
 })
 
+// queries data for Top Rated page
+router.get('/top-rated', movieController.topRated, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
 module.exports = router;

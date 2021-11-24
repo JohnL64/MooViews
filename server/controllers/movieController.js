@@ -141,4 +141,25 @@ movieController.comingSoon = (req, res, next) => {
   }
 }
 
+
+/*
+-------- QUERIES TOP RATED MOVIES FOR TOP RATED --------
+*/
+movieController.topRated = (req, res, next) => {
+  const top200Movies = [];
+  fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
+    .then(res => res.json())
+    .then(async data => {
+      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', top200Movies)
+      for (let i = 2; i < 11; i += 1) {
+        await movieApiMethods.getTop200Movies(i, top200Movies);
+      }
+      res.locals.topRated = top200Movies;
+      return next();
+    })
+    .catch(err => {
+      return next({ message: 'Error has occured when querying data for Top Rated in movieController.' });
+    })
+}
+
 module.exports = movieController;

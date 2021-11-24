@@ -17,9 +17,15 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     for (let i = 0; i < results.length; i += 1) {
       let movie = results[i];
       movie.poster_path = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
-      movie.backdrop_path = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
       movie.release_date = movie.release_date.slice(0, 4);
-      movie.genres = movieApiMethods.getGenres(movie.genre_ids);
+      if (content !== 'topRated') {
+        movie.backdrop_path = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+        movie.genres = movieApiMethods.getGenres(movie.genre_ids);
+      }
+      if (content === 'topRated') {
+        const {poster_path, title, release_date, vote_average} = movie;
+        movie = { poster_path, title, release_date, vote_average }
+      }
       if (allResults) allResults.push(movie);
     }
   } else if (content === 'comingSoon') {
@@ -32,7 +38,7 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     results.credits = movieApiMethods.getTopCast(results.credits.cast, results.credits.crew);
     const { runtime, MPAA_rating, credits } = results;
     results = { runtime, MPAA_rating, credits };
-  } 
+  }
   // else {
   //   results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
   //   results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
@@ -206,5 +212,13 @@ movieApiMethods.allPagesOfUpcoming = async (page) => {
   return currPageResults;
 }
 
+movieApiMethods.getTop200Movies = async (page, top200Movies) => {
+  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&
+  include_adult=false&include_video=false&page=${page}&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
+    .then(res => res.json())
+    .then(data => {
+      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', top200Movies);
+    })
+} 
 
 module.exports = movieApiMethods;
