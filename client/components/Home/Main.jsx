@@ -47,7 +47,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
   function loadingMainMovieBox () {
     return (
       <div className={css.loadingMainMovieBox}>
-        <div className={css.loadingDots}>
+        <div className="loadingDots">
           <div></div>
           <div></div>
           <div></div>

@@ -19,7 +19,7 @@
 
 .CStitle {
   width: 60%;
-  margin-top: 3.5rem;
+  /* margin-top: 3.5rem; */
   max-width: 810px;
   min-width: 715px;
 }
@@ -72,11 +72,6 @@
   background-color: #fbfbfb;
 }
 
-.imageLink {
-  box-sizing: border-box;
-  width: 20%;
-}
-
 .CSimage {
   width: 8.75rem;
   height: 13.125rem;
@@ -85,7 +80,7 @@
 }
 
 .movieInfo {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -97,7 +92,7 @@
 .movieInfo p,
 .expandInfo,
 .titleLink {
-  width: 95%;
+  width: 92%;
   box-sizing: border-box;
 }
 
@@ -114,7 +109,7 @@
 
 .generalMovieInfo {
   margin: 0;
-  font-size: 0.8235em;
+  font-size: 0.85em;
   color: rgb(66, 66, 66)
 }
 
@@ -157,7 +152,7 @@
   display: flex;
   position: absolute;
   right: 0.3rem;
-  bottom: 0.2rem;
+  bottom: 0.5rem;
   align-items: flex-end;
   background-color: transparent;
   border: none;
@@ -191,7 +186,7 @@
   font-size: 3.5rem;
 }
 
-.loadingMainMovieBox {
+.CSloadingBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -203,41 +198,8 @@
   border-radius: 3px;
 }
 
-.loadingDots {
-  width: 5em;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.loadingDots div {
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: 50%;
-  background-color: rgb(27, 27, 27);
-  animation: fade 0.8s ease-in-out alternate infinite;
-}
-
-.loadingDots div:nth-of-type(1) {
-  animation-delay: -0.4s;
-}
-
-.loadingDots div:nth-of-type(2) {
-  animation-delay: -0.2s;
-}
-
-@keyframes fade {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 @media screen and (max-width: 1138px) {
   .movieInfo {
-    font-size: 0.9107rem;
+    font-size: 0.9642rem;
   }
 }

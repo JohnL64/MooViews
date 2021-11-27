@@ -12,6 +12,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
   const [renderPage, setRenderPage] = useState(false);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
+  const [comingSoonError, setComingSoonError] = useState(null);
   const [CSimageErrors, setCSimageErrors] = useState({});
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
@@ -19,7 +20,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
       fetch(`/movie/coming-soon?content=comingSoon`)
         .then(res => res.json())
         .then(data => {
-          console.log(data.comingSoon);
+          console.log('Coming Soon ', data.comingSoon);
           setNumOfPages(Math.ceil(data.comingSoon.length / 20));
           setComingSoon(data.comingSoon);
           setRenderPage(true);
@@ -100,8 +101,8 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   function createCSloadingBox() {
     return (
-      <div className={css.loadingMainMovieBox}>
-          <div className={css.loadingDots}>
+      <div className={css.CSloadingBox}>
+          <div className="loadingDots">
             <div></div>
             <div></div>
             <div></div>

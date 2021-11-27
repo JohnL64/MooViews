@@ -1,3 +1,155 @@
 .topRated {
-  border: solid white 2px;
+  /* border: solid white 2px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TRtitle {
+  width: 50%;
+  min-width: 620px;
+  max-width: 680px;
+  /* margin-top: 3.5rem; */
+}
+
+.innerTR {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  min-width: 620px;
+  max-width: 680px;
+  background-color: white;
+  color: #666666;
+  border-radius: 3px;
+  font-size: 13.5px;
+  margin-bottom: 2.5rem;
+}
+
+.TRmovie,
+.columnNames {
+  display: flex;
+  width: 96%;
+  /* border: solid 1px; */
+  margin-bottom: 0.20rem;
+}
+
+.columnNames {
+  /* margin-top: 1rem; */
+  /* border-bottom: solid 1px; */
+}
+
+.TRmovie:nth-child(even) {
+  background-color: #f6f6f5;
+}
+
+.TRmovie:nth-child(odd) {
+  background-color: #fbfbfb;
+}
+
+.TRimage,
+.colImage {
+  /* width: 6.5rem; */
+  width: 4.5rem;
+  /* height: 6.75rem; */
+  /* height: 10.2rem; */
+  /* margin-right: 2.5%; */
+  vertical-align: top;
+}
+
+.TRimage {
+  height: 6.75rem;
+}
+
+.TRmovieInfo,
+.columnTitles {
+  display: flex;
+  /* border: solid purple 3px; */
+  width: 100%;
+}
+
+.TRmovieInfo {
+  align-items: center;
+}
+
+.columnTitles {
+  align-items: flex-end;
+  font-weight: 800;
+  font-size: 14.5px;
+}
+
+.columnTitles p {
+  margin-bottom: 0;
+}
+
+.rankAndTitle,
+.colRankAndTitle {
+  box-sizing: border-box;
+  padding-right: 1rem;
+  /* border: solid 1px; */
+  width: 70%;
+  margin-left: 1rem;
+}
+
+.rankAndTitle span {
+  margin-right: 0.4rem;
+}
+
+.rankAndTitle a {
+  color: rgb(255, 135, 153);
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  /* border: solid 1px; */
+  width: 15%
+}
+
+.starIcon {
+  margin-right: 0.2rem;
+  color: pink;
+  font-size: 16px;
+}
+
+.voteCount,
+.colVoteCount {
+  /* border: solid 1px; */
+  width: 15%
+}
+
+.columnRating {
+  width: 15%;
+  /* border: solid 1px; */
+}
+
+.columnRating span,
+.colVoteCount span {
+  /* border: solid 1px; */
+  display: block;
+}
+
+.TRloadingBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  height: 12rem;
+  width: 50%;
+  min-width: 620px;
+  max-width: 680px;
+  border-radius: 3px;
+}
+
+.TRimageUnavailable {
+  /* width: 4.5rem; */
+  height: 6.75rem;
+  display: flex;
+  align-items: center;
+  background-color: rgb(206, 206, 206);
+}
+
+.movieIcon {
+  width: 4.5rem;
+  font-size: 2.2rem;
 }
