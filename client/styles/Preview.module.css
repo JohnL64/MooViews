@@ -5,7 +5,7 @@
 }
 
 .outerPreview {
-  margin-top: 2.5rem;
+  /* margin-top: 2.5rem; */
   /******** properties for testing ********/
   /* background-color: white; */
   /* display: flex;
@@ -21,6 +21,7 @@ h2 {
   border-left: solid rgb(255, 136, 156) .25rem;
   padding-left: .45rem;
   box-sizing: border-box;
+  margin-top: 3.5rem;
   /******** properties for testing ********/
   /* width: 92%; */
 }

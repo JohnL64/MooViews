@@ -146,15 +146,15 @@ movieController.comingSoon = (req, res, next) => {
 -------- QUERIES TOP RATED MOVIES FOR TOP RATED --------
 */
 movieController.topRated = (req, res, next) => {
-  const top200Movies = [];
+  const topMovies = [];
   fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
     .then(res => res.json())
     .then(async data => {
-      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', top200Movies)
-      for (let i = 2; i < 11; i += 1) {
-        await movieApiMethods.getTop200Movies(i, top200Movies);
+      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', topMovies)
+      for (let i = 2; i < 6; i += 1) {
+        await movieApiMethods.getTopMovies(i, topMovies);
       }
-      res.locals.topRated = top200Movies;
+      res.locals.topRated = topMovies;
       return next();
     })
     .catch(err => {

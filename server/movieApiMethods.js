@@ -23,8 +23,13 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
         movie.genres = movieApiMethods.getGenres(movie.genre_ids);
       }
       if (content === 'topRated') {
-        const {poster_path, title, release_date, vote_average} = movie;
-        movie = { poster_path, title, release_date, vote_average }
+        if (i === 0 && allResults.length < 1) {
+          console.log(movie.vote_count);
+          console.log(movieApiMethods.newVoteCountFormat(movie.vote_count))
+        }
+        movie.vote_count = movieApiMethods.newVoteCountFormat(movie.vote_count);
+        const { id, poster_path, title, release_date, vote_average, vote_count } = movie;
+        movie = { id, poster_path, title, release_date, vote_average, vote_count }
       }
       if (allResults) allResults.push(movie);
     }
@@ -52,6 +57,9 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
   return results;
 }
 
+
+
+/************ METHODS TO CHANGE THE FORMAT OF THE DATA RECEIVED FROM MOVIE API ************/
 // Modifies the runtime to desired format
 movieApiMethods.changeRuntimeFormat = (runtime) => {
   if (runtime < 60) return `${runtime}min`;
@@ -129,6 +137,19 @@ movieApiMethods.getTopCast = (castArr, crewArr) => {
   return { topCast, director, directorTitle };
 }
 
+movieApiMethods.newVoteCountFormat = (voteCount) => {
+  let countBy1000 = voteCount / 1000;
+  let wholeCountNum = Math.floor(countBy1000);
+  // console.log("In voteCount method ", countBy1000, wholeCountNum);
+  if (countBy1000 < 100) {
+    // console.log('If count is less than 100 ', (countBy1000 - wholeCountNum) * 10)
+    let decimal = Math.floor((countBy1000 - wholeCountNum) * 10);
+    // console.log('Decimal ', decimal);
+    if (decimal > 0) wholeCountNum = wholeCountNum + (decimal / 10);
+  }
+  return wholeCountNum + 'K';
+}
+
 // movieApiMethods.queryMovieDetails = async (detailObj) => {
 //   let urlQuery = `https://api.themoviedb.org/3/movie/${detailObj.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`
 
@@ -147,6 +168,10 @@ movieApiMethods.getTopCast = (castArr, crewArr) => {
 //     })
 //   return movieDetails;
 // }
+
+
+
+/************ METHODS TO ENSURE THE CORRECT DATA IS SENT TO THE CLIENT SIDE FOR ALL PAGES ************/
 
 movieApiMethods.sortByRelease = (moviesArr) => {
   const moviesByRelease = [];
@@ -212,12 +237,12 @@ movieApiMethods.allPagesOfUpcoming = async (page) => {
   return currPageResults;
 }
 
-movieApiMethods.getTop200Movies = async (page, top200Movies) => {
+movieApiMethods.getTopMovies = async (page, topMovies) => {
   await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&
   include_adult=false&include_video=false&page=${page}&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
     .then(res => res.json())
     .then(data => {
-      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', top200Movies);
+      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', topMovies);
     })
 } 
 

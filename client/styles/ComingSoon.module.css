@@ -19,7 +19,7 @@
 
 .CStitle {
   width: 60%;
-  margin-top: 3.5rem;
+  /* margin-top: 3.5rem; */
   max-width: 810px;
   min-width: 715px;
 }
@@ -70,11 +70,6 @@
 
 .CSmovie:nth-child(odd) {
   background-color: #fbfbfb;
-}
-
-.imageLink {
-  box-sizing: border-box;
-  width: 20%;
 }
 
 .CSimage {
@@ -191,7 +186,7 @@
   font-size: 3.5rem;
 }
 
-.loadingMainMovieBox {
+.CSloadingBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -201,39 +196,6 @@
   max-width: 810px;
   min-width: 715px;
   border-radius: 3px;
-}
-
-.loadingDots {
-  width: 5em;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.loadingDots div {
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: 50%;
-  background-color: rgb(27, 27, 27);
-  animation: fade 0.8s ease-in-out alternate infinite;
-}
-
-.loadingDots div:nth-of-type(1) {
-  animation-delay: -0.4s;
-}
-
-.loadingDots div:nth-of-type(2) {
-  animation-delay: -0.2s;
-}
-
-@keyframes fade {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
 }
 
 @media screen and (max-width: 1138px) {

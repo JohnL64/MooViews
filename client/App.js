@@ -29,7 +29,7 @@ function App() {
             <Home imageErrorHandler={imageErrorHandler} />
           </Route>
           <Route path='/top-rated'>
-            <TopRated />
+            <TopRated imageErrorHandler={imageErrorHandler} />
           </Route>
           <Route path='/coming-soon'>
             <ComingSoon imageErrorHandler={imageErrorHandler} />
