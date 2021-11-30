@@ -112,18 +112,16 @@ const ComingSoon = ({ imageErrorHandler }) => {
   }
 
   return ( 
-  <div className={css.comingSoon}>
-    <h2 className={css.CStitle}>Coming Soon</h2>
-    { renderPage &&
-      <div className={css.innerCS}>
-        {comingSoonMovies(comingSoon, page)}
-      </div> }
-    { renderPage &&
-      <div className='pageNavigator'>
-        <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
-      </div> }
-      { !renderPage && createCSloadingBox() }
-  </div> );
+    <div className={css.comingSoon}>
+      <h2 className={css.CStitle}>Coming Soon</h2>
+      { renderPage &&
+        <div className={css.innerCS}>
+          {comingSoonMovies(comingSoon, page)}
+          <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
+        </div> }
+        { !renderPage && createCSloadingBox() }
+    </div> 
+  );
 }
  
 export default ComingSoon;

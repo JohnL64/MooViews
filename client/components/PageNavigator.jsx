@@ -1,17 +1,24 @@
 import React from 'react';
+import css from '../styles/Main.module.css';
 
-const PageNavigator = ({ page, numOfPages, renderNewPage }) => {
-  // dynamically renders the numbers to be displayed in page navigator depending on the current page a user is on
+const PageNavigator = ({ page, numOfPages, renderNewPage, content }) => {
+  function selectorName(name) {
+    if (content) return css[name];
+    return name;
+  }
+
   const pageNumbers = [];
-  pageNumbers.push(<button disabled={page === 1} className='pageNavNextPrev' key='navPrevious' onClick={() => renderNewPage(page - 1)}>Previous</button>);
   let firstNum;
   let lastNum;
+
   function regBtn(pageNum) {
     return <button className='pageNavBtn' key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
   };
+
   function currBtn(pageNum) {
-    return <button className='pageNavBtn' id='currPageNumber' key={pageNum} >{pageNum}</button>
+    return <button className='pageNavBtn' id={selectorName('currPageNumber')} key={pageNum} >{pageNum}</button>
   };
+  
   if (page === 1) pageNumbers.push(currBtn(1));
   else pageNumbers.push(regBtn(1));
 
@@ -40,8 +47,16 @@ const PageNavigator = ({ page, numOfPages, renderNewPage }) => {
   if (numOfPages >= 10 && page < (numOfPages - 5))  pageNumbers.push(<span className='pageNavEllipsis' key='e2'>...</span>);
   if (page === numOfPages) pageNumbers.push(currBtn(numOfPages));
   else pageNumbers.push(regBtn(numOfPages));
-  pageNumbers.push(<button disabled={page === numOfPages} className='pageNavNextPrev' key="navNext" onClick={() => renderNewPage(page + 1)}>Next</button>)
-  return pageNumbers;
+
+  return (
+    <div className={selectorName('pageNavigator')}> 
+      <button disabled={page === 1} className={selectorName('pageNavNextPrev')} key='navPrevious' onClick={() => renderNewPage(page - 1)}>Previous</button>
+      <div className="pageNumBtns">
+        {pageNumbers}
+      </div>
+      <button disabled={page === numOfPages} className={selectorName('pageNavNextPrev')} key="navNext" onClick={() => renderNewPage(page + 1)}>Next</button>
+    </div>
+  );
 }
  
 export default PageNavigator;

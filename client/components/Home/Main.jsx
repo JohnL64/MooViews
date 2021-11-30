@@ -75,10 +75,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
           </div> }
         { main && mainContent }
       </div>
-      {main &&
-        <div className='pageNavigator'>
-          <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage}/>
-        </div> }
+      {main && <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage} content='Home'/>}
     </div>
    );
 }

@@ -33,6 +33,10 @@
   /* border: coral solid 1px;  */
 }
 
+.mainMovieRow:last-child {
+  margin-bottom: 0;
+}
+
 .mainMovie {
   display: flex;
   /* justify-content: space-between; */
@@ -84,7 +88,7 @@
 
 .mainMovieTitle {
   margin: 0.75rem 0 0;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   /* border:solid black 1px; */
   display: -webkit-box;
   overflow: hidden;
@@ -100,7 +104,7 @@
 .allGeneralMovieInfo {
   color: rgb(80, 80, 80);
   margin: 0.25rem 0 0;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 1;
@@ -121,6 +125,7 @@
   display: inline-flex;
   /* display: none; */
   align-items: center;
+  font-size: 0.95rem;
 }
 
 .starRating {
@@ -130,7 +135,7 @@
 
 .mainOverview {
   margin: 0.75rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   /* height: 110px; */
   display: -webkit-box;
   overflow: hidden;
@@ -142,7 +147,7 @@
 .fullDetails {
   /* color: var(--main-pink); */
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   /* border: solid black 1px; */
   text-align: right;
   position: absolute;
@@ -151,6 +156,50 @@
 
 .fullDetailsLink {
   color: var(--main-pink);
+}
+
+.pageNavigator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.pageNavigator * {
+  font-size: 0.9rem;
+  color: white;
+  background-color: transparent;
+}
+
+.pageNavNextPrev {
+  border: solid 1px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  cursor: pointer;
+  min-width: 5.25rem;
+}
+
+.pageNavNextPrev:hover {
+  border-color: white;
+  color: rgb(253, 158, 174);
+}
+
+.pageNavNextPrev:disabled,
+.pageNavNextPrev[disabled]{
+  /* background-color: white; */
+  color: rgba(255, 255, 255, 0.424);
+  border-color: white;
+  cursor: text;
+}
+
+#currPageNumber {
+  border: solid 1px;
+  border-radius: 8px;
+}
+
+#currPageNumber:hover {
+  cursor: text;
+  color: white;
 }
 
 .loadingMainMovieRow {

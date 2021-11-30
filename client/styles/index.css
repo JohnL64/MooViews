@@ -13,61 +13,71 @@ a {
 }
 
 .pageNavigator {
-  /* border: white solid 2px; */
   display: flex;
   justify-content: center;
-  font-size: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 50px;
+  align-items: center;
+  margin: 2rem auto;
 }
 
-.pageNavNextPrev,
-.pageNavBtn,
-.pageNavEllipsis {
-  font-size: 1rem;
-  border-radius: 5px;
-}
-
-.pageNavNextPrev,
-.pageNavBtn {
-  background-color: white;
-}
-
-.pageNavNextPrev:hover,
-.pageNavBtn:hover {
-  cursor: pointer;
+.pageNavigator * {
+  font-size: 0.9rem;
+  background-color: transparent;
 }
 
 .pageNavNextPrev {
-  margin: 0 6px;
+  border: solid 1px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  cursor: pointer;
+  min-width: 5.25rem;
+}
+
+.pageNavNextPrev:hover {
+  border-color: black;
+  color: rgb(255, 136, 156);
 }
 
 .pageNavNextPrev:disabled,
 .pageNavNextPrev[disabled]{
-  margin: 0 12px;
-  background-color: white;
+  /* background-color: white; */
   color: rgba(0, 0, 0, 0.63);
+  border-color: black;
   cursor: text;
 }
 
+.pageNumBtns {
+  margin: auto 1rem; 
+}
+
 .pageNavBtn {
-  padding: 4px 8px;
-  margin-right: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.2rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.pageNavBtn:hover {
+  color: rgb(255, 136, 156);
+}
+
+.pageNavBtn:last-child {
+  margin: 0;
 }
 
 #currPageNumber {
-  background-color: pink;
+  border: solid 1px;
+  border-radius: 8px;
 }
 
 #currPageNumber:hover {
   cursor: text;
+  color: black;
 }
 
 .pageNavEllipsis {
-  padding-top: 6px;
-  margin-right: 3px;
+  padding-top: 0.15rem;
+  margin-right: 0.2rem;
 }
-
 
 .loadingDots {
   width: 5em;
