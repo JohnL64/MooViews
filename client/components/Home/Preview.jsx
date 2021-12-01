@@ -35,12 +35,12 @@ const Preview = ({ preview, imageErrorHandler }) => {
     moviesToPreview.push(
       <div className={css.moviePreview} key={movie.id}>
         { !previewImageErrors[movie.id] && 
-          <Link to={`/movie-info/${movie.id}`}>
+          <Link to={`/movie/${movie.id}`}>
             <img className={css.previewImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, previewImageErrors, setPreviewImageErrors)}/>
           </Link> }
         { previewImageErrors[movie.id] && <div className={css.previewImageUnavailable}><p>Image is currently unavailable</p></div>}
         <p className={css.moviePreviewRating}><AiFillStar className={css.starRating} color='pink'/>{movie.vote_average}</p>
-        <p className={css.moviePreviewTitle}><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></p>
+        <p className={css.moviePreviewTitle}><Link to={`/movie/${movie.id}`}>{movie.title}</Link></p>
         <button className={css.previewInfoBtn} onClick={() => { movieDataForInfo(movie.backdrop_path, movie.release_date, movie.id, movie.title, movie.overview, movie.genres)}}><AiOutlineInfoCircle className={css.infoBtnIcon} color='white'/></button>
       </div>
     ) 

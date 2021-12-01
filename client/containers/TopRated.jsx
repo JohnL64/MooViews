@@ -46,7 +46,7 @@ const TopRated = ({ imageErrorHandler }) => {
             return (
               <div className={css.TRmovie} key={movie.id}>
                 { !TRimageErrors[movie.id] &&
-                  <Link to={`/movie-info/${movie.id}`} className={css.TRimageLink}>
+                  <Link to={`/movie/${movie.id}`} className={css.TRimageLink}>
                     <img src={movie.poster_path} className={css.TRimage} onError={(e) => imageErrorHandler(e, movie.id, TRimageErrors, setTRimageErrors)}/>
                   </Link> }
                 {TRimageErrors[movie.id] && 
@@ -56,7 +56,7 @@ const TopRated = ({ imageErrorHandler }) => {
                 <div className={css.TRmovieInfo}>
                   <p className={css.rankAndTitle}> 
                     <span>{ind + 1}.</span>
-                    <span><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></span>
+                    <span><Link to={`/movie/${movie.id}`}>{movie.title}</Link></span>
                     <span>({movie.release_date})</span>
                   </p>
                   <p className={css.rating}><AiFillStar className={css.starIcon}/> { movie.vote_average }</p>

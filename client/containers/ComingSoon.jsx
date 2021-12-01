@@ -57,7 +57,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
       datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>
           {(movie.poster_path && !CSimageErrors[movie.id]) &&
-            <Link to={`/movie-info/${movie.id}`} className={css.imageLink}>
+            <Link to={`/movie/${movie.id}`} className={css.imageLink}>
               <img src={movie.poster_path} className={css.CSimage} onError={(e) => imageErrorHandler(e, movie.id, CSimageErrors, setCSimageErrors)}/> 
             </Link> }
           {(!movie.poster_path || CSimageErrors[movie.id]) && 
@@ -65,7 +65,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
               <GiFilmProjector className={css.movieIcon} />
             </div> }
           <div className={css.movieInfo}>
-            <Link to={`/movie-info/${movie.id}`} className={css.titleLink}>
+            <Link to={`/movie/${movie.id}`} className={css.titleLink}>
               <p className={css.movieTitle}>{movie.title}</p>
             </Link>
             <p className={css.generalMovieInfo}> 
