@@ -181,9 +181,8 @@ movieApiMethods.sortByRelease = (moviesArr) => {
   const year = date.getFullYear();
 
   const dateObj = {};
-  const yearArr = [];
-  const monthArr = [];
-  const dayArr = [];
+  const monthsByYear = {};
+  const daysByYear = {};
 
   for (let i = 0; i < moviesArr.length; i += 1) {
     const mYear = Number(moviesArr[i].release_date.slice(0, 4));
@@ -191,31 +190,30 @@ movieApiMethods.sortByRelease = (moviesArr) => {
     const mDay = Number(moviesArr[i].release_date.slice(8, 10));
     if (mYear < year || (mYear === year && mMonth < month) || ((mYear === year && mMonth === month) && mDay <= day)) continue;
     if (!dateObj.hasOwnProperty(mYear)) {
-      yearArr.push(mYear);
+      if (!monthsByYear.hasOwnProperty(mYear)) {
+        monthsByYear[mYear] = [];
+        daysByYear[mYear] = [];
+      }
       dateObj[mYear] = {};
     };
     if (!dateObj[mYear].hasOwnProperty(mMonth)) {
-      monthArr.push(mMonth);
+      monthsByYear[mYear].push(mMonth);
       dateObj[mYear][mMonth] = {};
     };
     if (!dateObj[mYear][mMonth].hasOwnProperty(mDay)) {
-      dayArr.push(mDay);
+      daysByYear[mYear].push(mDay);
       dateObj[mYear][mMonth][mDay] = [];
     };
     dateObj[mYear][mMonth][mDay].push(moviesArr[i])
   }
 
-  yearArr.sort((a, b) => a - b);
-  monthArr.sort((a, b) => a - b);
-  dayArr.sort((a, b) => a - b);
-
-  for (let i = 0; i < yearArr.length; i += 1) {
-    for (let y = 0; y < monthArr.length; y += 1) {
-      for (let n = 0; n <= dayArr.length; n += 1) {
-        if (dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
-          for (movie of dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
-            moviesByRelease.push(movie);
-          }
+  for (const key in monthsByYear) {
+    monthsByYear[key].sort((a, b) => a - b);
+    for (const month of monthsByYear[key]) {
+      daysByYear[key].sort((a, b) => a - b);
+      for (const day of daysByYear[key]) {
+        for (const movie of dateObj[key][month][day]) {
+          moviesByRelease.push(movie);
         }
       }
     }

@@ -109,7 +109,6 @@ movieController.comingSoon = (req, res, next) => {
     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`)
       .then(res => res.json())
       .then(async data => {
-        // const datesObj = {};
         const pages = data.total_pages;
         for (let i = 0; i < data.results.length; i += 1) {
           data.results[i] = movieApiMethods.moviesInfoUpdate(data.results[i], content);
