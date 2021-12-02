@@ -4,7 +4,7 @@ import css from '../../styles/Navbar.module.css'
 import SearchResult from './SearchResult.jsx';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-const Navbar = () => {
+const Navbar = ({ imageErrorHandler }) => {
   const [keyword, setKeyword] = useState(null);
   // using state to store search results from movie api to ensure data is dispayed in SearchResult component
   const [searchResult, setSearchResult] = useState(null);
@@ -18,15 +18,16 @@ const Navbar = () => {
   // function to be invoked when any change occurs in the search input box and will make a request to server with the given keyword from user
   const onSearch = (e) => {
     setKeyword(e.target.value);
-    fetch(`/movie/search?keyword=${e.target.value}`)
+    if (e.target.value.length > 0) {
+      fetch(`/movie/search?keyword=${e.target.value}`)
       .then(res => res.json())
       .then(data => {
-        // console.log(data.movies.length);
         setSearchResult(data.movies);
       })
       .catch(err => {
         setError(err);
       })
+    } else setSearchResult(null);
   }
 
   function conditionalPageRefresh(route, currLocation) {
@@ -43,7 +44,7 @@ const Navbar = () => {
         </div>
         { (focused && searchResult) && 
           <div className={css.outerSearchResult}>
-            <SearchResult searchResult={searchResult} keyword={keyword}/>
+            <SearchResult searchResult={searchResult} keyword={keyword} imageErrorHandler={imageErrorHandler}/>
           </div> }
         { error && <p>{error}</p>}
       </div>

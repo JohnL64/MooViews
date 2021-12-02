@@ -24,7 +24,7 @@ function App() {
   return (
     <Router>
       <div className='app'>
-        <Navbar />
+        <Navbar imageErrorHandler={imageErrorHandler}/>
         <Switch>
           <Route exact path='/'>
             <Home imageErrorHandler={imageErrorHandler} />

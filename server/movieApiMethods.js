@@ -16,10 +16,10 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
   if (Array.isArray(results)) {
     for (let i = 0; i < results.length; i += 1) {
       let movie = results[i];
-      movie.poster_path = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+      movie.poster_path = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
       movie.release_date = movie.release_date.slice(0, 4);
       if (content !== 'topRated') {
-        movie.backdrop_path = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+        movie.backdrop_path = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
         movie.genres = movieApiMethods.getGenres(movie.genre_ids);
       }
       if (content === 'topRated') {
@@ -35,7 +35,7 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     }
   } else if (content === 'comingSoon') {
     if (results.overview === 'Coming Soon') results.overview = 'The plot is currently unknown.'
-    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
+    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w342${results.poster_path}`;
     results.genres = movieApiMethods.getGenres(results.genre_ids);
   } else if (content === 'expandInfo') {
     results.runtime === 0 ? results.runtime = 'N/A' : results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
