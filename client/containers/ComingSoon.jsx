@@ -52,7 +52,6 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
     for (let i = firstMovie; i <= lastMovie; i += 1) {
       const movie = comingSoon[i];
-      if (movie.poster_path === null) console.log(movie.title);
       if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = [];
       datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>

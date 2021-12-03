@@ -198,6 +198,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   width: 30%;
+  min-width: 360px;
 }
 
 .backdropImg {
@@ -304,8 +305,8 @@ p a:hover {
   align-items: center;
 }
 
-.previewImageUnavailable p {
-  text-align: center;
+.filmIcon {
+  font-size: 3.5rem;
 }
 
 .preInfoImageUnavailable {
@@ -319,9 +320,8 @@ p a:hover {
   align-items: center;
 }
 
-.preInfoImageUnavailable p {
-  /* font-size: 1.3rem; */
-  text-align: center;
+.MPIfilmIcon {
+  font-size: 4.5rem;
 }
 
 @media screen and (max-width: 1400px) {

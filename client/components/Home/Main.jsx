@@ -3,6 +3,7 @@ import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
 import PageNavigator from '../PageNavigator.jsx';
+import { GiFilmProjector } from 'react-icons/gi';
 
 const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
@@ -13,8 +14,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
     return (
       <div className={css.mainMovie} key={movie.id}>
         { !mainImageErrors[movie.id] && <Link to={`/movie/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, mainImageErrors, setMainImageErrors)}/> </Link>}
-        { mainImageErrors[movie.id] && <div className={css.mainImageUnavailable}><p>Image is currently unavailable</p></div>}
-        {/* <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path}/> </Link> */}
+        { mainImageErrors[movie.id] && <div className={css.mainImageUnavailable}><GiFilmProjector className={css.filmIcon}/></div>}
         <div className={css.mainMovieInfo}>
           <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie/${movie.id}`}>{movie.title} </Link></p>
           <p className={css.allGeneralMovieInfo}> 

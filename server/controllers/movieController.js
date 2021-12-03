@@ -10,11 +10,11 @@ const movieController = {};
 
 //-------- QUERY MOVIE WITH USER GIVEN KEYWORD --------- 
 movieController.search = (req, res, next) => {
+  const { keyword, page, content } = req.query;
   // Function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
   function changeDates(results) {
-    let numOfMovies = 8;
-    if (results.length < 8) numOfMovies = results.length;
-    for (let i = 0; i < numOfMovies; i += 1) {
+    for (let i = 0; i < results.length; i += 1) {
+      if (i === 8 && content === 'navbar') break;
       if (results[i].release_date) {
         results[i].release_date = results[i].release_date.slice(0, 4);
       } else results[i].release_date = 'N/A';
@@ -22,7 +22,7 @@ movieController.search = (req, res, next) => {
     }
   }
 
-  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${req.query.keyword}`)
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&query=${keyword}&page=${page}&include_adult=false&region=US`)
     .then(res => res.json())
     .then(data => {
       if (data.results.length > 0) {

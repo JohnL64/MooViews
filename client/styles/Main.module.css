@@ -234,13 +234,9 @@
   border: yellow 1px solid; */
 }
 
-.mainImageUnavailable p {
-  /* border:solid white 1px; */
-  text-align: center;
+.filmIcon {
   width: var(--main-image-width);
-  /****Props for testing ****/
-  /* box-sizing: border-box;
-  border: white 1px solid; */
+  font-size: 3.5rem
 }
 
 @media screen and (max-width: 1400px) {

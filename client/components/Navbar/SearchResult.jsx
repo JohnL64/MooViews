@@ -11,7 +11,7 @@ const SearchResult = ({ searchResult, keyword, imageErrorHandler }) => {
   let numOfMovies = 8;
   if (searchResult.length < 8) numOfMovies = searchResult.length;
 
-  if (searchResult.length > 1) {
+  if (searchResult.length > 0) {
     for (let i = 0; i < numOfMovies; i += 1) {
       const movie = searchResult[i];
       topResults.push(

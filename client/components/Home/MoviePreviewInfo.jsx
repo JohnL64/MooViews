@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import css from '../../styles/Preview.module.css';
 import { IoClose } from 'react-icons/io5';
+import { GiFilmProjector } from 'react-icons/gi';
 
 const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
   const { backdrop, releaseDate, id, title, overview, genres } = movieToShowInfo;
@@ -41,7 +42,7 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
               <span>{previewGeneralInfo.runtime}</span> 
             </p>
             { !preInfoImageErrors[id] && <img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/>}
-            { preInfoImageErrors[id] && <div className={css.preInfoImageUnavailable}><p>Image is currently unavailable</p></div>}
+            { preInfoImageErrors[id] && <div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div>}
             <p className={css.previewOverview}>{overview}</p>
         </div> }
     </div>

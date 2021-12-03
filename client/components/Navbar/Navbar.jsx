@@ -19,7 +19,7 @@ const Navbar = ({ imageErrorHandler }) => {
   const onSearch = (e) => {
     setKeyword(e.target.value);
     if (e.target.value.length > 0) {
-      fetch(`/movie/search?keyword=${e.target.value}`)
+      fetch(`/movie/search?keyword=${e.target.value}&page=1&content=navbar`)
       .then(res => res.json())
       .then(data => {
         setSearchResult(data.movies);
