@@ -6,9 +6,12 @@ import PageNavigator from '../components/PageNavigator.jsx';
 
 
 const AllResults = ({ imageErrorHandler }) => {
-  const { keyword } = useParams();
+  const { keyWord } = useParams();
+  const [keyword, setKeyword] = useState(keyWord);
   const [page, setPage] = useState(1);
   const [allResults, setAllResults] = useState(null);
+
+  document.body.style.backgroundColor = 'white';
 
   useEffect(() => {
     fetch(`/movie/search?keyword=${keyword}&page=${page}&content=allResults`)
@@ -20,6 +23,10 @@ const AllResults = ({ imageErrorHandler }) => {
       .catch(err => {
         console.log(err);
       })
+    
+    return function backgroundColorChange() {
+      document.body.style.backgroundColor = 'black';
+    }
   }, [page]);
 
   function renderNewPage(newPageNum) {
@@ -47,7 +54,6 @@ const AllResults = ({ imageErrorHandler }) => {
               </div>
             )
           })}
-          {/* page, numOfPages, renderNewPage, content */}
           <PageNavigator page={page} numOfPages={20} renderNewPage={renderNewPage}/>
         </div>
       }

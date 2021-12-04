@@ -5,7 +5,7 @@ import SearchResult from './SearchResult.jsx';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 const Navbar = ({ imageErrorHandler }) => {
-  const [keyword, setKeyword] = useState(null);
+  const [keyword, setKeyword] = useState('');
   // using state to store search results from movie api to ensure data is dispayed in SearchResult component
   const [searchResult, setSearchResult] = useState(null);
   // using state to track whether search bar is focused and to determine if SearchResult component should be rendered
@@ -31,6 +31,8 @@ const Navbar = ({ imageErrorHandler }) => {
   }
 
   function conditionalPageRefresh(route, currLocation) {
+    // Changing keyword to empty string to clear search input field everytime page is changed or refreshed.
+    setKeyword('');
     if (route === currLocation) history.go(0);
   }
 
@@ -39,12 +41,12 @@ const Navbar = ({ imageErrorHandler }) => {
       <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link>
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
         <div className={css.inputAndIcon}>
-          <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch}></input>
+          <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch} value={keyword}></input>
           <AiOutlineSearch className={css.searchIcon} />
         </div>
         { (focused && searchResult) && 
           <div className={css.outerSearchResult}>
-            <SearchResult searchResult={searchResult} keyword={keyword} imageErrorHandler={imageErrorHandler}/>
+            <SearchResult searchResult={searchResult} keyword={keyword} setKeyword={setKeyword} imageErrorHandler={imageErrorHandler}/>
           </div> }
         { error && <p>{error}</p>}
       </div>

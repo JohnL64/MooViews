@@ -44,7 +44,7 @@ function App() {
           <Route path='/movie/:movie'>
             <MovieInfo />
           </Route>
-          <Route path='/all-results/:keyword'>
+          <Route path='/all-results/:keyWord'>
             <AllResults imageErrorHandler={imageErrorHandler}/>
           </Route>
         </Switch>
