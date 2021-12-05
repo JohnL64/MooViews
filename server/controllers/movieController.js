@@ -14,6 +14,7 @@ movieController.search = (req, res, next) => {
   // Function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
   function changeDates(results) {
     for (let i = 0; i < results.length; i += 1) {
+      if (!results[i].overview) results[i].overview = 'The plot is currently unknown.'
       if (i === 8 && content === 'navbar') break;
       if (results[i].release_date) {
         results[i].release_date = results[i].release_date.slice(0, 4);

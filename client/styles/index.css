@@ -5,6 +5,7 @@ body {
   font-family: Roboto;
   background-color: black;
   color: white;
+  --text-color-pink: rgb(255, 135, 153);
 }
 
 a {

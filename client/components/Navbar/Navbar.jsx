@@ -38,7 +38,7 @@ const Navbar = ({ imageErrorHandler }) => {
 
   return (
     <nav className={css.navbar}>
-      <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><p className={css.moo}>Moo</p><p className={css.views}>Views</p></Link>
+      <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><span className={css.moo}>Moo</span><span className={css.views}>Views</span></Link>
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
         <div className={css.inputAndIcon}>
           <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch} value={keyword}></input>

@@ -5,6 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { GiFilmProjector } from 'react-icons/gi';
 
 const TopRated = ({ imageErrorHandler }) => {
+  document.body.style.backgroundColor = 'black';
   const [topRated, setTopRated] = useState(null);
   const [TRimageErrors, setTRimageErrors] = useState({});
 

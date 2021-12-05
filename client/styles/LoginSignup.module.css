@@ -1,6 +1,7 @@
 .userForm {
   display: flex;
   flex-direction: column;
+  color: black;
 }
 
 .userForm h1 {
@@ -10,13 +11,13 @@
 
 .outerForm {
   margin: 45px auto 0;
-  border: 1px solid white;
+  border: 1px solid rgb(190, 190, 190);
   width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(27, 27, 27)
+  /* background-color: rgb(27, 27, 27) */
 }
 
 .innerForm {

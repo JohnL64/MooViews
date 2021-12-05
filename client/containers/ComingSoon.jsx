@@ -7,6 +7,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 
 
 const ComingSoon = ({ imageErrorHandler }) => {
+  document.body.style.backgroundColor = 'black';
   // Using state to store coming soon movie data retreived from server
   const [comingSoon, setComingSoon] = useState(null);
   const [renderPage, setRenderPage] = useState(false);

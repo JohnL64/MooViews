@@ -3,15 +3,16 @@ import { useParams } from "react-router";
 import css from "../styles/AllResults.module.css";
 import { Link } from "react-router-dom";
 import PageNavigator from '../components/PageNavigator.jsx';
+import { GiFilmProjector } from 'react-icons/gi';
 
 
 const AllResults = ({ imageErrorHandler }) => {
+  document.body.style.backgroundColor = 'white';
   const { keyWord } = useParams();
   const [keyword, setKeyword] = useState(keyWord);
   const [page, setPage] = useState(1);
   const [allResults, setAllResults] = useState(null);
-
-  document.body.style.backgroundColor = 'white';
+  const [ARimageErrors, setARimageErrors] = useState({});
 
   useEffect(() => {
     fetch(`/movie/search?keyword=${keyword}&page=${page}&content=allResults`)
@@ -23,10 +24,6 @@ const AllResults = ({ imageErrorHandler }) => {
       .catch(err => {
         console.log(err);
       })
-    
-    return function backgroundColorChange() {
-      document.body.style.backgroundColor = 'black';
-    }
   }, [page]);
 
   function renderNewPage(newPageNum) {
@@ -38,25 +35,33 @@ const AllResults = ({ imageErrorHandler }) => {
     <div className={css.allResults}>
       { allResults && 
         <div className={css.innerAllResults}>
-          <h3>All results for "{keyword}"</h3>
+          <h3 className={css.resultsTitle}>Showing results for <span>"{keyword}"</span></h3>
           {allResults.map(movie => {
             return (
-              <div className={css.movie} key={movie.id}>
-                <Link to={`/movie/${movie.id}`}><img className={css.image}src={movie.poster_path}/></Link>
+              <div className={css.ARmovie} key={movie.id}>
+                { 
+                  (movie.poster_path && !ARimageErrors[movie.id]) &&  
+                  <Link to={`/movie/${movie.id}`}><img className={css.image} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, ARimageErrors, setARimageErrors)}/></Link> 
+                }
+                {
+                  (!movie.poster_path || ARimageErrors[movie.id]) &&
+                  <div className={css.ARimageUnavailable}>
+                    <GiFilmProjector className={css.filmIcon} />
+                  </div>
+                }
+                {/* <Link to={`/movie/${movie.id}`}><img className={css.image}src={movie.poster_path}/></Link> */}
                 <div className={css.movieInfo}>
-                  <p>
-                    <span><Link to={`/movie/${movie.id}`}>{movie.title}</Link></span>
-                    <span>|</span>
-                    <span>({movie.release_date})</span>
-                  </p>
+                  <div className={css.titleYear}>
+                    <p className={css.title}><Link to={`/movie/${movie.id}`} className={css.titleLink}>{movie.title}</Link></p> 
+                    <p className={css.year}>({movie.release_date})</p>
+                  </div>
                   <p className={css.overview}>{movie.overview}</p>
                 </div>
               </div>
             )
           })}
           <PageNavigator page={page} numOfPages={20} renderNewPage={renderNewPage}/>
-        </div>
-      }
+        </div> }
     </div>
    );
 }
