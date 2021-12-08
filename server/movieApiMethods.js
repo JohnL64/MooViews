@@ -178,7 +178,7 @@ movieApiMethods.sortByRelease = (moviesArr) => {
   const date = new Date();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const year = date.getFullYear();
+  let year = date.getFullYear();
 
   const dateObj = {};
   const monthsByYear = {};
@@ -192,7 +192,7 @@ movieApiMethods.sortByRelease = (moviesArr) => {
     if (!dateObj.hasOwnProperty(mYear)) {
       if (!monthsByYear.hasOwnProperty(mYear)) {
         monthsByYear[mYear] = [];
-        daysByYear[mYear] = [];
+        daysByYear[mYear] = {};
       }
       dateObj[mYear] = {};
     };
@@ -201,24 +201,25 @@ movieApiMethods.sortByRelease = (moviesArr) => {
       dateObj[mYear][mMonth] = {};
     };
     if (!dateObj[mYear][mMonth].hasOwnProperty(mDay)) {
-      daysByYear[mYear].push(mDay);
+      if (daysByYear[mYear].hasOwnProperty(mMonth)) daysByYear[mYear][mMonth].push(mDay);
+      else daysByYear[mYear][mMonth] = [mDay];
       dateObj[mYear][mMonth][mDay] = [];
     };
-    dateObj[mYear][mMonth][mDay].push(moviesArr[i])
+    dateObj[mYear][mMonth][mDay].push(moviesArr[i]);
   }
 
-  for (const key in monthsByYear) {
-    monthsByYear[key].sort((a, b) => a - b);
-    for (const month of monthsByYear[key]) {
-      daysByYear[key].sort((a, b) => a - b);
-      for (const day of daysByYear[key]) {
-        for (const movie of dateObj[key][month][day]) {
+  while (monthsByYear[year]) {
+    monthsByYear[year].sort((a, b) => a - b);
+    for (const month of monthsByYear[year]) {
+      daysByYear[year][month].sort((a, b) => a - b);
+      for (const day of daysByYear[year][month]) {
+        for (const movie of dateObj[year][month][day]) {
           moviesByRelease.push(movie);
         }
       }
     }
+    year += 1;
   }
-
   return moviesByRelease;
 }
 

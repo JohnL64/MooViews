@@ -120,7 +120,6 @@ movieController.comingSoon = (req, res, next) => {
             data.results.push(movieApiMethods.moviesInfoUpdate(movie, content));
           }
         }
-        console.log(data.results.length);
         data.results = movieApiMethods.sortByRelease(data.results);
         res.locals.comingSoon = data.results;
         return next();
