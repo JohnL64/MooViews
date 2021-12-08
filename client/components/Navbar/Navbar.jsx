@@ -36,17 +36,29 @@ const Navbar = ({ imageErrorHandler }) => {
     if (route === currLocation) history.go(0);
   }
 
+  function showAllResults(e) {
+    // If the current page is All Results and user requests to see all results for a new keyword the current location in 'history' will be replaced with the new keyword then page will be refreshed. If current page is not All Results page will be redirected to All Results with given keyword.
+    if (e.key === 'Enter' || e === 'clicked') {
+      // console.log('Setkeyword ', setKeyword)
+      setKeyword('');
+      if (location.indexOf('/all-results') !== -1) {
+        history.replace(`/all-results/${keyword}`);
+        history.go(0)
+      } else history.push(`/all-results/${keyword}`);
+    }
+  }
+
   return (
     <nav className={css.navbar}>
       <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><span className={css.moo}>Moo</span><span className={css.views}>Views</span></Link>
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
         <div className={css.inputAndIcon}>
-          <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch} value={keyword}></input>
+          <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch} value={keyword} onKeyPress={showAllResults}></input>
           <AiOutlineSearch className={css.searchIcon} />
         </div>
         { (focused && searchResult) && 
           <div className={css.outerSearchResult}>
-            <SearchResult searchResult={searchResult} keyword={keyword} setKeyword={setKeyword} imageErrorHandler={imageErrorHandler}/>
+            <SearchResult searchResult={searchResult} keyword={keyword} showAllResults={showAllResults} imageErrorHandler={imageErrorHandler}/>
           </div> }
         { error && <p>{error}</p>}
       </div>

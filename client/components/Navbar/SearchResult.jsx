@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import css from '../../styles/Navbar.module.css';
 import { GiFilmProjector } from 'react-icons/gi';
 
-const SearchResult = ({ searchResult, keyword, setKeyword, imageErrorHandler }) => {
+const SearchResult = ({ searchResult, keyword, showAllResults, imageErrorHandler }) => {
   const [SRimageErrors, setSRimageErrors] = useState({});
   const history = useHistory();
-  const location = useLocation().pathname;
   const topResults = [];
 
   let numOfMovies = 8;
   if (searchResult.length < 8) numOfMovies = searchResult.length;
-
-  function conditionalPageRefresh(route, currLocation) {
-    // If the current page is All Results and user requests to see all results for a new keyword the current location in 'history' will be replaced with the new keyword then page will be refreshed. If current page is not All Results page will be redirected to All Results with given keyword.
-    setKeyword('');
-    if (location.indexOf('/all-results') !== -1) {
-      history.replace(`/all-results/${keyword}`);
-      history.go(0)
-    } else history.push(`/all-results/${keyword}`);
-  }
 
   if (searchResult.length > 0) {
     for (let i = 0; i < numOfMovies; i += 1) {
@@ -45,7 +35,7 @@ const SearchResult = ({ searchResult, keyword, setKeyword, imageErrorHandler }) 
       {searchResult.length < 1 && <p className={css.noResults}>No results found.</p>}
       {keyword.length > 0 && topResults}
       {(searchResult.length > 8 && keyword.length > 0) && 
-        <div className={css.outerAllResults} onMouseDown={() => conditionalPageRefresh()}>
+        <div className={css.outerAllResults} onMouseDown={() => showAllResults('clicked')}>
           <p className={css.allResults} >See all results for "{keyword}"</p>
         </div> }
     </div>
