@@ -101,11 +101,14 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   function createCSloadingBox() {
     return (
-      <div className={css.CSloadingBox}>
-          <div className="loadingDots">
-            <div></div>
-            <div></div>
-            <div></div>
+      <div className={css.innerCS}>
+        <div className={css.loadingDayTitle}></div>
+          <div className={css.CSloadingBox}>
+            <div className="loadingDots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
       </div>
     )
@@ -113,9 +116,11 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   return ( 
     <div className={css.comingSoon}>
+      <div className={css.CStitle}>
+        <h3 className={css.innerTitle}>Coming Soon</h3>
+      </div>
       { renderPage &&
         <div className={css.innerCS}>
-          <h3 className={css.CStitle}>Coming Soon</h3>
           {comingSoonMovies(comingSoon, page)}
           <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
         </div> }
