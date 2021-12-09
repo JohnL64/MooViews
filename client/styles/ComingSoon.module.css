@@ -12,17 +12,15 @@
   width: 60%;
   max-width: 810px;
   min-width: 715px;
-  background-color: white;
   color: black;
   border-radius: 3px;
   margin-bottom: 2rem;
 }
 
 .CStitle {
-  width: 60%;
-  /* margin-top: 3.5rem; */
-  max-width: 810px;
-  min-width: 715px;
+  width: 94%;
+  font-size: 1.5rem;
+  margin: 2.5rem 0 2rem;
 }
 
 .moviesByDay {

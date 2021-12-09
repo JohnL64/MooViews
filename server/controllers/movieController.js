@@ -30,6 +30,7 @@ movieController.search = (req, res, next) => {
         changeDates(data.results);
       }
       res.locals.movies = data.results;
+      res.locals.numOfPages = data.total_pages;
       return next();
     })
     .catch(err => {

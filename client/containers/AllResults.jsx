@@ -11,6 +11,7 @@ const AllResults = ({ imageErrorHandler }) => {
   const { keyWord } = useParams();
   const [keyword, setKeyword] = useState(keyWord);
   const [page, setPage] = useState(1);
+  const [numOfPages, setNumOfPages] = useState(0)
   const [allResults, setAllResults] = useState(null);
   const [ARimageErrors, setARimageErrors] = useState({});
 
@@ -19,6 +20,7 @@ const AllResults = ({ imageErrorHandler }) => {
       .then(res => res.json())
       .then(data => {
         console.log('In All Results ', data);
+        setNumOfPages(data.numOfPages)
         setAllResults(data.movies);
       })
       .catch(err => {
@@ -60,7 +62,7 @@ const AllResults = ({ imageErrorHandler }) => {
               </div>
             )
           })}
-          <PageNavigator page={page} numOfPages={20} renderNewPage={renderNewPage}/>
+          <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
         </div> }
     </div>
    );

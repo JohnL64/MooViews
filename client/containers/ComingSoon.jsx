@@ -7,7 +7,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 
 
 const ComingSoon = ({ imageErrorHandler }) => {
-  document.body.style.backgroundColor = 'black';
+  document.body.style.backgroundColor = 'white';
   // Using state to store coming soon movie data retreived from server
   const [comingSoon, setComingSoon] = useState(null);
   const [renderPage, setRenderPage] = useState(false);
@@ -113,9 +113,9 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   return ( 
     <div className={css.comingSoon}>
-      <h2 className={css.CStitle}>Coming Soon</h2>
       { renderPage &&
         <div className={css.innerCS}>
+          <h3 className={css.CStitle}>Coming Soon</h3>
           {comingSoonMovies(comingSoon, page)}
           <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
         </div> }

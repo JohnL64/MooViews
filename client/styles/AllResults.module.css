@@ -1,15 +1,12 @@
 .allResults {
   color: black;
-  border: solid 1px;
-
 }
 
 .innerAllResults {
   width: 40%;
   max-width: 660px;
   min-width: 560px;
-  margin: 2rem auto;
-  border: solid 1px rgba(163, 163, 163, 0.52);
+  margin: 0 auto 2rem;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -30,15 +27,8 @@
   font-size: 15px;
   width: 96%;
   display: flex;
-  margin-bottom: 0.15rem;
-}
-
-.ARmovie:nth-child(even) {
-  background-color: #f6f6f5;
-}
-
-.ARmovie:nth-child(odd) {
-  background-color: #fbfbfb;
+  border-top: solid 1px rgba(92, 92, 92, 0.493);
+  padding: 0.8rem 0;
 }
 
 .image {
