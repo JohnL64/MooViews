@@ -20,7 +20,7 @@
   min-width: 620px;
   max-width: 680px;
   background-color: white;
-  color: #666666;
+  color: var(--overview-text-color);
   border-radius: 3px;
   font-size: 13.5px;
   margin-bottom: 2.5rem;
@@ -96,7 +96,7 @@
 }
 
 .rankAndTitle a {
-  color: rgb(255, 135, 153);
+  color: var(--text-color-pink);
 }
 
 .rating {
@@ -108,7 +108,7 @@
 
 .starIcon {
   margin-right: 0.2rem;
-  color: pink;
+  color: var(--text-color-pink);
   font-size: 16px;
 }
 

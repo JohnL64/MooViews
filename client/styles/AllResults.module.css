@@ -29,6 +29,7 @@
   display: flex;
   border-top: solid 1px rgba(92, 92, 92, 0.493);
   padding: 0.8rem 0;
+  color: var(--overview-text-color);
 }
 
 .image {
@@ -62,12 +63,11 @@
 }
 
 .year {
-  color: rgb(65, 65, 65);
+  color: rgb(83, 83, 83);
   margin: 0;
 }
 
 .overview {
-  color: #666666;
   margin: 0.5em 0 0 0;
   font-size: 0.875em;
   display: -webkit-box;

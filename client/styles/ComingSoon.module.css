@@ -92,7 +92,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #666666;
+  color: var(--overview-text-color);
 }
 
 .movieInfo p,
@@ -105,7 +105,7 @@
 .movieTitle {
   font-size: 1.35em;
   margin: 0.35rem 0 0.15rem 0;
-  color: rgb(255, 135, 153);
+  color: var(--text-color-pink);
 }
 
 .movieTitle:hover {
@@ -116,7 +116,7 @@
 .generalMovieInfo {
   margin: 0;
   font-size: 0.85em;
-  color: rgb(66, 66, 66)
+  color: var(--generalInfo-text-color);
 }
 
 .generalMovieInfo * {
@@ -164,7 +164,7 @@
   border: none;
   font-weight: 550;
   padding: 0;
-  color: rgb(255, 135, 153);
+  color: var(--text-color-pink);
 }
 
 .actionBtn:hover {

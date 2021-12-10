@@ -5,7 +5,6 @@
   --main-width: 1210px;
   --main-image-height: 225px;
   --main-image-width: 150px;
-  --main-pink: rgb(255, 136, 156);
 }
 
 .innerMain {
@@ -66,6 +65,7 @@
   position: relative;
   background-color: white;
   border-radius: 0 8px 8px 0;
+  color: var(--overview-text-color)
   /******** Props for testing ********/
   /* box-sizing: border-box;
   border: solid black 1px;  */
@@ -98,17 +98,17 @@
 }
 
 .mainTitleLink {
-  color: var(--main-pink);
+  color: var(--text-color-pink);
 }
 
 .allGeneralMovieInfo {
-  color: rgb(80, 80, 80);
   margin: 0.25rem 0 0;
   font-size: 0.75rem;
   display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  color: var(--generalInfo-text-color);
 }
 
 .genInfo {
@@ -130,7 +130,7 @@
 
 .starRating {
   margin-right: 0.1875rem;
-  color: var(--main-pink);
+  color: var(--text-color-pink);
 }
 
 .mainOverview {
@@ -155,7 +155,7 @@
 }
 
 .fullDetailsLink {
-  color: var(--main-pink);
+  color: var(--text-color-pink);
 }
 
 .pageNavigator {
@@ -173,8 +173,8 @@
 
 .pageNavNextPrev {
   border: solid 1px;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 18px;
   cursor: pointer;
   min-width: 5.25rem;
 }
