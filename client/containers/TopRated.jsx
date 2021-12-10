@@ -5,7 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { GiFilmProjector } from 'react-icons/gi';
 
 const TopRated = ({ imageErrorHandler }) => {
-  document.body.style.backgroundColor = 'black';
+  document.body.style.backgroundColor = 'white';
   const [topRated, setTopRated] = useState(null);
   const [TRimageErrors, setTRimageErrors] = useState({});
 
@@ -20,19 +20,21 @@ const TopRated = ({ imageErrorHandler }) => {
 
   function createTRloadingBox() {
     return (
-      <div className={css.TRloadingBox}>
+      <div className={css.innerTR}>
+        <div className={css.loadingTRmovie}>
           <div className="loadingDots">
             <div></div>
             <div></div>
             <div></div>
           </div>
+        </div>
       </div>
     )
   }
 
   return ( 
     <div className={css.topRated}>
-      <h2 className={css.TRtitle}>Top 100</h2>
+      <div className={css.outerTitle}><h3 className={css.TRtitle}>Top 100 Movies</h3></div>
       { topRated && 
         <div className={css.innerTR}>
           <div className={css.columnNames}>
