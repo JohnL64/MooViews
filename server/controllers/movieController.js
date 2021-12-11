@@ -10,24 +10,27 @@ const movieController = {};
 
 //-------- QUERY MOVIE WITH USER GIVEN KEYWORD --------- 
 movieController.search = (req, res, next) => {
+  const { keyword, page, content } = req.query;
   // Function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
   function changeDates(results) {
-    const updatedResults = [];
     for (let i = 0; i < results.length; i += 1) {
-      if (updatedResults.length > 7) break;
+      if (!results[i].overview) results[i].overview = 'The plot is currently unknown.'
+      if (i === 8 && content === 'navbar') break;
       if (results[i].release_date) {
         results[i].release_date = results[i].release_date.slice(0, 4);
-        updatedResults.push(results[i]);
-      }
+      } else results[i].release_date = 'N/A';
+      if (results[i].poster_path) results[i].poster_path = `https://image.tmdb.org/t/p/w342${results[i].poster_path}`
     }
-    return updatedResults;
   }
 
-  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${req.query.keyword}`)
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&query=${keyword}&page=${page}&include_adult=false&region=US`)
     .then(res => res.json())
     .then(data => {
-      const updatedMovies = changeDates(data.results);
-      res.locals.movies = updatedMovies;
+      if (data.results.length > 0) {
+        changeDates(data.results);
+      }
+      res.locals.movies = data.results;
+      res.locals.numOfPages = data.total_pages;
       return next();
     })
     .catch(err => {
@@ -108,7 +111,6 @@ movieController.comingSoon = (req, res, next) => {
     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`)
       .then(res => res.json())
       .then(async data => {
-        // const datesObj = {};
         const pages = data.total_pages;
         for (let i = 0; i < data.results.length; i += 1) {
           data.results[i] = movieApiMethods.moviesInfoUpdate(data.results[i], content);

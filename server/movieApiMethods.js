@@ -16,10 +16,10 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
   if (Array.isArray(results)) {
     for (let i = 0; i < results.length; i += 1) {
       let movie = results[i];
-      movie.poster_path = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+      movie.poster_path = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
       movie.release_date = movie.release_date.slice(0, 4);
       if (content !== 'topRated') {
-        movie.backdrop_path = `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}`;
+        movie.backdrop_path = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
         movie.genres = movieApiMethods.getGenres(movie.genre_ids);
       }
       if (content === 'topRated') {
@@ -35,7 +35,7 @@ movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
     }
   } else if (content === 'comingSoon') {
     if (results.overview === 'Coming Soon') results.overview = 'The plot is currently unknown.'
-    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
+    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w342${results.poster_path}`;
     results.genres = movieApiMethods.getGenres(results.genre_ids);
   } else if (content === 'expandInfo') {
     results.runtime === 0 ? results.runtime = 'N/A' : results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
@@ -178,12 +178,11 @@ movieApiMethods.sortByRelease = (moviesArr) => {
   const date = new Date();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  const year = date.getFullYear();
+  let year = date.getFullYear();
 
   const dateObj = {};
-  const yearArr = [];
-  const monthArr = [];
-  const dayArr = [];
+  const monthsByYear = {};
+  const daysByYear = {};
 
   for (let i = 0; i < moviesArr.length; i += 1) {
     const mYear = Number(moviesArr[i].release_date.slice(0, 4));
@@ -191,36 +190,36 @@ movieApiMethods.sortByRelease = (moviesArr) => {
     const mDay = Number(moviesArr[i].release_date.slice(8, 10));
     if (mYear < year || (mYear === year && mMonth < month) || ((mYear === year && mMonth === month) && mDay <= day)) continue;
     if (!dateObj.hasOwnProperty(mYear)) {
-      yearArr.push(mYear);
+      if (!monthsByYear.hasOwnProperty(mYear)) {
+        monthsByYear[mYear] = [];
+        daysByYear[mYear] = {};
+      }
       dateObj[mYear] = {};
     };
     if (!dateObj[mYear].hasOwnProperty(mMonth)) {
-      monthArr.push(mMonth);
+      monthsByYear[mYear].push(mMonth);
       dateObj[mYear][mMonth] = {};
     };
     if (!dateObj[mYear][mMonth].hasOwnProperty(mDay)) {
-      dayArr.push(mDay);
+      if (daysByYear[mYear].hasOwnProperty(mMonth)) daysByYear[mYear][mMonth].push(mDay);
+      else daysByYear[mYear][mMonth] = [mDay];
       dateObj[mYear][mMonth][mDay] = [];
     };
-    dateObj[mYear][mMonth][mDay].push(moviesArr[i])
+    dateObj[mYear][mMonth][mDay].push(moviesArr[i]);
   }
 
-  yearArr.sort((a, b) => a - b);
-  monthArr.sort((a, b) => a - b);
-  dayArr.sort((a, b) => a - b);
-
-  for (let i = 0; i < yearArr.length; i += 1) {
-    for (let y = 0; y < monthArr.length; y += 1) {
-      for (let n = 0; n <= dayArr.length; n += 1) {
-        if (dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
-          for (movie of dateObj[yearArr[i]][monthArr[y]][dayArr[n]]) {
-            moviesByRelease.push(movie);
-          }
+  while (monthsByYear[year]) {
+    monthsByYear[year].sort((a, b) => a - b);
+    for (const month of monthsByYear[year]) {
+      daysByYear[year][month].sort((a, b) => a - b);
+      for (const day of daysByYear[year][month]) {
+        for (const movie of dateObj[year][month][day]) {
+          moviesByRelease.push(movie);
         }
       }
     }
+    year += 1;
   }
-
   return moviesByRelease;
 }
 

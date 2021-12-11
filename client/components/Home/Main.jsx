@@ -3,6 +3,7 @@ import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
 import PageNavigator from '../PageNavigator.jsx';
+import { GiFilmProjector } from 'react-icons/gi';
 
 const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
@@ -12,18 +13,17 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
   function mainMovie(movie) {
     return (
       <div className={css.mainMovie} key={movie.id}>
-        { !mainImageErrors[movie.id] && <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, mainImageErrors, setMainImageErrors)}/> </Link>}
-        { mainImageErrors[movie.id] && <div className={css.mainImageUnavailable}><p>Image is currently unavailable</p></div>}
-        {/* <Link to={`/movie-info/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path}/> </Link> */}
+        { !mainImageErrors[movie.id] && <Link to={`/movie/${movie.id}`}> <img className={css.mainImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, mainImageErrors, setMainImageErrors)}/> </Link>}
+        { mainImageErrors[movie.id] && <div className={css.mainImageUnavailable}><GiFilmProjector className={css.filmIcon}/></div>}
         <div className={css.mainMovieInfo}>
-          <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie-info/${movie.id}`}>{movie.title} </Link></p>
+          <p className={css.mainMovieTitle}><Link className={css.mainTitleLink} to={`/movie/${movie.id}`}>{movie.title} </Link></p>
           <p className={css.allGeneralMovieInfo}> 
             <span className={css.genInfo}>{movie.release_date},</span> 
             <span className={css.genInfo}>{movie.genres}</span>
           </p>
           <p className={css.mainMovieRating}><AiFillStar className={css.starRating} />{movie.vote_average}</p>
           <p className={css.mainOverview}>{movie.overview}</p>
-          <p className={css.fullDetails}><Link className={css.fullDetailsLink} to={`/movie-info/${movie.id}`}>See full details</Link></p>
+          <p className={css.fullDetails}><Link className={css.fullDetailsLink} to={`/movie/${movie.id}`}>See full details</Link></p>
         </div>
       </div>
     )
@@ -75,10 +75,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
           </div> }
         { main && mainContent }
       </div>
-      {main &&
-        <div className='pageNavigator'>
-          <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage}/>
-        </div> }
+      {main && <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage} content='Home'/>}
     </div>
    );
 }

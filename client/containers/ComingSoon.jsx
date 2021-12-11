@@ -7,6 +7,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 
 
 const ComingSoon = ({ imageErrorHandler }) => {
+  document.body.style.backgroundColor = 'white';
   // Using state to store coming soon movie data retreived from server
   const [comingSoon, setComingSoon] = useState(null);
   const [renderPage, setRenderPage] = useState(false);
@@ -52,12 +53,11 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
     for (let i = firstMovie; i <= lastMovie; i += 1) {
       const movie = comingSoon[i];
-      if (movie.poster_path === null) console.log(movie.title);
       if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = [];
       datesObj[movie.release_date].push(
         <div className={css.CSmovie} key={movie.id}>
           {(movie.poster_path && !CSimageErrors[movie.id]) &&
-            <Link to={`/movie-info/${movie.id}`} className={css.imageLink}>
+            <Link to={`/movie/${movie.id}`} className={css.imageLink}>
               <img src={movie.poster_path} className={css.CSimage} onError={(e) => imageErrorHandler(e, movie.id, CSimageErrors, setCSimageErrors)}/> 
             </Link> }
           {(!movie.poster_path || CSimageErrors[movie.id]) && 
@@ -65,7 +65,7 @@ const ComingSoon = ({ imageErrorHandler }) => {
               <GiFilmProjector className={css.movieIcon} />
             </div> }
           <div className={css.movieInfo}>
-            <Link to={`/movie-info/${movie.id}`} className={css.titleLink}>
+            <Link to={`/movie/${movie.id}`} className={css.titleLink}>
               <p className={css.movieTitle}>{movie.title}</p>
             </Link>
             <p className={css.generalMovieInfo}> 
@@ -101,29 +101,32 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   function createCSloadingBox() {
     return (
-      <div className={css.CSloadingBox}>
-          <div className="loadingDots">
-            <div></div>
-            <div></div>
-            <div></div>
+      <div className={css.innerCS}>
+        <div className={css.loadingDayTitle}></div>
+          <div className={css.CSloadingBox}>
+            <div className="loadingDots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
       </div>
     )
   }
 
   return ( 
-  <div className={css.comingSoon}>
-    <h2 className={css.CStitle}>Coming Soon</h2>
-    { renderPage &&
-      <div className={css.innerCS}>
-        {comingSoonMovies(comingSoon, page)}
-      </div> }
-    { renderPage &&
-      <div className='pageNavigator'>
-        <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
-      </div> }
-      { !renderPage && createCSloadingBox() }
-  </div> );
+    <div className={css.comingSoon}>
+      <div className={css.CStitle}>
+        <h3 className={css.innerTitle}>Coming Soon</h3>
+      </div>
+      { renderPage &&
+        <div className={css.innerCS}>
+          {comingSoonMovies(comingSoon, page)}
+          <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
+        </div> }
+        { !renderPage && createCSloadingBox() }
+    </div> 
+  );
 }
  
 export default ComingSoon;

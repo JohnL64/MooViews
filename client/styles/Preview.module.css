@@ -18,7 +18,7 @@
 
 h2 {
   font-size: 1.6rem;
-  border-left: solid rgb(255, 136, 156) .25rem;
+  border-left: solid var(--text-color-pink) .25rem;
   padding-left: .45rem;
   box-sizing: border-box;
   margin-top: 3.5rem;
@@ -96,6 +96,7 @@ h2 {
 
 .starRating {
   margin-right: .35rem;
+  color: var(--text-color-lightPink);
 }
 
 .moviePreviewTitle {
@@ -198,6 +199,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   width: 30%;
+  min-width: 360px;
 }
 
 .backdropImg {
@@ -276,7 +278,7 @@ h2 {
 }
 
 .previewInfoTitle a {
-  color: white;
+  color: var(--text-color-lightPink);
 }
 
 .allPreviewGeneralInfo {
@@ -304,8 +306,8 @@ p a:hover {
   align-items: center;
 }
 
-.previewImageUnavailable p {
-  text-align: center;
+.filmIcon {
+  font-size: 3.5rem;
 }
 
 .preInfoImageUnavailable {
@@ -319,9 +321,8 @@ p a:hover {
   align-items: center;
 }
 
-.preInfoImageUnavailable p {
-  /* font-size: 1.3rem; */
-  text-align: center;
+.MPIfilmIcon {
+  font-size: 4.5rem;
 }
 
 @media screen and (max-width: 1400px) {

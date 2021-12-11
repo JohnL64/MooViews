@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar.jsx';
 import MovieInfo from './containers/MovieInfo.jsx';
 import ComingSoon from './containers/ComingSoon.jsx';
 import TopRated from './containers/TopRated.jsx';
+import AllResults from './containers/AllResults.jsx';
 import './styles/index.css';
 
 
@@ -23,7 +24,7 @@ function App() {
   return (
     <Router>
       <div className='app'>
-        <Navbar />
+        <Navbar imageErrorHandler={imageErrorHandler}/>
         <Switch>
           <Route exact path='/'>
             <Home imageErrorHandler={imageErrorHandler} />
@@ -40,8 +41,11 @@ function App() {
           <Route path='/login'>
             <Login />
           </Route>
-          <Route path='/movie-info/:movie'>
+          <Route path='/movie/:movie'>
             <MovieInfo />
+          </Route>
+          <Route path='/all-results/:keyWord'>
+            <AllResults imageErrorHandler={imageErrorHandler}/>
           </Route>
         </Switch>
       </div>

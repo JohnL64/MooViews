@@ -5,7 +5,7 @@
   color: white;
   background-color: rgb(27, 27, 27);
   width: 100%;
-  min-width: 850px;
+  min-width: 870px;
 }
 
 .navbar a {
@@ -28,12 +28,13 @@
   display: flex;
   font-size: 1.8rem; 
   font-weight: 900;
-  margin-right: 3%;
+  /* margin-right: 3%; */
+  margin: 0 3%;
 }
 
 
 .views {
-  color: lightpink;
+  color: var(--text-color-lightPink);
 }
 
 .views,
@@ -42,24 +43,23 @@
 }
 
 .searchBar {
-  box-sizing: border-box;
-  margin: .75rem 3% .75rem 0;
+  margin: 0.85rem 3% 0.85rem 0;
   width: 30%;
   max-width: 550px;
-  min-width: 200px;
+  min-width: 350px;
   background-color: rgb(27, 27, 27);
 }
 
 .inputAndIcon {
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   background-color: white;
   border-radius: 5px;
+  border: solid white 0.125rem;
 }
 
 .inputAndIcon:focus-within {
-   border: solid lightpink 2px;
+   border: solid lightpink 0.125rem;
    border-radius: 5px;
 }
 
@@ -75,7 +75,6 @@
 }
 
 .searchIcon {
-  box-sizing: border-box;
   width: 8%;
   color: rgb(95, 95, 95);
   font-size: 1.375rem;
@@ -84,43 +83,85 @@
 
 
 .outerSearchResult {
-  margin-top: 0;
-  box-sizing: border-box;
   width: 100%;
   position: relative;
+  --movie-spacing-left: 0.8rem;
 }
 
 .searchResult {
   width: 100%;
   border-radius: 3px;
-  background-color: black;
+  background-color: rgb(10, 10, 10);
   margin: 0.4375rem 0;
   position: absolute;
-  z-index: 1;
-  padding: 1px 0;
-  /******* props for testing *******/
-  /* box-sizing: border-box;
-  border: white solid 1px; */
+  z-index: 10;
+  font-size: 0.9rem;
 }
 
 .result {
-  box-sizing: border-box;
-  margin: 0.75rem 0;
+  display: flex;
+  padding: 0.55rem 0;
+  border-bottom: solid rgba(255, 255, 255, 0.26) 0.01rem;
+}
+
+.result:hover,
+.outerAllResults:hover {
+  background-color: rgb(29, 29, 29);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
+.SRimage {
+  margin-left: var(--movie-spacing-left);
+  width: 3rem;
+  height: 4.5rem;
+}
+
+.SRimageUnavailable {
+  margin-left: var(--movie-spacing-left);
+  height: 4.5rem;
+  background-color: rgb(47, 47, 47);
+  display: flex;
+  align-items: center;
+}
+
+.SRmovieIcon {
+  width: 3rem;
+  font-size: 1.3rem;
+}
+
+.SRinfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 }
 
 .result p {
-  padding-left: 2%;
+  padding-left: 0.75rem;
   margin: 0;
+  max-width: 92%;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .date {
-  font-size: 0.80rem;
+  font-size: 0.75rem;
   color: darkgrey;
-   /******* props for testing *******/
-  /* box-sizing: border-box;
-  border: white solid 1px; */
 }
 
 .noResults {
-  margin-left: 2%;
+  margin-left: var(--movie-spacing-left);
+}
+
+.outerAllResults {
+  padding: 0.9rem 0 0.9rem var(--movie-spacing-left);
+}
+
+.allResults {
+  margin: 0;
+  width: 92%;
 }

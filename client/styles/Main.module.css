@@ -5,7 +5,6 @@
   --main-width: 1210px;
   --main-image-height: 225px;
   --main-image-width: 150px;
-  --main-pink: rgb(255, 136, 156);
 }
 
 .innerMain {
@@ -31,6 +30,10 @@
   /******** Props for testing ********/
   /* box-sizing: border-box; */
   /* border: coral solid 1px;  */
+}
+
+.mainMovieRow:last-child {
+  margin-bottom: 0;
 }
 
 .mainMovie {
@@ -62,6 +65,7 @@
   position: relative;
   background-color: white;
   border-radius: 0 8px 8px 0;
+  color: var(--overview-text-color)
   /******** Props for testing ********/
   /* box-sizing: border-box;
   border: solid black 1px;  */
@@ -84,7 +88,7 @@
 
 .mainMovieTitle {
   margin: 0.75rem 0 0;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   /* border:solid black 1px; */
   display: -webkit-box;
   overflow: hidden;
@@ -94,17 +98,17 @@
 }
 
 .mainTitleLink {
-  color: var(--main-pink);
+  color: var(--text-color-pink);
 }
 
 .allGeneralMovieInfo {
-  color: rgb(80, 80, 80);
   margin: 0.25rem 0 0;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+  color: var(--generalInfo-text-color);
 }
 
 .genInfo {
@@ -121,16 +125,17 @@
   display: inline-flex;
   /* display: none; */
   align-items: center;
+  font-size: 0.95rem;
 }
 
 .starRating {
   margin-right: 0.1875rem;
-  color: var(--main-pink);
+  color: var(--text-color-pink);
 }
 
 .mainOverview {
   margin: 0.75rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   /* height: 110px; */
   display: -webkit-box;
   overflow: hidden;
@@ -142,7 +147,7 @@
 .fullDetails {
   /* color: var(--main-pink); */
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   /* border: solid black 1px; */
   text-align: right;
   position: absolute;
@@ -150,7 +155,51 @@
 }
 
 .fullDetailsLink {
-  color: var(--main-pink);
+  color: var(--text-color-pink);
+}
+
+.pageNavigator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.pageNavigator * {
+  font-size: 0.9rem;
+  color: white;
+  background-color: transparent;
+}
+
+.pageNavNextPrev {
+  border: solid 1px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 18px;
+  cursor: pointer;
+  min-width: 5.25rem;
+}
+
+.pageNavNextPrev:hover {
+  border-color: white;
+  color: rgb(253, 158, 174);
+}
+
+.pageNavNextPrev:disabled,
+.pageNavNextPrev[disabled]{
+  /* background-color: white; */
+  color: rgba(255, 255, 255, 0.424);
+  border-color: white;
+  cursor: text;
+}
+
+#currPageNumber {
+  border: solid 1px;
+  border-radius: 8px;
+}
+
+#currPageNumber:hover {
+  cursor: text;
+  color: white;
 }
 
 .loadingMainMovieRow {
@@ -185,13 +234,9 @@
   border: yellow 1px solid; */
 }
 
-.mainImageUnavailable p {
-  /* border:solid white 1px; */
-  text-align: center;
+.filmIcon {
   width: var(--main-image-width);
-  /****Props for testing ****/
-  /* box-sizing: border-box;
-  border: white 1px solid; */
+  font-size: 3.5rem
 }
 
 @media screen and (max-width: 1400px) {

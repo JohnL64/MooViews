@@ -5,6 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { GiFilmProjector } from 'react-icons/gi';
 
 const TopRated = ({ imageErrorHandler }) => {
+  document.body.style.backgroundColor = 'white';
   const [topRated, setTopRated] = useState(null);
   const [TRimageErrors, setTRimageErrors] = useState({});
 
@@ -19,19 +20,21 @@ const TopRated = ({ imageErrorHandler }) => {
 
   function createTRloadingBox() {
     return (
-      <div className={css.TRloadingBox}>
+      <div className={css.innerTR}>
+        <div className={css.loadingTRmovie}>
           <div className="loadingDots">
             <div></div>
             <div></div>
             <div></div>
           </div>
+        </div>
       </div>
     )
   }
 
   return ( 
     <div className={css.topRated}>
-      <h2 className={css.TRtitle}>Top 100</h2>
+      <div className={css.outerTitle}><h3 className={css.TRtitle}>Top 100 Movies</h3></div>
       { topRated && 
         <div className={css.innerTR}>
           <div className={css.columnNames}>
@@ -46,7 +49,7 @@ const TopRated = ({ imageErrorHandler }) => {
             return (
               <div className={css.TRmovie} key={movie.id}>
                 { !TRimageErrors[movie.id] &&
-                  <Link to={`/movie-info/${movie.id}`} className={css.TRimageLink}>
+                  <Link to={`/movie/${movie.id}`} className={css.TRimageLink}>
                     <img src={movie.poster_path} className={css.TRimage} onError={(e) => imageErrorHandler(e, movie.id, TRimageErrors, setTRimageErrors)}/>
                   </Link> }
                 {TRimageErrors[movie.id] && 
@@ -56,7 +59,7 @@ const TopRated = ({ imageErrorHandler }) => {
                 <div className={css.TRmovieInfo}>
                   <p className={css.rankAndTitle}> 
                     <span>{ind + 1}.</span>
-                    <span><Link to={`/movie-info/${movie.id}`}>{movie.title}</Link></span>
+                    <span><Link to={`/movie/${movie.id}`}>{movie.title}</Link></span>
                     <span>({movie.release_date})</span>
                   </p>
                   <p className={css.rating}><AiFillStar className={css.starIcon}/> { movie.vote_average }</p>
