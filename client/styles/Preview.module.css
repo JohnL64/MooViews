@@ -278,7 +278,7 @@ h2 {
 }
 
 .previewInfoTitle a {
-  color: var(--text-color-lightPink);
+  color: rgb(255, 196, 207); 
 }
 
 .allPreviewGeneralInfo {

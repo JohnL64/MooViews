@@ -121,34 +121,51 @@ movieController.comingSoon = (req, res, next) => {
   const { content, id } = req.query;
   console.log('Content ', content);
   // console.log('Page ', page);
+
+  // Updates spefic data for each movie that will be displayed.
+  function updateCSinfo(movie) {
+    if (movie.overview === 'Coming Soon') movie.overview = 'The plot is currently unknown.'
+    if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+    movie.genres = movieApiMethods.getGenres(movie.genre_ids);                      
+  }
+
   if (content === 'comingSoon') {
     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=1&region=US`)
       .then(res => res.json())
       .then(async data => {
+        // Due to the movies received from the movie api not being ordered by release dates all movies from all possible pages must be recieved before sorting movies. The total amount of pages of results is given with the first initial request of coming soon movie data. The total number of pages received is then used to identify how many pages of results we need to make a request for.
         const pages = data.total_pages;
+        // Update the first page of movie results.
         for (let i = 0; i < data.results.length; i += 1) {
-          data.results[i] = movieApiMethods.moviesInfoUpdate(data.results[i], content);
+          updateCSinfo(data.results[i]);
         }
+        // Fetch  for all movies first fetch for Coming Soon movies 
         for (let i = 2; i <= pages; i += 1) {
           let currPageResults = await movieApiMethods.allPagesOfUpcoming(i);
           for (movie of currPageResults) {
-            data.results.push(movieApiMethods.moviesInfoUpdate(movie, content));
+            updateCSinfo(movie);
+            data.results.push(movie);
           }
         }
-        data.results = movieApiMethods.sortByRelease(data.results);
-        res.locals.comingSoon = data.results;
+        // Once all movies are received, the movies are sorted by their release date in ascending order.
+        res.locals.comingSoon = movieApiMethods.sortByRelease(data.results);
         return next();
       })
       .catch(err => {
         return next({ message: 'Error has occured when querying data for ComingSoon in movieController.comingSoon' });
       })
   } else {
-    console.log(content, id);
+    // A fetch request is made when more info of a movie in Coming Soon page is requested.
     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits`)
     .then(res => res.json())
     .then(data => {
-      // console.log(data.credits);
-      res.locals.expandInfo = movieApiMethods.moviesInfoUpdate(data, content);
+      // The runtime format is updated, the MPAA rating and credits is extracted from the movie data once it is received.
+      data.runtime === 0 ? data.runtime = 'N/A' : data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
+      data.MPAA_rating = movieApiMethods.findMpaaRating(data.release_dates.results);
+      data.credits = movieApiMethods.getTopCast(data.credits.cast, data.credits.crew);
+      const { runtime, MPAA_rating, credits } = data;
+      data = { runtime, MPAA_rating, credits };
+       res.locals.expandInfo = data;
       return next();
     })
     .catch(err => {
