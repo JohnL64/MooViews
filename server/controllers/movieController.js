@@ -11,23 +11,20 @@ const movieController = {};
 //-------- QUERY MOVIE WITH USER GIVEN KEYWORD --------- 
 movieController.search = (req, res, next) => {
   const { keyword, page, content } = req.query;
-  // Function will send only eight movies to render in search results. Ensures all movies will have a release date and will modify release dates to store just the year.
-  function changeDates(results) {
-    for (let i = 0; i < results.length; i += 1) {
-      if (!results[i].overview) results[i].overview = 'The plot is currently unknown.'
-      if (i === 8 && content === 'navbar') break;
-      if (results[i].release_date) {
-        results[i].release_date = results[i].release_date.slice(0, 4);
-      } else results[i].release_date = 'N/A';
-      if (results[i].poster_path) results[i].poster_path = `https://image.tmdb.org/t/p/w342${results[i].poster_path}`
-    }
-  }
 
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&query=${keyword}&page=${page}&include_adult=false&region=US`)
     .then(res => res.json())
     .then(data => {
       if (data.results.length > 0) {
-        changeDates(data.results);
+        for (let i = 0; i < data.results.length; i += 1) {
+          const movie = data.results[i];
+          if (!movie.overview) movie.overview = 'The plot is currently unknown.'
+          if (i === 8 && content === 'navbar') break;
+          if (movie.release_date) {
+            movie.release_date = movie.release_date.slice(0, 4);
+          } else movie.release_date = 'N/A';
+          if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+        }
       }
       res.locals.movies = data.results;
       res.locals.numOfPages = data.total_pages;
@@ -45,6 +42,17 @@ movieController.home = async (req, res, next) => {
 
   const allResults = [];
 
+  function updatePreviewInfo(movies) {
+    for (let i = 0; i < movies.length; i += 1) {
+      let movie = movies[i];
+      movie.poster_path = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+      movie.release_date = movie.release_date.slice(0, 4);
+      movie.backdrop_path = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
+      movie.genres = movieApiMethods.getGenres(movie.genre_ids);
+      allResults.push(movie);
+    }
+  }
+
   // Queries for a list of movies that are now playing in theaters for preview.
   if (content === "preview") {
         let urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
@@ -53,7 +61,7 @@ movieController.home = async (req, res, next) => {
     await fetch(urlQuery)
     .then(res => res.json())
       .then(data => {
-        movieApiMethods.moviesInfoUpdate(data.results, content, allResults);
+        updatePreviewInfo(data.results);
       })
       .catch(err => {
         return next({ message: 'Error has occured when first querying data for home preview in movieController.home' });
@@ -62,7 +70,7 @@ movieController.home = async (req, res, next) => {
     fetch(urlQueryTwo)
       .then(res => res.json())
       .then(secondData => {
-        movieApiMethods.moviesInfoUpdate(secondData.results, content, allResults);
+        updatePreviewInfo(secondData.results);
         res.locals.preview = allResults;
         return next();
       })
@@ -76,7 +84,13 @@ movieController.home = async (req, res, next) => {
     fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${api_key}&language=en-US&page=${page}&region=US`)
       .then(res => res.json())
       .then(data => {
-        res.locals.main = movieApiMethods.moviesInfoUpdate(data.results, content);
+        for (let i = 0; i < data.results.length; i += 1) {
+          let movie = data.results[i];
+          movie.poster_path = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+          movie.release_date = movie.release_date.slice(0, 4);
+          movie.genres = movieApiMethods.getGenres(movie.genre_ids);
+        }
+        res.locals.main = data.results;
         return next();
       })
       .catch(err => {
@@ -161,6 +175,16 @@ movieController.topRated = (req, res, next) => {
     })
     .catch(err => {
       return next({ message: 'Error has occured when querying data for Top Rated in movieController.' });
+    })
+}
+
+movieController.movieInfo = (req, res, next) => {
+  const { id } = req.query;
+  console.log(id);
+  fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
     })
 }
 

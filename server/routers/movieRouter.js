@@ -22,4 +22,9 @@ router.get('/top-rated', movieController.topRated, (req, res) => {
   res.status(200).json(res.locals);
 })
 
+// queries data for Movie Info page
+router.get('/movie-info', movieController.movieInfo, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
 module.exports = router;
