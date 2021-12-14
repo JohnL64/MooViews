@@ -223,26 +223,35 @@ movieApiMethods.sortByRelease = (moviesArr) => {
   return moviesByRelease;
 }
 
+// Fetches movies for requested page that will be dislayed on Coming Soon page.
 movieApiMethods.allPagesOfUpcoming = async (page) => {
   let currPageResults;
   await fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${api_key}&language=en-US&page=${page}&region=US`)
     .then(res => res.json())
     .then(data => {
-      currPageResults = data.results
+      currPageResults = data.results;
+      if (!data.results) throw new Error();
     })
     .catch(err => {
-      currPageResults = "An error occured when querying for movies in all pages of upcoming movies request";
+      currPageResults = "Error";
     })
   return currPageResults;
 }
 
-movieApiMethods.getTopMovies = async (page, topMovies) => {
+// Fetches movies for requested page that will be displayed on Top Rated page.
+movieApiMethods.getTopMovies = async (page) => {
+  let currPageResults;
   await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&
   include_adult=false&include_video=false&page=${page}&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
     .then(res => res.json())
     .then(data => {
-      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', topMovies);
+      currPageResults = data.results;
+      if (!data.results) throw new Error();
     })
+    .catch(() => {
+      currPageResults = 'Error';                        
+    })
+  return currPageResults;
 } 
 
 module.exports = movieApiMethods;

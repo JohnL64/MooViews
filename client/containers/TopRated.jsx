@@ -16,6 +16,9 @@ const TopRated = ({ imageErrorHandler }) => {
         console.log('Top Rated', data);
         setTopRated(data.topRated);
       })
+      .catch(err => {
+        console.log(err);
+      })
   }, [])
 
   function createTRloadingBox() {

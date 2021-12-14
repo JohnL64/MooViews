@@ -36,7 +36,7 @@ movieController.search = (req, res, next) => {
 }
 
 
-//-------- QUERIES MOVIES AND MOVIE DETAILS FOR HOME --------
+//-------- QUERIES FOR MOVIES IN THEATERS AND POPULAR MOVIES FOR HOME PAGE --------
 movieController.home = async (req, res, next) => {
   const { content, id, page } = req.query;
 
@@ -115,7 +115,7 @@ movieController.home = async (req, res, next) => {
 }
 
 /*
--------- QUERIES UPCOMING MOVIES FOR COMING SOON --------
+-------- QUERIES UPCOMING MOVIES FOR COMING SOON PAGE --------
 */
 movieController.comingSoon = (req, res, next) => {
   const { content, id } = req.query;
@@ -139,13 +139,15 @@ movieController.comingSoon = (req, res, next) => {
         for (let i = 0; i < data.results.length; i += 1) {
           updateCSinfo(data.results[i]);
         }
-        // Fetch  for all movies first fetch for Coming Soon movies 
+        // Fetch the next pages of results to update and add to total movies list.
         for (let i = 2; i <= pages; i += 1) {
           let currPageResults = await movieApiMethods.allPagesOfUpcoming(i);
-          for (movie of currPageResults) {
-            updateCSinfo(movie);
-            data.results.push(movie);
-          }
+          if (typeof currPageResults === 'object') {
+            for (movie of currPageResults) {
+              updateCSinfo(movie);
+              data.results.push(movie);
+            }
+          } else throw new Error();
         }
         // Once all movies are received, the movies are sorted by their release date in ascending order.
         res.locals.comingSoon = movieApiMethods.sortByRelease(data.results);
@@ -176,16 +178,32 @@ movieController.comingSoon = (req, res, next) => {
 
 
 /*
--------- QUERIES TOP RATED MOVIES FOR TOP RATED --------
+-------- QUERIES TOP RATED MOVIES FOR TOP RATED PAGE --------
 */
 movieController.topRated = (req, res, next) => {
+  // Array used to store all movie results from requested pages.
   const topMovies = [];
+  // Function that will take in an array of movies (results from one page) and update certain details of the movie and push each movie to topMovies array.
+  function updateTRmovies(movies) {
+    for (let i = 0; i < movies.length; i  += 1) {
+      let movie = movies[i];
+      movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+      movie.release_date = movie.release_date.slice(0, 4);
+      movie.vote_count = movieApiMethods.newVoteCountFormat(movie.vote_count);
+      topMovies.push(movie);
+    }
+  }
+
+  // Makes a request to API where the movies will be sorted by rating (descending) and where each movie must be rated by at least 5000 users. 
   fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&vote_count.gte=5000&with_watch_monetization_types=flatrate`)
     .then(res => res.json())
     .then(async data => {
-      movieApiMethods.moviesInfoUpdate(data.results, 'topRated', topMovies)
+      updateTRmovies(data.results);
+      // Queries for the movies on the next page of results, updates the movie details then is pushed into topMovies array.
       for (let i = 2; i < 6; i += 1) {
-        await movieApiMethods.getTopMovies(i, topMovies);
+        let currPageResult = await movieApiMethods.getTopMovies(i);
+        if (typeof  currPageResult === 'object') updateTRmovies(currPageResult);
+        else throw new Error();
       }
       res.locals.topRated = topMovies;
       return next();
@@ -195,6 +213,10 @@ movieController.topRated = (req, res, next) => {
     })
 }
 
+
+/*
+-------- QUERIES DETAILS FOR A MOVIE FOR MOVIE INFO PAGE --------
+*/
 movieController.movieInfo = (req, res, next) => {
   const { id } = req.query;
   console.log(id);
