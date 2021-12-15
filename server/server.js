@@ -1,9 +1,15 @@
 const express = require('express');
-const app = express();
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
 const userRouter = require('./routers/userRouter');
 const movieRouter = require('./routers/movieRouter');
+
+const app = express();
+dotenv.config();
+const { mongo_uri, secret } = process.env;
 
 app.use(cors());
 app.use(express.json());
@@ -11,6 +17,18 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/movie', movieRouter);
 app.use('/user', userRouter);
+
+const sessionStore = MongoStore.create({ mongoUrl: mongo_uri, collectionName: 'user_sessions'});
+
+app.use(session({
+  secret: secret,
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24 // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+  }
+}))
 
 // if NODE_ENV is production run this code
 if (process.env.NODE_ENV === 'production') {
