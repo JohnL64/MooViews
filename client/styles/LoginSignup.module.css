@@ -50,6 +50,10 @@
   border-radius: 5px;
 }
 
+#submitBtn:hover {
+  cursor: pointer;
+  color: black;
+}
 
 .loginSignupLink {
   margin-bottom: 45px;

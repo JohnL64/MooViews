@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const passport = require('passport');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
@@ -15,9 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/movie', movieRouter);
-app.use('/user', userRouter);
 
+/*
+------------ SESSION SETUP ------------
+*/
 const sessionStore = MongoStore.create({ mongoUrl: mongo_uri, collectionName: 'user_sessions'});
 
 app.use(session({
@@ -29,6 +31,30 @@ app.use(session({
       maxAge: 1000 * 60 * 60 * 24 // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
   }
 }))
+
+
+/*
+------------ PASSPORT AUTHENTICATION ------------
+*/
+require('./passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/isAuthenticatedUser', (req, res) => {
+  let isValidated = false;
+  if (req.isAuthenticated()) isValidated = true;
+  res.status(200).json({ isValidated });
+})
+
+app.get('/signout', (req, res) => {
+  let signedOut = false;
+  req.logout(); 
+  if (req.isAuthenticated() === false) signedOut = true
+  res.status(200).json({ signedOut })
+})
+app.use('/movie', movieRouter);
+app.use('/user', userRouter);
 
 // if NODE_ENV is production run this code
 if (process.env.NODE_ENV === 'production') {

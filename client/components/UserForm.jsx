@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import css from '../styles/LoginSignup.module.css';
 import { Link } from 'react-router-dom';
 
-const UserForm = ({ action }) => {
+const UserForm = ({ action, setValidatedUser}) => {
   // Using state to track possible errors when verifying or creating an account. If an error occurs this state will store the error and render it to the page
   const [userError, setUserError] = useState('');
   // Using state to store user inputted email, username, and password to display changes to the correct input field and to send user data to server.
@@ -35,13 +35,14 @@ const UserForm = ({ action }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify( { email, username, password })
     })
-    .then(res => {
-      return res.json()
-    })
+    .then(res => res.json())
     .then(data => {
       // if error occurs on the server side run code in catch method
       if (data.errorType) throw new Error('Error', { cause: data.errorType });
-      history.push('/');
+      if (action === 'verifyAccount') {
+        setValidatedUser(true);
+        history.goBack('/');
+      } else history.push('/login');
     })
     .catch(err => {
       // if an err has occurred update userError to the given cause to be displayed
