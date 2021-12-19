@@ -17,8 +17,9 @@ const ComingSoon = ({ imageErrorHandler }) => {
   const [CSimageErrors, setCSimageErrors] = useState({});
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
+    const abortCont = new AbortController();
     if (!comingSoon) {
-      fetch(`/movie/coming-soon?content=comingSoon`)
+      fetch(`/movie/coming-soon?content=comingSoon`, { signal: abortCont.signal })
         .then(res => res.json())
         .then(data => {
           console.log('Coming Soon ', data.comingSoon);
@@ -27,11 +28,16 @@ const ComingSoon = ({ imageErrorHandler }) => {
           setRenderPage(true);
         })
         .catch(err => {
-          console.log(err);
+          if (err.name === 'AbortError') {
+            console.log('Fetch Aborted');
+          }
+          // console.log(err);
         })
     } else {
       setRenderPage(true);
     }
+
+    return () => abortCont.abort();
   }, [page])
 
   function getMonthName(month) {

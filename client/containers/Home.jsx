@@ -17,7 +17,8 @@ const Home = ({ imageErrorHandler }) => {
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
-    await fetch(`/movie/home?content=preview`)
+    const abortCont = new AbortController();
+    await fetch(`/movie/home?content=preview`, { signal: abortCont.signal })
       .then(res => res.json())
       .then(previewData => {
         console.log('Preview ', previewData.preview)
@@ -29,7 +30,7 @@ const Home = ({ imageErrorHandler }) => {
         setPreviewError('An error has occured when loading preview content. Please try again or try again later')
       })
 
-    fetch(`/movie/home?content=main&page=${page}`)
+    fetch(`/movie/home?content=main&page=${page}`, { signal: abortCont.signal })
       .then(res => res.json())
       .then(mainData => {
         console.log('Main ', mainData.main);
@@ -38,9 +39,15 @@ const Home = ({ imageErrorHandler }) => {
       })
       .catch(err => {
         console.log(err.cause)
-        setMainError('An error has occured when loading main content. Please try again or try again later');
-        console.log(err);
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted')
+        } else {
+          setMainError('An error has occured when loading main content. Please try again or try again later');
+          console.log(err);
+        }
       })
+
+    return () => abortCont.abort();
   }, [page])
 
   return (

@@ -10,15 +10,21 @@ const TopRated = ({ imageErrorHandler }) => {
   const [TRimageErrors, setTRimageErrors] = useState({});
 
   useEffect(() => {
-    fetch('/movie/top-rated')
+    const abortCont = new AbortController();
+    fetch('/movie/top-rated', { signal: abortCont.signal })
       .then(res => res.json())
       .then(data => {
         console.log('Top Rated', data);
         setTopRated(data.topRated);
       })
       .catch(err => {
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted')
+        }
         console.log(err);
       })
+    
+    return () => abortCont.abort()
   }, [])
 
   function createTRloadingBox() {

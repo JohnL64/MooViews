@@ -16,7 +16,8 @@ const AllResults = ({ imageErrorHandler }) => {
   const [ARimageErrors, setARimageErrors] = useState({});
 
   useEffect(() => {
-    fetch(`/movie/search?keyword=${keyword}&page=${page}&content=allResults`)
+    const abortCont = new AbortController();
+    fetch(`/movie/search?keyword=${keyword}&page=${page}&content=allResults`, { signal: abortCont.signal})
       .then(res => res.json())
       .then(data => {
         console.log('In All Results ', data);
@@ -24,8 +25,13 @@ const AllResults = ({ imageErrorHandler }) => {
         setAllResults(data.movies);
       })
       .catch(err => {
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted')
+        }
         console.log(err);
       })
+
+    return () => abortCont.abort();
   }, [page]);
 
   function renderNewPage(newPageNum) {
