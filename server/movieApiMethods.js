@@ -11,54 +11,6 @@ const genresList = { 12: 'Adventure', 14: 'Fantasy', 16: 'Animation', 18: 'Drama
 const movieApiMethods = {};
 
 
-// Modifies the format of the received movie data for specified movie details
-movieApiMethods.moviesInfoUpdate = (results, content, allResults) => {
-  if (Array.isArray(results)) {
-    for (let i = 0; i < results.length; i += 1) {
-      let movie = results[i];
-      movie.poster_path = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-      movie.release_date = movie.release_date.slice(0, 4);
-      if (content !== 'topRated') {
-        movie.backdrop_path = `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`;
-        movie.genres = movieApiMethods.getGenres(movie.genre_ids);
-      }
-      if (content === 'topRated') {
-        if (i === 0 && allResults.length < 1) {
-          console.log(movie.vote_count);
-          console.log(movieApiMethods.newVoteCountFormat(movie.vote_count))
-        }
-        movie.vote_count = movieApiMethods.newVoteCountFormat(movie.vote_count);
-        const { id, poster_path, title, release_date, vote_average, vote_count } = movie;
-        movie = { id, poster_path, title, release_date, vote_average, vote_count }
-      }
-      if (allResults) allResults.push(movie);
-    }
-  } else if (content === 'comingSoon') {
-    if (results.overview === 'Coming Soon') results.overview = 'The plot is currently unknown.'
-    if (results.poster_path) results.poster_path = `https://image.tmdb.org/t/p/w342${results.poster_path}`;
-    results.genres = movieApiMethods.getGenres(results.genre_ids);
-  } else if (content === 'expandInfo') {
-    results.runtime === 0 ? results.runtime = 'N/A' : results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
-    results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results);
-    results.credits = movieApiMethods.getTopCast(results.credits.cast, results.credits.crew);
-    const { runtime, MPAA_rating, credits } = results;
-    results = { runtime, MPAA_rating, credits };
-  }
-  // else {
-  //   results.poster_path = `https://image.tmdb.org/t/p/w500/${results.poster_path}`;
-  //   results.backdrop_path = `https://image.tmdb.org/t/p/w780/${results.backdrop_path}`;
-  //   if (content !== 'comingSoon') results.release_date = results.release_date.slice(0, 4);
-  //   results.runtime = movieApiMethods.changeRuntimeFormat(results.runtime);
-  //   results.MPAA_rating = movieApiMethods.findMpaaRating(results.release_dates.results)
-  //   results.genres = movieApiMethods.getGenres(results.genres);
-  //   const {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path} = results;
-  //   return {id, title, MPAA_rating, runtime, release_date, genres, vote_average, overview, poster_path};
-  // }
-  return results;
-}
-
-
-
 /************ METHODS TO CHANGE THE FORMAT OF THE DATA RECEIVED FROM MOVIE API ************/
 // Modifies the runtime to desired format
 movieApiMethods.changeRuntimeFormat = (runtime) => {
@@ -105,26 +57,20 @@ movieApiMethods.getGenres = (genres) => {
   return newGenreFormat;
 }
 
-movieApiMethods.getTopCast = (castArr, crewArr) => {
-  // console.log(castArr[0].name);
-  // console.log(castArr);
+movieApiMethods.topCastAndCrew = (castArr, crewArr) => {
   let topCast = '';
   let director = '';
   let numOfDir = 0;
   let directorTitle = 'Director';
-// console.log(topCast, director, directorTitle) 
   if (castArr.length > 0) {
     for (let i = 0; i < castArr.length; i += 1) {
       if (i === 3) break;
-      // console.log(topCast, director, directorTitle);
       topCast ? topCast += ', ' + castArr[i].name : topCast += castArr[i].name;
     }
   }
-  // console.log(topCast, director, directorTitle)  
   if (crewArr.length > 0) {
     for (let i = 0; i < crewArr.length; i += 1) {
       if (crewArr[i].job === "Director") {
-        // console.log(topCast, director, directorTitle)
         director ? director += ', ' + crewArr[i].name : director += crewArr[i].name;
         numOfDir += 1;
       }
@@ -133,8 +79,27 @@ movieApiMethods.getTopCast = (castArr, crewArr) => {
   if (!topCast) topCast = 'N/A';
   if (!director) director = 'N/A';
   if (numOfDir > 1) directorTitle = 'Directors';
-  // console.log(topCast, director, directorTitle)
   return { topCast, director, directorTitle };
+}
+
+movieApiMethods.fullCastAndCrew = (cast, crew) => {
+  const updatedCast = [];
+  const updatedCrew = {
+    Director: [],
+    Writer: [],
+    Producer: []
+  };
+  for (let i = 0; i < cast.length; i += 1) {
+    if (i === 16) break;
+    cast[i].profile_path = `https://image.tmdb.org/t/p/w185/${cast[i].profile_path}`;
+    const { name, character, profile_path } = cast[i];
+    updatedCast.push({ name, character, profile_path });
+  }
+
+  for (const member of crew) {
+    if (member.job === 'Producer' || member.job === 'Writer' || member.job === 'Director') updatedCrew[member.job].push(member.name);
+  }
+  return { updatedCast, updatedCrew };
 }
 
 movieApiMethods.newVoteCountFormat = (voteCount) => {
@@ -150,24 +115,21 @@ movieApiMethods.newVoteCountFormat = (voteCount) => {
   return wholeCountNum + 'K';
 }
 
-// movieApiMethods.queryMovieDetails = async (detailObj) => {
-//   let urlQuery = `https://api.themoviedb.org/3/movie/${detailObj.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates`
+movieApiMethods.getMovieTrailer = (videoResults) => {
+  let trailer;
+  let teaser;
+  for (const video of videoResults) {
+    // If both trailer and teaser are assigned a src string we no longer need to keep iterating. So break out of the loop
+    if (trailer && teaser) break;
+    if (video.type === 'Trailer' && !trailer) trailer = `https://www.youtube.com/embed/${video.key}`;
+    if (video.type === 'Teaser' && !teaser) teaser = `https://www.youtube.com/embed/${video.key}`;
+  }
 
-//   let movieDetails;
-//   const { content } = detailObj;
+  if (trailer) return trailer;
+  else if (teaser) return teaser;
+  else return null;
 
-//   if (detailObj.credits) urlQuery += ',credits'
-  
-//   await fetch(urlQuery)
-//     .then(res => res.json())
-//     .then(data => {
-//       movieDetails = movieApiMethods.moviesInfoUpdate(data, content);
-//     })
-//     .catch(err => {
-//       movieDetails = "An error occured when querying for movie details for Main"
-//     })
-//   return movieDetails;
-// }
+}
 
 
 

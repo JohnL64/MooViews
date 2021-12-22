@@ -164,7 +164,7 @@ movieController.comingSoon = (req, res, next) => {
       // The runtime format is updated, the MPAA rating and credits is extracted from the movie data once it is received.
       data.runtime === 0 ? data.runtime = 'N/A' : data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
       data.MPAA_rating = movieApiMethods.findMpaaRating(data.release_dates.results);
-      data.credits = movieApiMethods.getTopCast(data.credits.cast, data.credits.crew);
+      data.credits = movieApiMethods.topCastAndCrew(data.credits.cast, data.credits.crew);
       const { runtime, MPAA_rating, credits } = data;
       data = { runtime, MPAA_rating, credits };
        res.locals.expandInfo = data;
@@ -223,7 +223,20 @@ movieController.movieInfo = (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
+      data.rating = movieApiMethods.findMpaaRating(data.release_dates.results);
+      data.release_dates = null;
+      data.year = data.release_date.slice(0, 4);
+      data.genres = movieApiMethods.getGenres(data.genres);
+      data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+      data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
+      data.videos = movieApiMethods.getMovieTrailer(data.videos.results);
+      data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew);
+      
+      res.locals.movieInfo = data;
+      return next();
+    })
+    .catch(err => {
+      return next({ message: 'Error has occured when querying data for Movie Info in movieController.' });
     })
 }
 
