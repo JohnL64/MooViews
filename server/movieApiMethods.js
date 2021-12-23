@@ -98,6 +98,8 @@ movieApiMethods.fullCastAndCrew = (cast, crew) => {
 
   for (const member of crew) {
     if (member.job === 'Producer' || member.job === 'Writer' || member.job === 'Director') updatedCrew[member.job].push(member.name);
+    else if (member.job === 'Screenplay') updatedCrew.Writer.push(member.name);
+
   }
   return { updatedCast, updatedCrew };
 }

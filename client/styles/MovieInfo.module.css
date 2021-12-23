@@ -1,0 +1,21 @@
+.movieInfo {
+
+}
+
+.innerMovieInfo {
+
+}
+
+.generalInfo {
+  display: inline;
+}
+
+.generalInfo li {
+  display: inline;
+}
+
+iframe {
+  width: 1000px;
+  height: 600px;
+  border: none;
+}
