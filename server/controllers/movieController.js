@@ -223,15 +223,17 @@ movieController.movieInfo = (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
     .then(res => res.json())
     .then(data => {
-      data.rating = movieApiMethods.findMpaaRating(data.release_dates.results);
+      if (data.release_dates.results.length > 0) data.rating = movieApiMethods.findMpaaRating(data.release_dates.results);
       data.release_dates = null;
-      data.year = data.release_date.slice(0, 4);
-      data.genres = movieApiMethods.getGenres(data.genres);
-      data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
-      data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
+      if (data.release_date) data.year = data.release_date.slice(0, 4);
+      if (data.genres.length) data.genres = movieApiMethods.getGenres(data.genres);
+      if (data.poster_path) data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+      if (data.runtime) data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
       data.videos = movieApiMethods.getMovieTrailer(data.videos.results);
       data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew);
-      
+      if (data.vote_count > 999) data.vote_count = movieApiMethods.newVoteCountFormat(data.vote_count);
+      if (!data.overview) data.overview = 'The plot is currently unknown.'
+
       res.locals.movieInfo = data;
       return next();
     })

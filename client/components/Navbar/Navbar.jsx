@@ -43,7 +43,9 @@ const Navbar = ({ imageErrorHandler, validatedUser }) => {
     // If the current page is All Results and user requests to see all results for a new keyword the current location in 'history' will be replaced with the new keyword then page will be refreshed. If current page is not All Results page will be redirected to All Results with given keyword.
     if (e.key === 'Enter' || e === 'clicked') {
       // console.log('Setkeyword ', setKeyword)
+      // Sets the keyword to empty string so that when user navigates to a different page the input field is cleared.
       setKeyword('');
+      // Sets signOut to false so the confirmSignout box is closed when user navigates to a different page.
       setSignout(false);
       if (location.indexOf('/all-results') !== -1) {
         history.replace(`/all-results/${keyword}`);
@@ -62,7 +64,7 @@ const Navbar = ({ imageErrorHandler, validatedUser }) => {
         </div>
         { (focused && searchResult) && 
           <div className={css.outerSearchResult}>
-            <SearchResult searchResult={searchResult} keyword={keyword} showAllResults={showAllResults} imageErrorHandler={imageErrorHandler}/>
+            <SearchResult searchResult={searchResult} keyword={keyword} setKeyword={setKeyword} setSignout={setSignout} showAllResults={showAllResults} imageErrorHandler={imageErrorHandler}/>
           </div> }
         { error && <p>{error}</p>}
       </div>

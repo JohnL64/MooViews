@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router";
 import css from "../styles/MovieInfo.module.css";
-import { AiFillStar } from 'react-icons/ai';
+import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
+import { GiFilmProjector } from 'react-icons/gi';
+import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 
-const MovieInfo = () => {
-  document.body.style.backgroundColor = 'black';
+const MovieInfo = ({ imageErrorHandler}) => {
   const { movie } = useParams();
   const [movieInfo, setMovieInfo] = useState(null);
+  const [MIimageErrors, setMIimageErrors] = useState({});
 
   useEffect(() => {
     fetch(`/movie/movie-info?id=${movie}`)
@@ -16,15 +18,6 @@ const MovieInfo = () => {
         console.log(data);
       })
   }, []);
-
-  function getCrew(jobArr) {
-    const peopleArr = [];
-    for (let i = 0; i < jobArr.length; i += 1) {
-      if (i !== jobArr.length - 1) peopleArr.push(<span key={jobArr[i]}>{ jobArr[i] + ', ' }</span>);
-      else peopleArr.push(<span key={jobArr[i]}>{ jobArr[i] }</span>);
-    }
-    return peopleArr;
-  }
 
   function getCast(castArr) {
     return castArr.map(star => {
@@ -40,31 +33,22 @@ const MovieInfo = () => {
 
   return (
     <div className={css.movieInfo}>
-      {/* <h2>Movie Id {movie}</h2> */}
       { 
         movieInfo && 
         <div className={css.innerMovieInfo}>
-          <div className={css.topMovieInfo}>
-            <h1>{movieInfo.title}</h1>
-            <div className={css.generalInfo}>
-              <p>{movieInfo.rating}</p>
-              <p>{movieInfo.year}</p>
-              <p>{movieInfo.genres}</p>
-              <p>{movieInfo.runtime}</p>
+          <section className={css.genInfoAndMedia}>
+            <div className={css.infoAndMediaContent}>
+              <MovieHeader movieInfo={movieInfo}/>
+              <div className={css.movieMedia}>
+                { (movieInfo.poster_path && !MIimageErrors.hasOwnProperty(movieInfo.id)) && <img src={movieInfo.poster_path} onError={(e) => imageErrorHandler(e, movieInfo.id, MIimageErrors, setMIimageErrors)}/>}
+                { (!movieInfo.poster_path || MIimageErrors.hasOwnProperty(movieInfo.id)) && <div className={css.unavailableImage}><GiFilmProjector className={css.filmIcon} /></div> }
+                { movieInfo.videos ? <iframe src={movieInfo.videos} allow="fullscreen"></iframe> : <CrewAndSummary updatedCrew={movieInfo.credits.updatedCrew} overview={movieInfo.overview} video={false}/>}
+              </div>
+              { movieInfo.videos && <CrewAndSummary updatedCrew={movieInfo.credits.updatedCrew} overview={movieInfo.overview} video={true}/> }
             </div>
-            <div><AiFillStar/>{movieInfo.vote_average}</div>
-            <div className={css.movieMedia}>
-              <img src={movieInfo.poster_path}/>
-              <iframe src={movieInfo.videos}>hello</iframe>
-            </div>
-            <div className={movieInfo.crewAndSummary}>
-              <p>{movieInfo.overview}</p>
-              <p>Director: {getCrew(movieInfo.credits.updatedCrew.Director)}</p>
-              <p>Writer: {getCrew(movieInfo.credits.updatedCrew.Writer)}</p>
-              <p>Producer: {getCrew(movieInfo.credits.updatedCrew.Producer)}</p>
-            </div> 
-          </div>
-          <div className={css.bottomMovieInfo}>
+          </section>
+
+          <section className={css.castAndReviews}>
             <div className={css.cast}>
               <h2>Cast</h2>
               {getCast(movieInfo.credits.updatedCast)}
@@ -72,7 +56,7 @@ const MovieInfo = () => {
             <div className={css.userReviews}>
               <h2>User Reviews</h2>
             </div>
-          </div>
+          </section>
 
         </div>
       }

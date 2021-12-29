@@ -53,6 +53,7 @@ app.get('/signout', (req, res) => {
   if (req.isAuthenticated() === false) signedOut = true
   res.status(200).json({ signedOut })
 })
+
 app.use('/movie', movieRouter);
 app.use('/user', userRouter);
 
