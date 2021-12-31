@@ -3,10 +3,13 @@ import { useParams } from "react-router";
 import css from "../styles/MovieInfo.module.css";
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
+import { BsFillPersonFill } from 'react-icons/bs';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 
 const MovieInfo = ({ imageErrorHandler}) => {
+  document.body.style.backgroundColor = 'white';
   const { movie } = useParams();
+  console.log(movie);
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
 
@@ -21,11 +24,15 @@ const MovieInfo = ({ imageErrorHandler}) => {
 
   function getCast(castArr) {
     return castArr.map(star => {
+      if (star.name === 'Elodie Fong') console.log('Elodie Fong', star.profile_path);
       return (
         <div className={css.star} key={star.name}>
-          <img src={star.profile_path}/>
-          <p>{star.name}</p>
-          <p>as {star.character}</p>
+          { star.profile_path && !MIimageErrors.hasOwnProperty(star.id) && <img src={star.profile_path} onError={(e) => imageErrorHandler(e, star.id, MIimageErrors, setMIimageErrors)}/>}
+          { (!star.profile_path || MIimageErrors.hasOwnProperty(star.id)) && <div className={css.starImgUnavailable}><BsFillPersonFill className={css.personIcon} /></div>}
+          <div className={css.starInfo}>
+            <p>{star.name}</p>
+            <p>as {star.character}</p>
+          </div>
         </div>
       )
     })
@@ -50,8 +57,10 @@ const MovieInfo = ({ imageErrorHandler}) => {
 
           <section className={css.castAndReviews}>
             <div className={css.cast}>
-              <h2>Cast</h2>
-              {getCast(movieInfo.credits.updatedCast)}
+              <h2 className={css.castTitle}>Top Cast</h2>
+              { movieInfo.credits.updatedCast.length > 0 ? <div className={css.castList}>
+                {getCast(movieInfo.credits.updatedCast)}
+              </div> : <p>The cast has yet to be added.</p>}
             </div>
             <div className={css.userReviews}>
               <h2>User Reviews</h2>

@@ -91,9 +91,9 @@ movieApiMethods.fullCastAndCrew = (cast, crew) => {
   };
   for (let i = 0; i < cast.length; i += 1) {
     if (i === 16) break;
-    cast[i].profile_path = `https://image.tmdb.org/t/p/w185/${cast[i].profile_path}`;
-    const { name, character, profile_path } = cast[i];
-    updatedCast.push({ name, character, profile_path });
+    if (cast[i].profile_path) cast[i].profile_path = `https://image.tmdb.org/t/p/w185/${cast[i].profile_path}`;
+    const { id, name, character, profile_path } = cast[i];
+    updatedCast.push({ id, name, character, profile_path });
   }
 
   for (const member of crew) {
@@ -171,6 +171,8 @@ movieApiMethods.sortByRelease = (moviesArr) => {
     };
     dateObj[mYear][mMonth][mDay].push(moviesArr[i]);
   }
+
+  if (!monthsByYear[year]) year += 1;
 
   while (monthsByYear[year]) {
     monthsByYear[year].sort((a, b) => a - b);
