@@ -24,7 +24,6 @@ const MovieInfo = ({ imageErrorHandler}) => {
 
   function getCast(castArr) {
     return castArr.map(star => {
-      if (star.name === 'Elodie Fong') console.log('Elodie Fong', star.profile_path);
       return (
         <div className={css.star} key={star.name}>
           { star.profile_path && !MIimageErrors.hasOwnProperty(star.id) && <img src={star.profile_path} onError={(e) => imageErrorHandler(e, star.id, MIimageErrors, setMIimageErrors)}/>}

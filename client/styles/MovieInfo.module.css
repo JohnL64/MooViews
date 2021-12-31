@@ -190,10 +190,6 @@ iframe {
   margin: 0 auto;
 }
 
-.cast {
-  /* border: solid black 1px; */
-}
-
 .castAndReviews h2 {
   border-left: solid var(--text-color-lightPink) 0.25rem;
   font-size: 2rem;
@@ -212,10 +208,7 @@ iframe {
   border-radius: 5px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
   width: 49.75%;
-  /* width: 50%; */
-  /* width: 50%; */
   display: flex;
-  /* padding: 0.8rem 0; */
   margin:  0.15rem 0;
 }
 
@@ -224,7 +217,6 @@ iframe {
 }
 
 .star img {
-  /* width: 30%; */
   width: 8.263vw;
   max-width: 138px;
   min-width: 92px;
@@ -243,7 +235,6 @@ iframe {
 }
 
 .personIcon {
-  /* height: 10vw; */
   width: 8.263vw;
   max-width: 138px;
   min-width: 92px;
