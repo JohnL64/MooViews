@@ -220,8 +220,6 @@ movieApiController.topRated = (req, res, next) => {
 movieApiController.movieInfo = (req, res, next) => {
   const { id } = req.query;
   const dbRating = res.locals.dbRating;
-  console.log(id);
-  console.log('In movieApiController ', res.locals.dbRating);
   fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
     .then(res => res.json())
     .then(data => {
@@ -238,7 +236,6 @@ movieApiController.movieInfo = (req, res, next) => {
       if (data.runtime) data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
       data.videos = movieApiMethods.getMovieTrailer(data.videos.results);
       data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew);
-      console.log('Vote count ',data.vote_count);
       if (data.vote_count > 999) data.vote_count = movieApiMethods.newVoteCountFormat(data.vote_count);
       if (!data.overview) data.overview = 'The plot is currently unknown.'
 

@@ -6,20 +6,37 @@ import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill } from 'react-icons/bs';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 
-const MovieInfo = ({ imageErrorHandler}) => {
+const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   document.body.style.backgroundColor = 'white';
   const { movie } = useParams();
   console.log(movie);
+  console.log('User is signed in : ', validatedUser)
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
+  const [userRating, setUserRating] = useState(null);
 
-  useEffect(() => {
-    fetch(`/movie/movie-info?id=${movie}`)
+  useEffect(async () => {
+    await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {
         setMovieInfo(data.movieInfo);
         console.log(data);
       })
+      .catch(err => {
+          console.log(err);
+      })
+
+      if (validatedUser) {
+        fetch(`/movie/user-rating?id=${movie}`)
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+            if (data.userRating) setUserRating(data.userRating);
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      }
   }, []);
 
   function getCast(castArr) {

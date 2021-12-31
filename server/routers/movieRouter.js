@@ -28,4 +28,9 @@ router.get('/movie-info', movieDbController.dbMovieRating, movieApiController.mo
   res.status(200).json(res.locals);
 })
 
+// Queries database for user rating for selected movie
+router.get('/user-rating', movieDbController.getUserMovieRating, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
 module.exports = router;

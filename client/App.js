@@ -52,7 +52,7 @@ function App() {
             <Login setValidatedUser={setValidatedUser} />
           </Route>
           <Route path='/movie/:movie'>
-            <MovieInfo imageErrorHandler={imageErrorHandler}/>
+            <MovieInfo imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>
           </Route>
           <Route path='/all-results/:keyWord'>
             <AllResults imageErrorHandler={imageErrorHandler}/>
