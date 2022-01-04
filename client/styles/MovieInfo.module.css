@@ -24,7 +24,7 @@
 
 .titleAndInfo {
   /* border: solid 1px white; */
-  width: 88%;
+  width: 100%;
 }
 
 .title {
@@ -52,24 +52,31 @@
 }
 
 .movieRating {
-  /* border: solid 1px white; */
+  /* border: solid 1px yellow; */
   display: flex;
-  flex-direction: column;
-  align-items: end;
-  justify-content: center;
-  width: 12%;
-  min-width: 73.8px;
+  justify-content: end;
   color: rgb(200, 200, 200);
   margin-left: 1rem;
+  padding-top: 0.6rem;
+}
+
+.rating:first-child {
+  /* border: solid 1px white; */
+  margin-right: 1.3rem;
 }
 
 .ratingTitle {
   /*border: solid 1px white;*/
+  font-weight: 700;
   margin: 0;
-  font-size: 1rem
+  font-size: 0.90625rem;
+  white-space: nowrap;
+  letter-spacing: 0.03rem;
 }
 
-.userRating {
+.userRating,
+.yourRating,
+.ratingQuery {
   /*border: solid 1px white;*/
   display: flex;
   align-items: center;
@@ -80,23 +87,71 @@
 .starIcon {
   font-size: 1.5rem;
   color: pink;
-  margin: 0.3rem;
+  margin-right: 0.3rem;
 }
 
 .ratingAndCount p {
-  font-size: 0.9rem;
   margin: 0;
 }
 
 .ratingAndCount p:last-child {
-  font-size: 0.80rem;
+  font-size: 0.875rem;
 }
 
-.ratingAndCount p span{
+.ratingAndCount p span,
+#dbRating span {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.125rem;
   color: white;
 }
+
+.yourRating,
+.ratingQuery {
+  /* border: solid 1px white; */
+  padding: 0.4rem;
+  border-radius: 3px;
+}
+
+.yourRating:hover {
+  background-color: rgba(49, 49, 49, 0.507);
+  cursor: pointer;
+}
+
+.yourRating p,
+.ratingQuery p {
+  margin: 0;
+  font-size: 1.125rem;
+  color: rgb(90, 159, 248);
+}
+
+#dbRating {
+  color: rgb(200, 200, 200);
+  font-size: 1rem;
+}
+
+.rateIcon {
+  font-size: 1.5rem;
+  color: rgb(90, 159, 248);
+  /* margin: 0.3rem; */
+  margin-right: 0.3rem;
+}
+
+.queryAnimation {
+  border: 3px solid rgba(107, 107, 107, 0.5);;
+  border-top-color: rgb(200, 200, 200);
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  animation: spin 1s linear infinite;
+  margin-right: 0.3rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .movieMedia {
   /* border: solid 1px yellow; */

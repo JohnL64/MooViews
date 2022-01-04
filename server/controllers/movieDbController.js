@@ -24,7 +24,7 @@ movieDbController.dbMovieRating = (req, res, next) => {
 
 
 /*
--------- QUERIES DB TO SEE IF USER RATED MOVIE --------
+-------- QUERIES DB TO SEE IF USER RATED A MOVIE --------
 */
 movieDbController.getUserMovieRating = (req, res, next) => {
   const { id } = req.query;
@@ -46,8 +46,8 @@ movieDbController.getUserMovieRating = (req, res, next) => {
 
   db.query(query, values, (err, userReview) => {
     if (err) return next({ message: 'Error has occured when querying database in movieDbController.getUserMovieRating' });
-    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0];
-    else res.locals.userRating = null;
+    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0].rating;
+    else res.locals.userRating = false;
     return next();
   })
 }

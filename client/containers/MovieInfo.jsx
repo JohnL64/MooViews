@@ -30,8 +30,8 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         fetch(`/movie/user-rating?id=${movie}`)
           .then(res => res.json())
           .then(data => {
-            console.log(data);
-            if (data.userRating) setUserRating(data.userRating);
+            console.log("User rating status: ", data);
+            setUserRating(data.userRating);
           })
           .catch(err => {
             console.log(err);
@@ -61,7 +61,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         <div className={css.innerMovieInfo}>
           <section className={css.genInfoAndMedia}>
             <div className={css.infoAndMediaContent}>
-              <MovieHeader movieInfo={movieInfo}/>
+              <MovieHeader movieInfo={movieInfo} validatedUser={validatedUser} userRating={userRating}/>
               <div className={css.movieMedia}>
                 { (movieInfo.poster_path && !MIimageErrors.hasOwnProperty(movieInfo.id)) && <img src={movieInfo.poster_path} onError={(e) => imageErrorHandler(e, movieInfo.id, MIimageErrors, setMIimageErrors)}/>}
                 { (!movieInfo.poster_path || MIimageErrors.hasOwnProperty(movieInfo.id)) && <div className={css.unavailableImage}><GiFilmProjector className={css.filmIcon} /></div> }
