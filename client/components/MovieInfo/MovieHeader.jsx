@@ -23,10 +23,17 @@ const MovieHeader = ({ movieInfo, validatedUser, userRating }) => {
     )
   }
 
+  function conditionalTitle(title) {
+    let length = title.length;
+    if (length <= 24) return css.smallTitle;
+    else if (length > 24 && length <= 48) return css.mediumTitle;
+    else return css.largeTitle;
+  }
+
   return ( 
-    <div className={css.movieHeader}>
+    <div className={css.movieHeader} onClick={() => conditionalTitle(movieInfo.title)}>
       <div className={css.titleAndInfo}>
-        <h1 className={css.title}>{movieInfo.title}</h1>
+        <h1 className={conditionalTitle(movieInfo.title)}>{movieInfo.title}</h1>
         {createGenInfo()}
       </div>
       { (movieInfo.vote_count > 0 || typeof movieInfo.vote_count === 'string') && <div className={css.movieRating}>
