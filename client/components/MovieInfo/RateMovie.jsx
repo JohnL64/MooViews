@@ -3,7 +3,7 @@ import css from '../../styles/MovieInfo.module.css';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { IoClose } from 'react-icons/io5';
 
-const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, setMovieInfo, ratingBefore }) => {
+const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, setMovieInfo }) => {
   document.body.style.overflow = 'hidden';
 
   const [rating, setRating] = useState(0);
@@ -20,13 +20,23 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
   }, [])
 
 
-  function updateMovieRating(newDbRating) {
+  function updateMovieRating(newDbRating, reviewedUserIsCurrentUser) {
     const newMovieInfo = { ...movieInfo };
     if (typeof movieInfo.vote_count !== 'string') {
       newMovieInfo.vote_average = newDbRating.rating;
       newMovieInfo.vote_count = newDbRating.vote_count;
     }
+    const previousDbRating = newMovieInfo.dbRating;
     newMovieInfo.dbRating = newDbRating;
+    const dbRating = newMovieInfo.dbRating;
+    if (previousDbRating.review) {
+      dbRating.username = previousDbRating.username;
+      dbRating.date = previousDbRating.date;
+      dbRating.review = previousDbRating.review;
+      dbRating.headline = previousDbRating.headline;
+      if (!reviewedUserIsCurrentUser) dbRating.user_rating  = previousDbRating.user_rating;
+      else dbRating.user_rating = rating;
+    } else dbRating.review = null;
     setMovieInfo(newMovieInfo);
     setUserRating(rating);
   }
@@ -35,6 +45,7 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
     const { dbRating, id, tmdb_vote_count, vote_average } = movieInfo;
     setShowRateMovie(false);
     let previousUserRating = userRating;
+    let reviewedUserIsCurrentUser;
     setUserRating(null);
 
     if (!previousUserRating) {
@@ -50,8 +61,12 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
       await fetch('/movie/user-rating', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { id, rating })
+        body: JSON.stringify( { id, rating, dbRating })
       })
+        .then(res => res.json())
+        .then(data => {
+          reviewedUserIsCurrentUser = data.reviewedUserIsCurrentUser;
+        })
         .catch(err => {
           console.log(err);
         })
@@ -78,7 +93,7 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
       })
         .then(res => res.json())
         .then(data => {
-          updateMovieRating(data.updatedDbRating);
+          updateMovieRating(data.updatedDbRating, reviewedUserIsCurrentUser);
         })
         .catch(err => {
           console.log(err.message);

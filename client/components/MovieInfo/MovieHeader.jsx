@@ -77,7 +77,7 @@ const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUs
           </div> }
         </div>
       </div> }
-      { showRateMovie && <RateMovie userRating={userRating} setUserRating={setUserRating} setShowRateMovie={setShowRateMovie} movieInfo={movieInfo} setMovieInfo={setMovieInfo} ratingBefore={ratingBefore}/> }
+      { showRateMovie && <RateMovie userRating={userRating} setUserRating={setUserRating} setShowRateMovie={setShowRateMovie} movieInfo={movieInfo} setMovieInfo={setMovieInfo} /> }
     </div>
    );
 }

@@ -1,3 +1,4 @@
+const { IoCompassSharp } = require('react-icons/io5');
 const db = require('../model');
 
 function getCurrentDate() {
@@ -14,12 +15,16 @@ const movieDbController = {};
 /*
 -------- QUERIES TO SEE IF MOVIE EXIST IN DB --------
 */
-movieDbController.dbMovieRating = (req, res, next) => {
+movieDbController.dbMovieRatingAndReview = (req, res, next) => {
   const { id } = req.query;
   const query = `
   SELECT *
-  FROM movies
-  WHERE movie_id = $1;
+  FROM movies m
+  INNER JOIN reviews r
+  ON m.movie_id = r.movie_id
+  WHERE r.movie_id = $1
+  ORDER BY r.review NULLS LAST
+  LIMIT 1;
   `;
 
   const values = [id];
@@ -45,7 +50,7 @@ movieDbController.getUserMovieRating = (req, res, next) => {
   }
 
   const query = `
-  SELECT rating
+  SELECT user_rating
   FROM reviews
   WHERE movie_id = $1 AND user_id = $2;
   `;
@@ -54,7 +59,7 @@ movieDbController.getUserMovieRating = (req, res, next) => {
 
   db.query(query, values, (err, userReview) => {
     if (err) return next({ message: 'Error has occured when querying database in movieDbController.getUserMovieRating' });
-    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0].rating;
+    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0].user_rating;
     else res.locals.userRating = false;
     return next();
   })
@@ -62,7 +67,7 @@ movieDbController.getUserMovieRating = (req, res, next) => {
 
 
 /*
--------- ADDS USER REVIEW OR RATING TO ALL REVIEWS AND UPDATES MOVIE'S TOTAL RATING --------
+-------- ADDS USER REVIEW OR ONLY RATING TO REVIEWS IN DATABSE --------
 */
 movieDbController.addUserMovieRating = (req, res, next) => {
   const { id, rating } = req.body;
@@ -70,7 +75,7 @@ movieDbController.addUserMovieRating = (req, res, next) => {
   if (req.isAuthenticated()) {
     const date = getCurrentDate();
     const query = `
-    INSERT INTO  reviews(movie_id, user_id, username, date, rating)
+    INSERT INTO  reviews(movie_id, user_id, username, date, user_rating)
     VALUES ($1, $2, $3, $4, $5);
     `;
 
@@ -89,13 +94,16 @@ movieDbController.addUserMovieRating = (req, res, next) => {
 }
 
 
+/*
+-------- UPDATES USER REVIEW OR ONLY RATING TO REVIEWS IN DATABASE --------
+*/
 movieDbController.updateUserMovieRating  = (req, res, next) => {
-  const { id, rating } = req.body;
+  const { id, rating, dbRating } = req.body;
 
   if (req.isAuthenticated()) {
     const query = `
     UPDATE reviews
-    SET rating = $1
+    SET user_rating = $1
     WHERE movie_id = $2 AND user_id = $3;
     `;
 
@@ -103,7 +111,8 @@ movieDbController.updateUserMovieRating  = (req, res, next) => {
 
     db.query(query, values, (err, updatedReview) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
-      res.locals.msg = 'User review has been updated.';
+      if (req.user._id === dbRating.user_id) res.locals.reviewedUserIsCurrentUser = true;
+      else res.locals.reviewedUserIsCurrentUser = false;
       return next();
     })
   }
@@ -166,6 +175,7 @@ movieDbController.updateMovie = (req, res, next) => {
 
   if (req.isAuthenticated()) {
     dbRating[`star_${rating}`] += 1;
+    // If user has never rated existing movie previousUserRating is assigned an arbitrary rating to ensure database query does not cause an error. The value of this arbitrary rating's count will not change in the database. Also the vote_count property must be incremented only when this is the user first time rating movie.
     if (!previousUserRating) {
       if (rating === 10) previousUserRating = rating - 1;
       else previousUserRating = rating + 1;

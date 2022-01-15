@@ -3,6 +3,10 @@
   --your-rating-color: rgb(90, 159, 248);
 }
 
+
+/*
+-------- MOVIE'S GENERAL INFORMATION AND MEDIA --------
+*/
 .genInfoAndMedia {
   background-color: rgb(7, 7, 7);
   /* border: solid purple 3px; */
@@ -356,6 +360,11 @@ iframe {
   background-color: rgb(58, 58, 58);
 }
 
+
+
+/*
+-------- MOVIE'S CAST AND USER REVIEWS --------
+*/
 .castAndReviews {
   color: black;
   width: 60%;

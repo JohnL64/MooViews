@@ -4,6 +4,7 @@ import css from "../styles/MovieInfo.module.css";
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill } from 'react-icons/bs';
+import { GrAdd } from 'react-icons/gr';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 
 const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
@@ -12,13 +13,11 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
   const [userRating, setUserRating] = useState(null);
-  const [ratingBefore, setRatingBefore] = useState(null);
 
   useEffect(async () => {
     await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {
-        setRatingBefore({ voteAverage: data.movieInfo.vote_average, voteCount: data.movieInfo.vote_count})
         setMovieInfo(data.movieInfo);
       })
       .catch(err => {
@@ -59,7 +58,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         <div className={css.innerMovieInfo}>
           <section className={css.genInfoAndMedia}>
             <div className={css.infoAndMediaContent}>
-              <MovieHeader movieInfo={movieInfo} setMovieInfo={setMovieInfo} validatedUser={validatedUser} userRating={userRating} setUserRating={setUserRating} ratingBefore={ratingBefore}/>
+              <MovieHeader movieInfo={movieInfo} setMovieInfo={setMovieInfo} validatedUser={validatedUser} userRating={userRating} setUserRating={setUserRating} />
               <div className={css.movieMedia}>
                 { (movieInfo.poster_path && !MIimageErrors.hasOwnProperty(movieInfo.id)) && <img src={movieInfo.poster_path} onError={(e) => imageErrorHandler(e, movieInfo.id, MIimageErrors, setMIimageErrors)}/>}
                 { (!movieInfo.poster_path || MIimageErrors.hasOwnProperty(movieInfo.id)) && <div className={css.unavailableImage}><GiFilmProjector className={css.filmIcon} /></div> }
@@ -77,7 +76,13 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
               </div> : <p>The cast has yet to be added.</p>}
             </div>
             <div className={css.userReviews}>
-              <h2>User Reviews</h2>
+              <div className={css.reviewsTitleAndBtn}>
+                <h2>User Reviews</h2>
+                <div className={css.addReview}>
+                  <GrAdd />
+                  <p>Review</p>
+                </div>
+              </div>
             </div>
           </section>
 
