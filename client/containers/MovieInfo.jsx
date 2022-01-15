@@ -9,18 +9,17 @@ import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   document.body.style.backgroundColor = 'white';
   const { movie } = useParams();
-  console.log(movie);
-  console.log('User is signed in : ', validatedUser)
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
   const [userRating, setUserRating] = useState(null);
+  const [ratingBefore, setRatingBefore] = useState(null);
 
   useEffect(async () => {
     await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {
+        setRatingBefore({ voteAverage: data.movieInfo.vote_average, voteCount: data.movieInfo.vote_count})
         setMovieInfo(data.movieInfo);
-        console.log(data);
       })
       .catch(err => {
           console.log(err);
@@ -30,7 +29,6 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         fetch(`/movie/user-rating?id=${movie}`)
           .then(res => res.json())
           .then(data => {
-            console.log("User rating status: ", data);
             setUserRating(data.userRating);
           })
           .catch(err => {
@@ -61,7 +59,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         <div className={css.innerMovieInfo}>
           <section className={css.genInfoAndMedia}>
             <div className={css.infoAndMediaContent}>
-              <MovieHeader movieInfo={movieInfo} validatedUser={validatedUser} userRating={userRating}/>
+              <MovieHeader movieInfo={movieInfo} setMovieInfo={setMovieInfo} validatedUser={validatedUser} userRating={userRating} setUserRating={setUserRating} ratingBefore={ratingBefore}/>
               <div className={css.movieMedia}>
                 { (movieInfo.poster_path && !MIimageErrors.hasOwnProperty(movieInfo.id)) && <img src={movieInfo.poster_path} onError={(e) => imageErrorHandler(e, movieInfo.id, MIimageErrors, setMIimageErrors)}/>}
                 { (!movieInfo.poster_path || MIimageErrors.hasOwnProperty(movieInfo.id)) && <div className={css.unavailableImage}><GiFilmProjector className={css.filmIcon} /></div> }

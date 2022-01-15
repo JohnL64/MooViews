@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from "../../styles/MovieInfo.module.css";
 import { BsCircleFill } from 'react-icons/bs';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import RateMovie from './RateMovie.jsx';
+import { useHistory } from 'react-router-dom';
 
-const MovieHeader = ({ movieInfo, validatedUser, userRating }) => {
+const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUserRating, ratingBefore }) => {
+  console.log('Movie id: ', movieInfo.id);
+  const [showRateMovie, setShowRateMovie] = useState(false);
+  const history = useHistory();
+  
   function createGenInfo() {
     let genInfoArr = [];
     function conditionalInfo(info) {
@@ -30,8 +36,13 @@ const MovieHeader = ({ movieInfo, validatedUser, userRating }) => {
     else return css.largeTitle;
   }
 
+  function conditionalRating() {
+    if (validatedUser) setShowRateMovie(true);
+    else history.push('/login');
+  }
+
   return ( 
-    <div className={css.movieHeader} onClick={() => conditionalTitle(movieInfo.title)}>
+    <div className={css.movieHeader}>
       <div className={css.titleAndInfo}>
         <h1 className={conditionalTitle(movieInfo.title)}>{movieInfo.title}</h1>
         {createGenInfo()}
@@ -49,13 +60,15 @@ const MovieHeader = ({ movieInfo, validatedUser, userRating }) => {
         </div>
         <div className={css.rating}>
           <p className={css.ratingTitle}>Your Rating</p>
-          { (!validatedUser || (validatedUser && userRating !== null)) && <div className={css.yourRating}>
-            {/* Elements to dislplay when user is logged in and HAS rated movie */}
-            { (validatedUser && userRating) && <AiFillStar className={css.rateIcon}/>}
-            { (validatedUser && userRating) && <p id={css.dbRating}><span>{userRating}</span>/10</p>}
-            {/* Elements to dislplay when user is not logged in OR has not rated movie */}
-            { (!validatedUser || !userRating) && <AiOutlineStar className={css.rateIcon}/> }
-            { (!validatedUser || !userRating) && <p>Rate</p> }
+          {/* Elements to dislplay when user is logged in and HAS rated movie */}
+          { (validatedUser && userRating) && <div className={css.yourRating} onClick={() => setShowRateMovie(true)}>
+            <AiFillStar className={css.rateIcon}/>
+            <p id={css.dbRating}><span>{userRating}</span>/10</p>
+          </div> }
+          {/* Elements to dislplay when user is not logged in OR has not rated movie */}
+          { (!validatedUser || userRating === false) && <div className={css.yourRating} onClick={conditionalRating}>
+            <AiOutlineStar className={css.rateIcon}/>
+            <p>Rate</p>
           </div> }
           {/* Element to display when querying db to see if user rated movie */}
           { (validatedUser && userRating === null) && <div className={css.ratingQuery}>
@@ -64,6 +77,7 @@ const MovieHeader = ({ movieInfo, validatedUser, userRating }) => {
           </div> }
         </div>
       </div> }
+      { showRateMovie && <RateMovie userRating={userRating} setUserRating={setUserRating} setShowRateMovie={setShowRateMovie} movieInfo={movieInfo} setMovieInfo={setMovieInfo} ratingBefore={ratingBefore}/> }
     </div>
    );
 }

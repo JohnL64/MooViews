@@ -1,5 +1,6 @@
 .movieInfo {
   background-color: white;
+  --your-rating-color: rgb(90, 159, 248);
 }
 
 .genInfoAndMedia {
@@ -140,7 +141,7 @@
 .ratingQuery p {
   margin: 0;
   font-size: 1.125rem;
-  color: rgb(90, 159, 248);
+  color: var(--your-rating-color);
 }
 
 #dbRating {
@@ -150,7 +151,7 @@
 
 .rateIcon {
   font-size: 1.5rem;
-  color: rgb(90, 159, 248);
+  color: var(--your-rating-color);
   margin-right: 0.3rem;
 }
 
@@ -252,6 +253,107 @@ iframe {
   margin-right: 1.2rem;
   font-weight: 800;
   color: white;
+}
+
+.rateMovie {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ratingBox {
+  width: 35rem;
+  background-color: rgb(37, 37, 37);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 3px;
+}
+
+.closeRating {
+  position:  absolute;
+  right: 0;
+  top: -2.9rem;
+  font-size: 1.5rem;
+  padding: 0.7rem;
+  border-radius: 50%;
+}
+
+.closeRating:hover {
+  background-color: rgba(255, 255, 255, 0.103);
+  cursor: pointer;
+}
+
+.selectedRating {
+  position:  absolute;
+  top: -3.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ratingMainStar {
+  font-size: 6.8rem;
+  color: var(--your-rating-color);
+}
+
+.selectedRating p {
+  font-size: 1.5rem;
+  position: absolute;
+}
+
+.rateThis {
+  margin: 4.5rem 0 0;
+  color: rgb(255, 197, 206);
+  font-size: 0.92rem;
+}
+
+.ratingMovieTitle {
+  font-size: 1.2rem;
+  max-width: 80%;
+}
+
+.ratingStars {
+  margin-bottom: 1.2rem;
+}
+
+.rateMovieStar {
+  font-size: 1.8rem;
+  color: var(--your-rating-color);
+}
+
+.rateMovieStar:hover {
+  cursor: pointer;
+}
+
+.submitRating {
+  margin-bottom: 2rem;
+  font-size: 0.92rem;
+  padding: 0.5rem 0;
+  width: 17.998125rem;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  background-color: rgb(58, 58, 58);
+}
+
+.submitRating:hover {
+  cursor: pointer;
+  background-color: rgb(75, 75, 75);
+}
+
+.submitRating:disabled,
+.submitRating[disabled] {
+  color: rgb(138, 138, 138);
+  cursor: default;
+  background-color: rgb(58, 58, 58);
 }
 
 .castAndReviews {

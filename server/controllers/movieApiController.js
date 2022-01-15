@@ -224,6 +224,8 @@ movieApiController.movieInfo = (req, res, next) => {
     .then(res => res.json())
     .then(data => {
       // if (res.locals.hasOwnProperty('dbRating')) console.log('Movie exists in DB!!!!!!!!!!!!!!');
+      data.dbRating = dbRating;
+      data.tmdb_vote_count = data.vote_count;
       if (dbRating) {
         data.vote_average = dbRating.rating;
         data.vote_count = dbRating.vote_count;
