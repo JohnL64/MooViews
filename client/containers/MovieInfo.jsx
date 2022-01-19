@@ -4,8 +4,8 @@ import css from "../styles/MovieInfo.module.css";
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { GrAdd } from 'react-icons/gr';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
+import UserReviews from '../components/MovieInfo/UserReviews.jsx';
 
 const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   document.body.style.backgroundColor = 'white';
@@ -18,6 +18,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {
+        console.log('Movie info: ', data.movieInfo);
         setMovieInfo(data.movieInfo);
       })
       .catch(err => {
@@ -75,15 +76,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
                 {getCast(movieInfo.credits.updatedCast)}
               </div> : <p>The cast has yet to be added.</p>}
             </div>
-            <div className={css.userReviews}>
-              <div className={css.reviewsTitleAndBtn}>
-                <h2>User Reviews</h2>
-                <div className={css.addReview}>
-                  <GrAdd />
-                  <p>Review</p>
-                </div>
-              </div>
-            </div>
+            <UserReviews movieInfo={movieInfo}/>
           </section>
 
         </div>

@@ -15,23 +15,41 @@ const movieDbController = {};
 /*
 -------- QUERIES TO SEE IF MOVIE EXIST IN DB --------
 */
-movieDbController.dbMovieRatingAndReview = (req, res, next) => {
+movieDbController.dbMovieRating = (req, res, next) => {
   const { id } = req.query;
   const query = `
   SELECT *
-  FROM movies m
-  INNER JOIN reviews r
-  ON m.movie_id = r.movie_id
-  WHERE r.movie_id = $1
-  ORDER BY r.review NULLS LAST
-  LIMIT 1;
+  FROM movies 
+  WHERE movie_id = $1;
   `;
 
   const values = [id];
   db.query(query, values, (err, ratedMovies) => {
-    if (err) return next({ message: 'Error has occured at movieDbController.dbMovieRating'});
-    if (ratedMovies.rows.length > 0) res.locals.dbRating = ratedMovies.rows[0];
+    if (err) return next({ message: 'Error has occured querying for movie rating in database in movieDbController.dbMovieRatingAndReview'});
+    if (ratedMovies.rows.length > 0) {
+      res.locals.dbRating = ratedMovies.rows[0];
+    }
     else  res.locals.dbRating = null;
+    return next();
+  })
+}
+
+movieDbController.getLatestReview = (req, res, next) => {
+  if (!res.locals.dbRating || !res.locals.dbRating.most_recent_review) {
+    res.locals.latestReview = null;
+    return next();
+  } 
+
+  const query = `
+  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
+  FROM reviews 
+  WHERE _id = $1;
+  `;
+
+  const values = [res.locals.dbRating.most_recent_review];
+  db.query(query, values, (err, latestReview) => {
+    if (err) return next({ message: 'Error has occured querying for latest review in movieDbController.dbMovieRatingAndReview'});
+    res.locals.latestReview = latestReview.rows[0];
     return next();
   })
 }
@@ -209,5 +227,29 @@ movieDbController.updateMovie = (req, res, next) => {
   }
 }
 
+
+/*
+-------- GETS USER REVIEWS FROM DATABASE FOR CURRENT MOVIE --------
+*/
+movieDbController.getUserReviews = (req, res, next) => {
+  const { id, reviewsShown } = req.query;
+
+  const query = `
+  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
+  FROM reviews
+  WHERE movie_id = $1 AND review IS NOT NULL
+  ORDER BY date DESC, _id DESC
+  LIMIT 20
+  OFFSET $2;
+  `;
+
+  const values = [id, reviewsShown];
+
+  db.query(query, values, (err, reviewsToDisplay) => {
+    if (err) return next({message: 'Error has occured when retreiving reviews in movieDbController.getUserReviews'});
+    res.locals.reviewsToDisplay = reviewsToDisplay.rows;
+    return next(); 
+  })
+}
 
 module.exports = movieDbController;

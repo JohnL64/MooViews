@@ -220,11 +220,29 @@ movieApiController.topRated = (req, res, next) => {
 movieApiController.movieInfo = (req, res, next) => {
   const { id } = req.query;
   const dbRating = res.locals.dbRating;
+
+  function isReleased(releaseDate) {
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    const movieMonth = Number(releaseDate.slice(5, 7));
+    const movieDay = Number(releaseDate.slice(8, 10));
+    const movieYear = Number(releaseDate.slice(0, 4));
+
+    if (movieYear < year) return true;
+    else if (movieYear === year && movieMonth < month) return true;
+    else if (movieYear === year && (movieMonth === month && movieDay <= day)) return true;
+    else return false; 
+  }
+
   fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
     .then(res => res.json())
     .then(data => {
       // if (res.locals.hasOwnProperty('dbRating')) console.log('Movie exists in DB!!!!!!!!!!!!!!');
       data.dbRating = dbRating;
+      data.latestReview = res.locals.latestReview;
       data.tmdb_vote_count = data.vote_count;
       if (dbRating) {
         data.vote_average = dbRating.rating;
@@ -232,7 +250,10 @@ movieApiController.movieInfo = (req, res, next) => {
       };
       if (data.release_dates.results.length > 0) data.rating = movieApiMethods.findMpaaRating(data.release_dates.results);
       data.release_dates = null;
-      if (data.release_date) data.year = data.release_date.slice(0, 4);
+      if (data.release_date) {
+        data.year = data.release_date.slice(0, 4);
+        data.is_released = isReleased(data.release_date);
+      }
       if (data.genres.length) data.genres = movieApiMethods.getGenres(data.genres);
       if (data.poster_path) data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
       if (data.runtime) data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);

@@ -24,7 +24,7 @@ router.get('/top-rated', movieApiController.topRated, (req, res) => {
 })
 
 // Queries data for Movie Info page.
-router.get('/movie-info', movieDbController.dbMovieRatingAndReview, movieApiController.movieInfo, (req, res) => {
+router.get('/movie-info', movieDbController.dbMovieRating, movieDbController.getLatestReview, movieApiController.movieInfo, (req, res) => {
   res.status(200).json(res.locals);
 })
 
@@ -50,6 +50,11 @@ router.post('/user-rating', movieDbController.addUserMovieRating, (req, res) => 
 
 // Update user rating or review and update movie's average score.
 router.patch('/user-rating', movieDbController.updateUserMovieRating, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
+// Update user rating or review and update movie's average score.
+router.get('/user-reviews', movieDbController.getUserReviews, (req, res) => {
   res.status(200).json(res.locals);
 })
 
