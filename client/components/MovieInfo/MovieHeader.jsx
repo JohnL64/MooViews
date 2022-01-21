@@ -63,7 +63,7 @@ const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUs
           {/* Elements to dislplay when user is logged in and HAS rated movie */}
           { (validatedUser && userRating) && <div className={css.yourRating} onClick={() => setShowRateMovie(true)}>
             <AiFillStar className={css.rateIcon}/>
-            <p id={css.dbRating}><span>{userRating}</span>/10</p>
+            <p id={css.dbRating}><span>{userRating.user_rating}</span>/10</p>
           </div> }
           {/* Elements to dislplay when user is not logged in OR has not rated movie */}
           { (!validatedUser || userRating === false) && <div className={css.yourRating} onClick={conditionalRating}>

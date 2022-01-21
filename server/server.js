@@ -43,7 +43,11 @@ app.use(passport.session());
 
 app.get('/isAuthenticatedUser', (req, res) => {
   let isValidated = false;
-  if (req.isAuthenticated()) isValidated = true;
+  // if (req.isAuthenticated()) isValidated = true;
+  if (req.isAuthenticated()) {
+    isValidated = true;
+    console.log('CURRENT USER\'S ID: ', req.user._id);
+  }
   res.status(200).json({ isValidated });
 })
 

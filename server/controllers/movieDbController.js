@@ -35,22 +35,25 @@ movieDbController.dbMovieRating = (req, res, next) => {
 }
 
 movieDbController.getLatestReview = (req, res, next) => {
-  if (!res.locals.dbRating || !res.locals.dbRating.most_recent_review) {
+  if (!res.locals.dbRating || res.locals.dbRating.review_count < 1) {
     res.locals.latestReview = null;
     return next();
   } 
 
   const query = `
-  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
-  FROM reviews 
-  WHERE _id = $1;
+  SELECT user_id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
+  FROM reviews
+  WHERE movie_id = $1 AND review IS NOT NULL
+  ORDER BY date DESC, _id DESC
+  LIMIT 1;
   `;
 
-  const values = [res.locals.dbRating.most_recent_review];
+  const values = [res.locals.dbRating.movie_id];
+
   db.query(query, values, (err, latestReview) => {
-    if (err) return next({ message: 'Error has occured querying for latest review in movieDbController.dbMovieRatingAndReview'});
+    if (err) return next({message: 'Error has occured when retreiving reviews in movieDbController.getUserReviews'});
     res.locals.latestReview = latestReview.rows[0];
-    return next();
+    return next(); 
   })
 }
 
@@ -68,7 +71,7 @@ movieDbController.getUserMovieRating = (req, res, next) => {
   }
 
   const query = `
-  SELECT user_rating
+  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
   FROM reviews
   WHERE movie_id = $1 AND user_id = $2;
   `;
@@ -77,7 +80,7 @@ movieDbController.getUserMovieRating = (req, res, next) => {
 
   db.query(query, values, (err, userReview) => {
     if (err) return next({ message: 'Error has occured when querying database in movieDbController.getUserMovieRating' });
-    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0].user_rating;
+    if (userReview.rows.length > 0) res.locals.userRating = userReview.rows[0];
     else res.locals.userRating = false;
     return next();
   })
@@ -94,14 +97,16 @@ movieDbController.addUserMovieRating = (req, res, next) => {
     const date = getCurrentDate();
     const query = `
     INSERT INTO  reviews(movie_id, user_id, username, date, user_rating)
-    VALUES ($1, $2, $3, $4, $5);
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING *
     `;
 
     const values = [id, req.user._id, req.user.username, date, rating];
 
-    db.query(query, values, (err, addedReview) => {
+    db.query(query, values, (err, addedRating) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
-      res.locals.msg = 'User review has been added.';
+      if (addedRating.rows.length > 0) res.locals.userRating = addedRating.rows[0];
+      else res.locals.userRating = null;
       return next();
     })
   }
@@ -116,21 +121,26 @@ movieDbController.addUserMovieRating = (req, res, next) => {
 -------- UPDATES USER REVIEW OR ONLY RATING TO REVIEWS IN DATABASE --------
 */
 movieDbController.updateUserMovieRating  = (req, res, next) => {
-  const { id, rating, dbRating } = req.body;
+  const { id, rating, latestReview } = req.body;
 
   if (req.isAuthenticated()) {
     const query = `
     UPDATE reviews
     SET user_rating = $1
-    WHERE movie_id = $2 AND user_id = $3;
+    WHERE movie_id = $2 AND user_id = $3
+    RETURNING *
     `;
 
     const values = [rating, id, req.user._id];
 
-    db.query(query, values, (err, updatedReview) => {
+    db.query(query, values, (err, updatedRating) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
-      if (req.user._id === dbRating.user_id) res.locals.reviewedUserIsCurrentUser = true;
+      if (latestReview && req.user._id === latestReview.user_id) res.locals.reviewedUserIsCurrentUser = true;
       else res.locals.reviewedUserIsCurrentUser = false;
+      if (updatedRating.rows.length > 0) res.locals.userRating = updatedRating.rows[0];
+      else res.locals.userRating = null;
+      // console.log('Updated rating: ', updatedRating.rows[0]);
+      // console.log('Inside updateUserRating: ', req.user._id === latestReview.user_id)
       return next();
     })
   }

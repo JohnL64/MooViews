@@ -11,8 +11,8 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
 
   useEffect(() => {
     if (userRating) {
-      setRating(userRating);
-      setHover(userRating);
+      setRating(userRating.user_rating);
+      setHover(userRating.user_rating);
     }
     return function enableScrolling() {
       document.body.style.overflow = 'auto';
@@ -20,32 +20,36 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
   }, [])
 
 
-  function updateMovieRating(newDbRating, reviewedUserIsCurrentUser) {
+  function updateMovieRating(newDbRating, newUserRating, reviewedUserIsCurrentUser) {
     const newMovieInfo = { ...movieInfo };
+    // Only updates vote count and average rating only if the current vote count is less than 1000 because if the vote count is less than a thousand 
     if (typeof movieInfo.vote_count !== 'string') {
       newMovieInfo.vote_average = newDbRating.rating;
-      newMovieInfo.vote_count = newDbRating.vote_count;
+      if (newDbRating.vote_count === 1000) newMovieInfo.vote_count = '1K';
+      else newMovieInfo.vote_count = newDbRating.vote_count;
     }
-    const previousDbRating = newMovieInfo.dbRating;
+    // Updating dbRating in movieInfo to inculde the new or updated changes to current movie and to ensure the data on the client side matches with the database.
     newMovieInfo.dbRating = newDbRating;
-    const dbRating = newMovieInfo.dbRating;
-    if (previousDbRating.review) {
-      dbRating.username = previousDbRating.username;
-      dbRating.date = previousDbRating.date;
-      dbRating.review = previousDbRating.review;
-      dbRating.headline = previousDbRating.headline;
-      if (!reviewedUserIsCurrentUser) dbRating.user_rating  = previousDbRating.user_rating;
-      else dbRating.user_rating = rating;
-    } else dbRating.review = null;
+
+    // If the current user that updated their movie rating is also the user with the most recent written review, the rating must be updated in the new latestReview object to ensure the UserReviews section displays the correct data.
+    if (reviewedUserIsCurrentUser) {
+      const newLatestReview = { ...movieInfo.latestReview } 
+      newLatestReview.user_rating = rating;
+      newMovieInfo.latestReview = newLatestReview;
+    }
     setMovieInfo(newMovieInfo);
-    setUserRating(rating);
+
+    // Updates the user's rating in userRating to display the newly added 
+    setUserRating(newUserRating);
   }
 
   async function inputUserRating() {
-    const { dbRating, id, tmdb_vote_count, vote_average } = movieInfo;
+    const { dbRating, latestReview, id, tmdb_vote_count, vote_average } = movieInfo;
     setShowRateMovie(false);
-    let previousUserRating = userRating;
+    let previousUserRating = userRating.user_rating;
+    let newUserRating;
     let reviewedUserIsCurrentUser;
+    // Setting userRating to null so that the loading circle and 'Rate' text are shown when adding/updating rating or movie to database.
     setUserRating(null);
 
     if (!previousUserRating) {
@@ -54,6 +58,10 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify( { id, rating })
       })
+        .then(res => res.json())
+        .then(data => {
+          newUserRating = data.userRating;
+        })
         .catch(err => {
           console.log(err);
         })
@@ -61,10 +69,11 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
       await fetch('/movie/user-rating', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { id, rating, dbRating })
+        body: JSON.stringify( { id, rating, latestReview })
       })
         .then(res => res.json())
         .then(data => {
+          newUserRating = data.userRating;
           reviewedUserIsCurrentUser = data.reviewedUserIsCurrentUser;
         })
         .catch(err => {
@@ -80,7 +89,7 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
       })
         .then(res => res.json())
         .then(data => {
-          updateMovieRating(data.addedDbRating);
+          updateMovieRating(data.addedDbRating, newUserRating);
         })
         .catch(err => {
           console.log(err);
@@ -93,7 +102,7 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
       })
         .then(res => res.json())
         .then(data => {
-          updateMovieRating(data.updatedDbRating, reviewedUserIsCurrentUser);
+          updateMovieRating(data.updatedDbRating, newUserRating, reviewedUserIsCurrentUser);
         })
         .catch(err => {
           console.log(err.message);
@@ -123,7 +132,7 @@ const RateMovie = ({ userRating, setUserRating, setShowRateMovie, movieInfo, set
         <div className={css.ratingStars}>
           {createStars()}
         </div>
-        <button className={css.submitRating} disabled={!rating || (userRating && rating === userRating)} onClick={() => inputUserRating()}>Rate</button>
+        <button className={css.submitRating} disabled={!rating || (userRating && rating === userRating.user_rating)} onClick={() => inputUserRating()}>Rate</button>
       </div>
     </div>
    );

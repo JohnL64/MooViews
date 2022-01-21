@@ -494,17 +494,16 @@ iframe {
 }
 
 .userReview {
-  /* border: rgba(95, 95, 95, 0.342) solid 1px;
-  border-radius: 3px; */
   color: rgb(66, 66, 66);
   --review-child-width: 95%;
-
-  /* box-sizing: border-box; */
   border: solid rgba(109, 109, 109, 0.13) 1px;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
-  background-color: rgba(246, 246, 246, 0.678);
   margin-bottom: 0.4rem;
+}
+
+.userReview:nth-child(odd) {
+  background-color: rgba(246, 246, 246, 0.678);
 }
 
 .headlineRating {
@@ -589,4 +588,59 @@ iframe {
 .showMoreOnly p {
   margin: 0;
   font-size: 0.9rem;
+}
+
+.noReviews,
+.notReleased {
+  margin-top: 2.5rem;
+}
+
+.outerReviewMovie {
+  /* width: 30%; */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.445);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reviewMovie {
+  /* display: flex;
+  flex-direction: column; */
+  width: 400px;
+  background-color: white;
+  overflow: auto;
+  border-top-left-radius: 10px;
+}
+
+.closeBar {
+  background-color: rgb(37, 37, 37);
+  display: flex;
+  justify-content: flex-end;
+  border-top-left-radius: 10px;
+}
+
+.closeReview {
+  /* border: solid white 1px; */
+  color:white;
+  font-size: 1.6rem;
+  padding: 0.8rem;
+  border-radius: 50%;
+}
+
+.closeReview:hover {
+  background-color: rgba(131, 131, 131, 0.233);
+  cursor: pointer;
+}
+
+.reviewingMovieInfo {
+  border: solid 1px black;
+  display: flex;
+}
+
+.reviewingMovieInfo img {
+  width: 25%;
 }

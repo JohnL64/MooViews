@@ -13,12 +13,14 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
   const [userRating, setUserRating] = useState(null);
+  console.log('USER RATING: ', userRating);
+  console.log('MOVIE INFO: ', movieInfo);
 
   useEffect(async () => {
     await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {
-        console.log('Movie info: ', data.movieInfo);
+        // console.log('MOVIE INFO: ', data.movieInfo);
         setMovieInfo(data.movieInfo);
       })
       .catch(err => {
@@ -29,6 +31,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         fetch(`/movie/user-rating?id=${movie}`)
           .then(res => res.json())
           .then(data => {
+            // console.log('USER RATING: ', data.userRating);
             setUserRating(data.userRating);
           })
           .catch(err => {
@@ -76,7 +79,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
                 {getCast(movieInfo.credits.updatedCast)}
               </div> : <p>The cast has yet to be added.</p>}
             </div>
-            <UserReviews movieInfo={movieInfo}/>
+            <UserReviews movieInfo={movieInfo} userRating={userRating}/>
           </section>
 
         </div>
