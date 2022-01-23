@@ -41,7 +41,7 @@ movieDbController.getLatestReview = (req, res, next) => {
   } 
 
   const query = `
-  SELECT user_id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
+  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
   FROM reviews
   WHERE movie_id = $1 AND review IS NOT NULL
   ORDER BY date DESC, _id DESC
@@ -171,7 +171,7 @@ movieDbController.addMovie = (req, res, next) => {
     db.query(query, values, (err, addedMovie) => {
       if (err) return next({ message: 'Error has occured when adding movie in movieDbController.addMovie' });
       addedMovie.rows[0].rating = Number(addedMovie.rows[0].rating);
-      res.locals.addedDbRating = addedMovie.rows[0];
+      res.locals.newDbRating = addedMovie.rows[0];
       return next();
     })
   }
@@ -227,7 +227,7 @@ movieDbController.updateMovie = (req, res, next) => {
     db.query(query, values, (err, updatedMovie) => {
       if (err) return next({ message: 'Error has occured when updating movie in movieDbController.updateMovie' });
       updatedMovie.rows[0].rating = Number(updatedMovie.rows[0].rating);
-      res.locals.updatedDbRating = updatedMovie.rows[0];
+      res.locals.newDbRating = updatedMovie.rows[0];
       return next();
     })
   }

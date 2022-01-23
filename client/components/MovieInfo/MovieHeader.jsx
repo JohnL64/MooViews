@@ -5,7 +5,7 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import RateMovie from './RateMovie.jsx';
 import { useHistory } from 'react-router-dom';
 
-const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUserRating, ratingBefore }) => {
+const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUserRating, updateOrAddReviewAndMovie }) => {
   console.log('Movie id: ', movieInfo.id);
   const [showRateMovie, setShowRateMovie] = useState(false);
   const history = useHistory();
@@ -77,7 +77,7 @@ const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUs
           </div> }
         </div>
       </div> }
-      { showRateMovie && <RateMovie userRating={userRating} setUserRating={setUserRating} setShowRateMovie={setShowRateMovie} movieInfo={movieInfo} setMovieInfo={setMovieInfo} /> }
+      { showRateMovie && <RateMovie userRating={userRating} setUserRating={setUserRating} setShowRateMovie={setShowRateMovie} movieInfo={movieInfo} setMovieInfo={setMovieInfo} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} /> }
     </div>
    );
 }

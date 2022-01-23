@@ -5,7 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { BsCircleFill } from 'react-icons/bs';
 import ReviewMovie from './ReviewMovie.jsx';
 
-const UserReviews = ({ movieInfo, userRating }) => {
+const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie }) => {
   const [userReviews, setUserReviews] = useState([movieInfo.latestReview]);
   const [reviewMovie, setReviewMovie] = useState(false);
 
@@ -14,7 +14,7 @@ const UserReviews = ({ movieInfo, userRating }) => {
     for (let i = 0; i < userReviews.length; i += 1) {
       const review = userReviews[i];
       reviewsArr.push(
-        <div className={css.userReview} key={review.user_id}>
+        <div className={css.userReview} key={review._id}>
           <div className={css.headlineRating}>
             <p>{review.headline}</p>
             <p><AiFillStar className={css.reviewStarIcon}/> {review.user_rating}<span>/10</span></p>
@@ -66,7 +66,7 @@ const UserReviews = ({ movieInfo, userRating }) => {
       - user rating
       - 
       */}
-      { reviewMovie && <ReviewMovie setReviewMovie={setReviewMovie} posterPath={movieInfo.poster_path} title={movieInfo.title} year={movieInfo.year} userRating={userRating}/> }
+      { (reviewMovie && userRating !== null) && <ReviewMovie setReviewMovie={setReviewMovie} posterPath={movieInfo.poster_path} title={movieInfo.title} year={movieInfo.year} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} /> }
     </div>
   );
 }

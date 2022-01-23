@@ -55,6 +55,79 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     })
   }
 
+  async function updateOrAddReviewAndMovie(setShowRateReviewMovie, rating, review = null, headline = null) {
+    const { dbRating, latestReview, id, tmdb_vote_count, vote_average } = movieInfo;
+    setShowRateReviewMovie(false);
+    let previousUserRating = userRating.user_rating;
+    let newUserRating;
+    let reviewedUserIsCurrentUser;
+    // Setting userRating to null so that the loading circle and 'Rate' text are shown when adding/updating rating or movie to database.
+    setUserRating(null);
+
+    function updateMovieRating(newDbRating, newUserRating, reviewedUserIsCurrentUser) {
+      const newMovieInfo = { ...movieInfo };
+      // Only updates vote count and average rating only if the current vote count is less than 1000 because if the vote count is less than a thousand 
+      if (typeof movieInfo.vote_count !== 'string') {
+        newMovieInfo.vote_average = newDbRating.rating;
+        if (newDbRating.vote_count === 1000) newMovieInfo.vote_count = '1K';
+        else newMovieInfo.vote_count = newDbRating.vote_count;
+      }
+      // Updating dbRating in movieInfo to inculde the new or updated changes to current movie and to ensure the data on the client side matches with the database.
+      newMovieInfo.dbRating = newDbRating;
+  
+      // If the current user that updated their movie rating is also the user with the most recent written review, the rating must be updated in the new latestReview object to ensure the UserReviews section displays the correct data.
+      if (reviewedUserIsCurrentUser) {
+        const newLatestReview = { ...movieInfo.latestReview } 
+        newLatestReview.user_rating = rating;
+        newMovieInfo.latestReview = newLatestReview;
+      }
+      setMovieInfo(newMovieInfo);
+  
+      // Updates the user's rating in userRating to display the newly added 
+      setUserRating(newUserRating);
+    }
+
+    function customFetch(route, method, bodyObj, action) {
+      return fetch(route, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyObj)
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (action === 'updateRating' || action === 'addRating') {
+            newUserRating = data.userRating;
+            reviewedUserIsCurrentUser = data.reviewedUserIsCurrentUser;
+            console.log("Rating changes applied");
+          } else {
+            console.log('Movie changes applied');
+            updateMovieRating(data.newDbRating, newUserRating, reviewedUserIsCurrentUser);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+
+    if (!previousUserRating) {
+      const reqBody = { id, rating};
+      await customFetch('/movie/user-rating', 'POST', reqBody, 'addRating');
+    } else {
+      const reqBody = { id, rating, latestReview};
+      await customFetch('/movie/user-rating', 'PATCH', reqBody, 'updateRating');
+    }
+    console.log('After rating update', newUserRating);
+    if (!dbRating)  {
+      const reqBody = { id, rating, tmdb_vote_count, vote_average};
+      customFetch('/movie/movie-info', 'POST', reqBody, 'addMovie');
+    } else {
+      const reqBody = { dbRating, id, rating, previousUserRating};
+      customFetch('/movie/movie-info', 'PATCH', reqBody, 'updateMovie');
+    }
+  }
+
+  
+
   return (
     <div className={css.movieInfo}>
       { 
@@ -62,7 +135,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         <div className={css.innerMovieInfo}>
           <section className={css.genInfoAndMedia}>
             <div className={css.infoAndMediaContent}>
-              <MovieHeader movieInfo={movieInfo} setMovieInfo={setMovieInfo} validatedUser={validatedUser} userRating={userRating} setUserRating={setUserRating} />
+              <MovieHeader movieInfo={movieInfo} setMovieInfo={setMovieInfo} validatedUser={validatedUser} userRating={userRating} setUserRating={setUserRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie}/>
               <div className={css.movieMedia}>
                 { (movieInfo.poster_path && !MIimageErrors.hasOwnProperty(movieInfo.id)) && <img src={movieInfo.poster_path} onError={(e) => imageErrorHandler(e, movieInfo.id, MIimageErrors, setMIimageErrors)}/>}
                 { (!movieInfo.poster_path || MIimageErrors.hasOwnProperty(movieInfo.id)) && <div className={css.unavailableImage}><GiFilmProjector className={css.filmIcon} /></div> }
@@ -79,7 +152,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
                 {getCast(movieInfo.credits.updatedCast)}
               </div> : <p>The cast has yet to be added.</p>}
             </div>
-            <UserReviews movieInfo={movieInfo} userRating={userRating}/>
+            <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie}/>
           </section>
 
         </div>

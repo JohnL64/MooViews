@@ -596,7 +596,6 @@ iframe {
 }
 
 .outerReviewMovie {
-  /* width: 30%; */
   position: fixed;
   top: 0;
   bottom: 0;
@@ -608,26 +607,26 @@ iframe {
 }
 
 .reviewMovie {
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
   width: 400px;
   background-color: white;
   overflow: auto;
-  border-top-left-radius: 10px;
+  border-top-left-radius: 5px;
+  --section-bg-color: rgb(242, 242, 242);
 }
 
 .closeBar {
   background-color: rgb(37, 37, 37);
   display: flex;
   justify-content: flex-end;
-  border-top-left-radius: 10px;
+  border-top-left-radius: 5px;
 }
 
 .closeReview {
-  /* border: solid white 1px; */
   color:white;
-  font-size: 1.6rem;
-  padding: 0.8rem;
+  font-size: 25.6px;
+  padding: 12.8px;
   border-radius: 50%;
 }
 
@@ -637,10 +636,149 @@ iframe {
 }
 
 .reviewingMovieInfo {
-  border: solid 1px black;
   display: flex;
+  align-items: center;
+  background-color: var(--section-bg-color);
+  padding: 10px 0 10px 8px;
 }
 
 .reviewingMovieInfo img {
-  width: 25%;
+  width: 80px;
+  height: 120px;
+}
+
+.infoAndAction {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.titleAndYear {
+  font-size: 17.5px;
+  width: 92%;
+  margin: 0 0 18px;
+}
+
+.titleAndYear span {
+  font-size: 14px;
+  color: rgb(68, 68, 68);
+}
+
+.action {
+  border-top: solid rgba(139, 139, 139, 0.356) 1px;
+  font-size: 24px;
+  width: 92%;
+  margin: 0;
+  padding: 18px 0 0;
+}
+
+.reviewRating {
+  border-top: rgba(158, 158, 158, 0.479) solid 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.reviewRating p,
+.headlineAndReview p {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--section-bg-color);
+  font-size: 15px;
+  margin: 0;
+  padding: 8px 0 8px 12px;
+  color: rgb(87, 87, 87);
+}
+
+.starsBox {
+  border: solid rgba(126, 126, 126, 0.678) 1px;
+  border-radius: 10px;
+  padding: 6px 10px 6px 6px;
+  display: flex;
+  align-items: center;
+  margin: 12px 0 12px 12px;
+}
+
+.reviewMovieStar {
+  font-size: 1.8rem;
+  color: rgb(18, 105, 219);
+}
+
+.reviewMovieStarOut {
+  font-size: 1.8rem;
+  color: rgb(190, 190, 190);
+}
+
+.reviewMovieStar,
+.reviewMovieStarOut {
+  cursor: pointer;
+}
+
+.starsBox span {
+  margin-left: 8px;
+}
+
+.headlineAndReview {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.headlineAndReview input,
+.headlineAndReview textarea {
+  padding: 10px 7px;
+  font-size: 14.5px;
+  font-weight: 500;
+  border-radius: 3px;
+  border: solid 1px rgba(124, 124, 124, 0.76);
+  outline: none;
+}
+
+.headlineAndReview input {
+  margin: 15px 12px;
+}
+
+
+.headlineAndReview textarea {
+  margin: 0 12px 20px;
+  font-family: Roboto;
+  height: 100px;
+  flex-grow: 1;
+  resize: none;
+}
+
+.headlineAndReview input:focus,
+.headlineAndReview textarea:focus {
+  box-shadow: 3px 3px 5px rgb(66, 129, 212), -3px -3px 5px rgb(66, 129, 212);
+}
+
+.headlineAndReview button {
+  margin: 20px 12px 35px;
+  background-color: transparent;
+  border: solid rgba(143, 143, 143, 0.575) 1px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+}
+
+.headlineAndReview button:hover {
+  background-color: rgb(238, 238, 238);
+  cursor: pointer;
+}
+
+.reviewAlert {
+  display: flex;
+  align-items: center;
+  color: #BA0933;
+  font-size: 13px;
+  margin: 0 0 12px 12px;
+  padding: 3px;
+}
+
+.alertIcon {
+  margin-right: 5px;
+  font-size: 22px;
 }
