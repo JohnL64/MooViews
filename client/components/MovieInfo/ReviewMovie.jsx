@@ -14,6 +14,7 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
   const [ratingAlert, setRatingAlert] = useState(false);
   const [headlineAlert, setHeadlineAlert] = useState(false);
   const [reviewAlert, setReviewAlert] = useState(false);
+  const [showQueryingDb, setShowQueryingDb] = useState(false);
 
   useEffect(() => {
     if (userRating) {
@@ -68,11 +69,15 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
     if (userRating) {
       if (rating !== userRating.user_rating || (review !== userRating.review && review.length >= 150) || (headline !== userRating.headline && headline)) {
         console.log('UPDATING! review and movie ALL REQUIREMENTS MET');
-        // updateOrAddReviewAndMovie(setReviewMovie, rating, review, headline);
+        setShowQueryingDb(true);
+        // console.log(rating, headline , review);
+        updateOrAddReviewAndMovie('review', setReviewMovie, rating, headline, review);
       } else if (rating === userRating.user_rating && (review === userRating.review && headline === userRating.headline)) setMainAlert(true);
     } else if ((!userRating && rating) && (headline && review.length >= 150)) {
-      console.log('ADDING! review and adding or updating movie ALL REQUIREMENTS MET')
-      // updateOrAddReviewAndMovie(setReviewMovie, rating, review, headline);
+      console.log('ADDING! review and adding or updating movie ALL REQUIREMENTS MET');
+      // console.log(rating, headline , review);
+      setShowQueryingDb(true);
+      updateOrAddReviewAndMovie('review', setReviewMovie, rating, headline, review);
     }
 
     if (!rating) setRatingAlert(true);
@@ -89,23 +94,29 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
           <img src={posterPath} />
           <div className={css.infoAndAction}>
             <p className={css.titleAndYear}>{title} <span>({year})</span></p>
-            { (userRating && !userRating.review) ? <p className={css.action}>Add item</p> : <p className={css.action}>Edit Item</p>}
+            { (!userRating || (userRating && !userRating.review)) ? <p className={css.action}>Add item</p> : <p className={css.action}>Edit Item</p>}
           </div>
         </div>
-        <div className={css.reviewRating}>
-          <p>YOUR RATING</p>
-          {createStars()}
-          { ratingAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> Rating is required to add review.</div>}
-        </div>
-        <form className={css.headlineAndReview} onSubmit={conditionalAddOrUpdate}>
+        { !showQueryingDb && <form className={css.headlineAndReview} onSubmit={conditionalAddOrUpdate}>
+          <div className={css.reviewRating}>
+            <p>YOUR RATING</p>
+            {createStars()}
+            { ratingAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> Rating is required to add review.</div>}
+          </div>
           <p>YOUR REVIEW</p>
           <input type="text" value={headline} placeholder="Write a headline for your review here" onChange={(e) => updateFieldsAndClearAlerts(e, 'headline')} />
           { headlineAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> A required field is missing.</div>}
           <textarea value={review} placeholder="Write your review here" onChange={(e) => updateFieldsAndClearAlerts(e, 'review')}></textarea>
           { reviewAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> {reviewAlert === 'not150' ? 'Sorry, your review is too short. It needs to contain at least 150 characters.' : 'A required field is missing.'}</div>}
-          { mainAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> There are no changes your review to update.</div>}
+          { mainAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> There are no changes in your review to update.</div>}
           <button>Submit</button>
-        </form>
+        </form> }
+        { showQueryingDb && <div className={css.reviewQuery}>
+          { (!userRating || (userRating && !userRating.review)) ? <h3> Please wait, while we add your review.</h3> : <h3> Please wait, while we update your review.</h3>}
+          <div className={css.outerQueryAnimation}>
+            <div className={css.reviewQueryAnimation}></div>
+          </div>
+        </div>}
       </div>
     </div>
    );

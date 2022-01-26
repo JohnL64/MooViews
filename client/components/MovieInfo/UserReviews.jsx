@@ -4,10 +4,12 @@ import { MdAdd } from 'react-icons/md';
 import { AiFillStar } from 'react-icons/ai';
 import { BsCircleFill } from 'react-icons/bs';
 import ReviewMovie from './ReviewMovie.jsx';
+import { useHistory } from 'react-router-dom';
 
-const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie }) => {
+const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validatedUser }) => {
   const [userReviews, setUserReviews] = useState([movieInfo.latestReview]);
   const [reviewMovie, setReviewMovie] = useState(false);
+  const history = useHistory();
 
   function renderUserReviews() {
     const reviewsArr = [];
@@ -46,11 +48,16 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie }) => {
     )
   }
 
+  function authorizedUserForReview() {
+    if (validatedUser) setReviewMovie(true);
+    else history.push('/login');
+  }
+
   return ( 
     <div className={css.userReviews}>
       <div className={css.reviewsTitleAndBtn}>
         <h2 className={css.userTitle}>User Reviews</h2>
-        { movieInfo.is_released && <div className={css.addReview} onClick={() => setReviewMovie(true)}>
+        { movieInfo.is_released && <div className={css.addReview} onClick={authorizedUserForReview}>
           <MdAdd className={css.plusIcon}/>
           <p>Review</p>
         </div>}

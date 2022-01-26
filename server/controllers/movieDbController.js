@@ -91,17 +91,17 @@ movieDbController.getUserMovieRating = (req, res, next) => {
 -------- ADDS USER REVIEW OR ONLY RATING TO REVIEWS IN DATABSE --------
 */
 movieDbController.addUserMovieRating = (req, res, next) => {
-  const { id, rating } = req.body;
+  const { id, rating, headline, review } = req.body;
 
   if (req.isAuthenticated()) {
     const date = getCurrentDate();
     const query = `
-    INSERT INTO  reviews(movie_id, user_id, username, date, user_rating)
-    VALUES ($1, $2, $3, $4, $5)
+    INSERT INTO  reviews(movie_id, user_id, username, date, user_rating, headline, review)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *
     `;
 
-    const values = [id, req.user._id, req.user.username, date, rating];
+    const values = [id, req.user._id, req.user.username, date, rating, headline, review];
 
     db.query(query, values, (err, addedRating) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
@@ -121,17 +121,17 @@ movieDbController.addUserMovieRating = (req, res, next) => {
 -------- UPDATES USER REVIEW OR ONLY RATING TO REVIEWS IN DATABASE --------
 */
 movieDbController.updateUserMovieRating  = (req, res, next) => {
-  const { id, rating, latestReview } = req.body;
+  const { id, rating, headline, review, latestReview } = req.body;
 
   if (req.isAuthenticated()) {
     const query = `
     UPDATE reviews
-    SET user_rating = $1
-    WHERE movie_id = $2 AND user_id = $3
+    SET user_rating = $1, headline = $2, review = $3
+    WHERE movie_id = $4 AND user_id = $5
     RETURNING *
     `;
 
-    const values = [rating, id, req.user._id];
+    const values = [rating, headline, review, id, req.user._id];
 
     db.query(query, values, (err, updatedRating) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
@@ -155,18 +155,20 @@ movieDbController.updateUserMovieRating  = (req, res, next) => {
 -------- ADDS MOVIE TO DATABASE WITH EXISTING USER REVIEWS --------
 */
 movieDbController.addMovie = (req, res, next) => {
-  const { id, rating, tmdb_vote_count, vote_average } = req.body;
+  const { id, rating, tmdb_vote_count, vote_average, ratingOrReview } = req.body;
 
   if (req.isAuthenticated()) {
     const totalRating = ((vote_average * tmdb_vote_count) + rating) / (tmdb_vote_count + 1);
     const fixedRating = Number(totalRating.toFixed(1));
     const voteCount = tmdb_vote_count + 1;
+    let reviewCount = 0;
+    if (ratingOrReview === 'review') reviewCount += 1;
     const query = `
-    INSERT INTO movies(movie_id, rating, vote_count, custom_star, custom_count, star_${rating})
-    VALUES ($1, $2, $3, $4, $5, $6)
+    INSERT INTO movies(movie_id, rating, vote_count, custom_star, custom_count, star_${rating}, review_count)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING *;
     `
-    const values = [id, fixedRating, voteCount, vote_average, tmdb_vote_count, 1];
+    const values = [id, fixedRating, voteCount, vote_average, tmdb_vote_count, 1, reviewCount];
 
     db.query(query, values, (err, addedMovie) => {
       if (err) return next({ message: 'Error has occured when adding movie in movieDbController.addMovie' });
@@ -186,8 +188,9 @@ movieDbController.addMovie = (req, res, next) => {
 -------- UPDATES MOVIE IN DATABASE WITH NEW USER RATING --------
 */
 movieDbController.updateMovie = (req, res, next) => {
-  const { dbRating, id, rating } = req.body;
+  const { dbRating, id, rating, previousUserReview, ratingOrReview } = req.body;
   let previousUserRating = req.body.previousUserRating;
+  console.log('In UPDATE MOVIE: ', previousUserReview, ratingOrReview, !previousUserReview && ratingOrReview === 'review');
 
   function getAverage(dbObj) {
     let sum = dbObj.custom_count * dbObj.custom_star;
@@ -202,9 +205,9 @@ movieDbController.updateMovie = (req, res, next) => {
   }
 
   if (req.isAuthenticated()) {
-    dbRating[`star_${rating}`] += 1;
+    if(ratingOrReview === 'rating' || rating !== previousUserRating) dbRating[`star_${rating}`] += 1;
     // If user has never rated existing movie previousUserRating is assigned an arbitrary rating to ensure database query does not cause an error. The value of this arbitrary rating's count will not change in the database. Also the vote_count property must be incremented only when this is the user first time rating movie.
-    if (!previousUserRating) {
+    if (!previousUserRating || (ratingOrReview === 'review' && rating === previousUserRating)) {
       if (rating === 10) previousUserRating = rating - 1;
       else previousUserRating = rating + 1;
       dbRating.vote_count += 1;
@@ -213,20 +216,33 @@ movieDbController.updateMovie = (req, res, next) => {
       dbRating[`star_${previousUserRating}`] -= 1;
     }
     dbRating.rating = getAverage(dbRating);
+    console.log('OVERALL RATING: ', dbRating.rating);
+    if (!previousUserReview && ratingOrReview === 'review') {
+      console.log('INCREMENTING REVIEW COUNT BY ONE');
+      dbRating.review_count += 1; 
+    }
+
     const query = `
     UPDATE movies
     SET rating = $1,
         vote_count = $2,
         star_${rating} = $3,
-        star_${previousUserRating} = $4
-    WHERE movie_id = $5
+        star_${previousUserRating} = $4,
+        review_count = $5
+    WHERE movie_id = $6
     RETURNING *;
     `
-    const values = [dbRating.rating, dbRating.vote_count, dbRating[`star_${rating}`], dbRating[`star_${previousUserRating}`], id];
+    const values = [dbRating.rating, dbRating.vote_count, dbRating[`star_${rating}`], dbRating[`star_${previousUserRating}`],  dbRating.review_count, id];
+    console.log(dbRating.rating, dbRating.vote_count, dbRating[`star_${rating}`], dbRating[`star_${previousUserRating}`],  dbRating.review_count, id);
 
     db.query(query, values, (err, updatedMovie) => {
-      if (err) return next({ message: 'Error has occured when updating movie in movieDbController.updateMovie' });
+      if (err) {
+        console.log('Error occured when making query in update movie');
+        console.log(err);
+        return next({ message: 'Error has occured when updating movie in movieDbController.updateMovie' });
+      }
       updatedMovie.rows[0].rating = Number(updatedMovie.rows[0].rating);
+      console.log("AFTER QUERY IN UPDATE MOVIE: ", updatedMovie.rows[0]);
       res.locals.newDbRating = updatedMovie.rows[0];
       return next();
     })

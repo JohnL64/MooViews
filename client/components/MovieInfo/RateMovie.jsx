@@ -41,7 +41,7 @@ const RateMovie = ({ userRating, setShowRateMovie, movieInfo, updateOrAddReviewA
         <div className={css.ratingStars}>
           {createStars()}
         </div>
-        <button className={css.submitRating} disabled={!rating || (userRating && rating === userRating.user_rating)} onClick={() => updateOrAddReviewAndMovie(setShowRateMovie, rating)}>Rate</button>
+        <button className={css.submitRating} disabled={!rating || (userRating && rating === userRating.user_rating)} onClick={() => updateOrAddReviewAndMovie('rating', setShowRateMovie, rating, userRating.headline, userRating.review)}>Rate</button>
       </div>
     </div>
    );

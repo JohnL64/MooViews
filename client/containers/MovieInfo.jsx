@@ -55,14 +55,18 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     })
   }
 
-  async function updateOrAddReviewAndMovie(setShowRateReviewMovie, rating, review = null, headline = null) {
+  async function updateOrAddReviewAndMovie(ratingOrReview, actionAfterSubmit, rating, headline, review) {
+    // console.log('Inside updateOrAdd: !!!!!!', rating, headline, review);
     const { dbRating, latestReview, id, tmdb_vote_count, vote_average } = movieInfo;
-    setShowRateReviewMovie(false);
-    let previousUserRating = userRating.user_rating;
+    const previousUserRating = userRating.user_rating;
+    const previousUserReview = userRating.review;
     let newUserRating;
     let reviewedUserIsCurrentUser;
-    // Setting userRating to null so that the loading circle and 'Rate' text are shown when adding/updating rating or movie to database.
-    setUserRating(null);
+    // Setting userRating to null so that the loading circle and 'Rate' text are shown when adding/updating rating and movie to database.
+    if (ratingOrReview === 'rating') {
+      actionAfterSubmit(false);
+      setUserRating(null);
+    }
 
     function updateMovieRating(newDbRating, newUserRating, reviewedUserIsCurrentUser) {
       const newMovieInfo = { ...movieInfo };
@@ -110,18 +114,19 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     }
 
     if (!previousUserRating) {
-      const reqBody = { id, rating};
+      const reqBody = { id, rating, headline, review};
+      console.log('Object when sent with request when review is being added!!!!', reqBody);
       await customFetch('/movie/user-rating', 'POST', reqBody, 'addRating');
     } else {
-      const reqBody = { id, rating, latestReview};
+      const reqBody = { id, rating, headline, review, latestReview};
       await customFetch('/movie/user-rating', 'PATCH', reqBody, 'updateRating');
     }
     console.log('After rating update', newUserRating);
     if (!dbRating)  {
-      const reqBody = { id, rating, tmdb_vote_count, vote_average};
+      const reqBody = { id, rating, tmdb_vote_count, vote_average, ratingOrReview};
       customFetch('/movie/movie-info', 'POST', reqBody, 'addMovie');
     } else {
-      const reqBody = { dbRating, id, rating, previousUserRating};
+      const reqBody = { dbRating, id, rating, previousUserRating, previousUserReview, ratingOrReview};
       customFetch('/movie/movie-info', 'PATCH', reqBody, 'updateMovie');
     }
   }
@@ -152,7 +157,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
                 {getCast(movieInfo.credits.updatedCast)}
               </div> : <p>The cast has yet to be added.</p>}
             </div>
-            <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie}/>
+            <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} validatedUser={validatedUser}/>
           </section>
 
         </div>
