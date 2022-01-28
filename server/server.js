@@ -46,7 +46,7 @@ app.get('/isAuthenticatedUser', (req, res) => {
   // if (req.isAuthenticated()) isValidated = true;
   if (req.isAuthenticated()) {
     isValidated = true;
-    console.log('CURRENT USER\'S ID: ', req.user._id);
+    console.log('CURRENT USER: ', req.user._id, req.user.username);
   }
   res.status(200).json({ isValidated });
 })

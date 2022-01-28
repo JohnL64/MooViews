@@ -57,7 +57,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
 
   async function updateOrAddReviewAndMovie(ratingOrReview, actionAfterSubmit, rating, headline, review) {
     // console.log('Inside updateOrAdd: !!!!!!', rating, headline, review);
-    const { dbRating, latestReview, id, tmdb_vote_count, vote_average } = movieInfo;
+    const { dbRating, id, tmdb_vote_count, vote_average } = movieInfo;
     const previousUserRating = userRating.user_rating;
     const previousUserReview = userRating.review;
     let newUserRating;
@@ -69,6 +69,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     }
 
     function updateMovieRating(newDbRating, newUserRating, reviewedUserIsCurrentUser) {
+      if (ratingOrReview === 'review') actionAfterSubmit(true);
       const newMovieInfo = { ...movieInfo };
       // Only updates vote count and average rating only if the current vote count is less than 1000 because if the vote count is less than a thousand 
       if (typeof movieInfo.vote_count !== 'string') {
@@ -80,11 +81,6 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
       newMovieInfo.dbRating = newDbRating;
   
       // If the current user that updated their movie rating is also the user with the most recent written review, the rating must be updated in the new latestReview object to ensure the UserReviews section displays the correct data.
-      if (reviewedUserIsCurrentUser) {
-        const newLatestReview = { ...movieInfo.latestReview } 
-        newLatestReview.user_rating = rating;
-        newMovieInfo.latestReview = newLatestReview;
-      }
       setMovieInfo(newMovieInfo);
   
       // Updates the user's rating in userRating to display the newly added 
@@ -101,7 +97,6 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
         .then(data => {
           if (action === 'updateRating' || action === 'addRating') {
             newUserRating = data.userRating;
-            reviewedUserIsCurrentUser = data.reviewedUserIsCurrentUser;
             console.log("Rating changes applied");
           } else {
             console.log('Movie changes applied');
@@ -118,7 +113,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
       console.log('Object when sent with request when review is being added!!!!', reqBody);
       await customFetch('/movie/user-rating', 'POST', reqBody, 'addRating');
     } else {
-      const reqBody = { id, rating, headline, review, latestReview};
+      const reqBody = { id, rating, headline, review};
       await customFetch('/movie/user-rating', 'PATCH', reqBody, 'updateRating');
     }
     console.log('After rating update', newUserRating);

@@ -3,7 +3,7 @@ import css from '../../styles/MovieInfo.module.css';
 import { IoClose, IoAlertCircleSharp } from 'react-icons/io5';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
-const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, updateOrAddReviewAndMovie}) => {
+const ReviewMovie = ({ setReviewMovie, setUserReviews, posterPath, title, year, userRating, updateOrAddReviewAndMovie}) => {
   document.body.style.overflow = 'hidden';
 
   const [rating, setRating] = useState(0);
@@ -13,8 +13,11 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
   const [mainAlert, setMainAlert] = useState(false);
   const [ratingAlert, setRatingAlert] = useState(false);
   const [headlineAlert, setHeadlineAlert] = useState(false);
+  const [headlineLimit, setHeadlineLimit] = useState(false);
   const [reviewAlert, setReviewAlert] = useState(false);
+  const [reviewLimit, setReviewLimit] = useState(false);
   const [showQueryingDb, setShowQueryingDb] = useState(false);
+  const [reviewCompleted, setReviewCompleted] = useState(false);
 
   useEffect(() => {
     if (userRating) {
@@ -55,12 +58,26 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
       if (userInput.length > 0) setHeadlineAlert(false);
       // If user is editing a review and current headline is different from the headline saved in database remove mainAlert from the page.
       if ((userRating && userRating.headline) && userInput !== userRating.headline) setMainAlert(false);
-      setHeadline(userInput)
+      // If the length of userInput is less than maximum number, update headline and ensure that the limit alert is not displayed.
+      if (userInput.length < 150) {
+        setHeadlineLimit(false);
+        setHeadline(userInput);
+      // If length of userInput is greater than or equal to maximum number, update headline to the allowed maximum amount of characters and ensure the limit alert is displayed.
+      } else {
+        setHeadlineLimit(true);
+        setHeadline(userInput.slice(0, 149));
+      }
     } else {
       if (userInput.length > 0 && reviewAlert === true) setReviewAlert(false);
       else if (userInput.length >= 150 && reviewAlert === 'not150') setReviewAlert(false);
       if ((userRating && userRating.review) && userInput !== userRating.review) setMainAlert(false);
-      setReview(userInput);
+      if (userInput.length < 4200) {
+        setReviewLimit(false);
+        setReview(userInput);
+      } else {
+        setReviewLimit(true);
+        setReview(userInput.slice(0, 4199));
+      }
     }
   }
 
@@ -71,13 +88,13 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
         console.log('UPDATING! review and movie ALL REQUIREMENTS MET');
         setShowQueryingDb(true);
         // console.log(rating, headline , review);
-        updateOrAddReviewAndMovie('review', setReviewMovie, rating, headline, review);
+        updateOrAddReviewAndMovie('review', setReviewCompleted, rating, headline, review);
       } else if (rating === userRating.user_rating && (review === userRating.review && headline === userRating.headline)) setMainAlert(true);
     } else if ((!userRating && rating) && (headline && review.length >= 150)) {
       console.log('ADDING! review and adding or updating movie ALL REQUIREMENTS MET');
       // console.log(rating, headline , review);
       setShowQueryingDb(true);
-      updateOrAddReviewAndMovie('review', setReviewMovie, rating, headline, review);
+      updateOrAddReviewAndMovie('review', setReviewCompleted, rating, headline, review);
     }
 
     if (!rating) setRatingAlert(true);
@@ -86,18 +103,25 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
     else if (review.length < 150) setReviewAlert('not150');
   }
 
+  function closeReviewAndUpdate() {
+    setUserReviews([]);
+    setReviewMovie(false);
+  }
+
   return ( 
-    <div className={css.outerReviewMovie} onClick={() => setReviewMovie(false)}>
-      <div className={css.reviewMovie} onClick={e => e.stopPropagation()}>
+    <div className={css.outerReviewMovie} onMouseDown={() => setReviewMovie(false)}>
+      <div className={css.reviewMovie} onMouseDown={e => e.stopPropagation()}>
         <div className={css.closeBar}><IoClose className={css.closeReview} onClick={() => setReviewMovie(false)}/></div>
         <div className={css.reviewingMovieInfo}>
           <img src={posterPath} />
           <div className={css.infoAndAction}>
             <p className={css.titleAndYear}>{title} <span>({year})</span></p>
-            { (!userRating || (userRating && !userRating.review)) ? <p className={css.action}>Add item</p> : <p className={css.action}>Edit Item</p>}
+            { (!reviewCompleted && (!userRating || (userRating && !userRating.review))) && <p className={css.action}>Add item</p> }
+            { (!reviewCompleted && userRating.review) && <p className={css.action}>Edit Item</p>}
+            { reviewCompleted && <p className={css.action}>Submission successful</p>}
           </div>
         </div>
-        { !showQueryingDb && <form className={css.headlineAndReview} onSubmit={conditionalAddOrUpdate}>
+        { (!showQueryingDb && !reviewCompleted) && <form className={css.headlineAndReview} onSubmit={conditionalAddOrUpdate}>
           <div className={css.reviewRating}>
             <p>YOUR RATING</p>
             {createStars()}
@@ -106,16 +130,23 @@ const ReviewMovie = ({ setReviewMovie, posterPath, title, year, userRating, upda
           <p>YOUR REVIEW</p>
           <input type="text" value={headline} placeholder="Write a headline for your review here" onChange={(e) => updateFieldsAndClearAlerts(e, 'headline')} />
           { headlineAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> A required field is missing.</div>}
+          { headlineLimit && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> You have reached the maximum amount of the 150 characters allowed.</div>}
           <textarea value={review} placeholder="Write your review here" onChange={(e) => updateFieldsAndClearAlerts(e, 'review')}></textarea>
           { reviewAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> {reviewAlert === 'not150' ? 'Sorry, your review is too short. It needs to contain at least 150 characters.' : 'A required field is missing.'}</div>}
+          { reviewLimit && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> You have reached the maximum amount of the 4200 characters allowed.</div>}
           { mainAlert && <div className={css.reviewAlert}><IoAlertCircleSharp className={css.alertIcon}/> There are no changes in your review to update.</div>}
           <button>Submit</button>
         </form> }
-        { showQueryingDb && <div className={css.reviewQuery}>
-          { (!userRating || (userRating && !userRating.review)) ? <h3> Please wait, while we add your review.</h3> : <h3> Please wait, while we update your review.</h3>}
+        { (showQueryingDb && !reviewCompleted) && <div className={css.reviewQuery}>
+          <h3>Please give us a second while we process your submission.</h3>
           <div className={css.outerQueryAnimation}>
             <div className={css.reviewQueryAnimation}></div>
           </div>
+        </div>}
+        { reviewCompleted && <div className={css.reviewComplete}>
+          <p>Thank you for contributing to MooViews!</p>
+          <p className={css.completeMsg}>The information you have supplied has been processed and your review is now available for everyone to see. We love to hear from our MooViewers and hope to hear from you again soon!</p>
+          <button onClick={closeReviewAndUpdate}>Ok</button>
         </div>}
       </div>
     </div>

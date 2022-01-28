@@ -497,13 +497,24 @@ iframe {
   font-weight: 800;
 }
 
-.userReview {
+.userReview,
+.loadingReviews {
   color: rgb(66, 66, 66);
-  --review-child-width: 95%;
+  /* --review-child-width: 95%; */
+  /* width: 100%; */
   border: solid rgba(109, 109, 109, 0.13) 1px;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
   margin-bottom: 0.4rem;
+  padding: 0 1.0625rem;
+}
+
+.loadingReviews {
+  height: 12rem;
+  background-color: rgba(246, 246, 246, 0.678);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .userReview:nth-child(odd) {
@@ -514,7 +525,6 @@ iframe {
   /* border: solid 1px black; */
   display: flex;
   justify-content: space-between;
-  width: var(--review-child-width);
   margin: 0.5rem auto 0;
 }
 
@@ -539,17 +549,30 @@ iframe {
 }
 
 .writtenReview {
-  width: var(--review-child-width);
   margin: 0 auto 0.5rem;
-  /* border: solid 1px black; */
+  white-space: pre-line;
+  font-size: 0.9375rem;
+  max-height: 14rem;
+  overflow: hidden;
+}
+
+.fullWrittenReview {
+  margin: 0 auto 0.5rem;
+  white-space: pre-line;
+  font-size: 0.9375rem;
+}
+
+.reviewBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
 .userAndDate {
   /* border: solid 1px black; */
   display: flex;
   align-items: center;
-  width: var(--review-child-width);
-  margin: 0 auto 0.5rem;
   font-size: 0.9rem;
 }
 
@@ -565,6 +588,17 @@ iframe {
 
 .userAndDate p:last-child {
   color: black;
+}
+
+.showMoreIcon {
+  font-size: 1.3rem;
+  font-weight: 900;
+  padding: 0.8rem;
+  color: #0e63be;
+}
+
+.showMoreIcon:hover {
+  cursor: pointer;
 }
 
 .reviewsDisplayed {
@@ -758,8 +792,8 @@ iframe {
   box-shadow: 3px 3px 5px rgb(66, 129, 212), -3px -3px 5px rgb(66, 129, 212);
 }
 
-.headlineAndReview button {
-  margin: 20px 12px 35px;
+.headlineAndReview button,
+.reviewComplete button {
   background-color: transparent;
   border: solid rgba(143, 143, 143, 0.575) 1px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
@@ -768,7 +802,16 @@ iframe {
   font-size: 15px;
 }
 
-.headlineAndReview button:hover {
+.headlineAndReview button {
+  margin: 20px 12px 35px;
+}
+
+.reviewComplete button {
+  margin: 20px 0;
+}
+
+.headlineAndReview button:hover,
+.reviewComplete button:hover {
   background-color: rgb(238, 238, 238);
   cursor: pointer;
 }
@@ -815,4 +858,22 @@ iframe {
   width: 4rem;
   height: 4rem;
   margin-top: 1.5rem;
+}
+
+.reviewComplete {
+  padding: 12px;
+}
+
+.reviewComplete p:first-child {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.completeMsg {
+  font-size: 14px;
+}
+
+.reviewComplete button {
+  width: 100%;
+
 }

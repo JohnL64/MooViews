@@ -34,28 +34,6 @@ movieDbController.dbMovieRating = (req, res, next) => {
   })
 }
 
-movieDbController.getLatestReview = (req, res, next) => {
-  if (!res.locals.dbRating || res.locals.dbRating.review_count < 1) {
-    res.locals.latestReview = null;
-    return next();
-  } 
-
-  const query = `
-  SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
-  FROM reviews
-  WHERE movie_id = $1 AND review IS NOT NULL
-  ORDER BY date DESC, _id DESC
-  LIMIT 1;
-  `;
-
-  const values = [res.locals.dbRating.movie_id];
-
-  db.query(query, values, (err, latestReview) => {
-    if (err) return next({message: 'Error has occured when retreiving reviews in movieDbController.getUserReviews'});
-    res.locals.latestReview = latestReview.rows[0];
-    return next(); 
-  })
-}
 
 
 /*
@@ -121,7 +99,7 @@ movieDbController.addUserMovieRating = (req, res, next) => {
 -------- UPDATES USER REVIEW OR ONLY RATING TO REVIEWS IN DATABASE --------
 */
 movieDbController.updateUserMovieRating  = (req, res, next) => {
-  const { id, rating, headline, review, latestReview } = req.body;
+  const { id, rating, headline, review } = req.body;
 
   if (req.isAuthenticated()) {
     const query = `
@@ -135,12 +113,8 @@ movieDbController.updateUserMovieRating  = (req, res, next) => {
 
     db.query(query, values, (err, updatedRating) => {
       if (err) return next({ message: 'Error has occured when adding review in movieDbController.addUserMovieRating' });
-      if (latestReview && req.user._id === latestReview.user_id) res.locals.reviewedUserIsCurrentUser = true;
-      else res.locals.reviewedUserIsCurrentUser = false;
       if (updatedRating.rows.length > 0) res.locals.userRating = updatedRating.rows[0];
       else res.locals.userRating = null;
-      // console.log('Updated rating: ', updatedRating.rows[0]);
-      // console.log('Inside updateUserRating: ', req.user._id === latestReview.user_id)
       return next();
     })
   }
@@ -258,22 +232,23 @@ movieDbController.updateMovie = (req, res, next) => {
 -------- GETS USER REVIEWS FROM DATABASE FOR CURRENT MOVIE --------
 */
 movieDbController.getUserReviews = (req, res, next) => {
-  const { id, reviewsShown } = req.query;
+  const { id, limit, reviewsShown } = req.query;
 
   const query = `
   SELECT _id, username, TO_CHAR(date :: DATE, 'Mon dd, yyyy') AS date, review, headline, user_rating
   FROM reviews
   WHERE movie_id = $1 AND review IS NOT NULL
   ORDER BY date DESC, _id DESC
-  LIMIT 20
-  OFFSET $2;
+  LIMIT $2
+  OFFSET $3;
   `;
 
-  const values = [id, reviewsShown];
+  const values = [id, limit, reviewsShown];
 
   db.query(query, values, (err, reviewsToDisplay) => {
     if (err) return next({message: 'Error has occured when retreiving reviews in movieDbController.getUserReviews'});
-    res.locals.reviewsToDisplay = reviewsToDisplay.rows;
+    if (reviewsToDisplay.rows.length > 0) res.locals.reviewsToDisplay = reviewsToDisplay.rows;
+    else res.locals.reviewsToDisplay = null;
     return next(); 
   })
 }

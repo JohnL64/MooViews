@@ -24,7 +24,7 @@ router.get('/top-rated', movieApiController.topRated, (req, res) => {
 })
 
 // Queries data for Movie Info page.
-router.get('/movie-info', movieDbController.dbMovieRating, movieDbController.getLatestReview, movieApiController.movieInfo, (req, res) => {
+router.get('/movie-info', movieDbController.dbMovieRating, movieApiController.movieInfo, (req, res) => {
   res.status(200).json(res.locals);
 })
 

@@ -240,9 +240,7 @@ movieApiController.movieInfo = (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits,videos`)
     .then(res => res.json())
     .then(data => {
-      // if (res.locals.hasOwnProperty('dbRating')) console.log('Movie exists in DB!!!!!!!!!!!!!!');
       data.dbRating = dbRating;
-      data.latestReview = res.locals.latestReview;
       data.tmdb_vote_count = data.vote_count;
       if (dbRating) {
         data.vote_average = dbRating.rating;
