@@ -6,6 +6,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill, BsCircleFill } from 'react-icons/bs';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 import UserReviews from '../components/MovieInfo/UserReviews.jsx';
+import MoreLikeThis from '../components/MovieInfo/MoreLikeThis.jsx';
 
 const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   document.body.style.backgroundColor = 'white';
@@ -133,7 +134,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
       if (i === 3) break;
       if (prodInfo[i].name === "United States of America") prodInfo[i].name = 'United States';
       prodArray.push(<span key={`${production[13]}${i}`}>{prodInfo[i].name}</span>);
-      if (i !== prodInfo.length - 1) prodArray.push(<BsCircleFill key={`${production[13]}B${i}`}/>)
+      if (i !== 2 && prodInfo[i + 1]) prodArray.push(<BsCircleFill key={`${production[13]}B${i}`}/>)
     }
     if (production === 'production_countries') return <p>{ prodInfo.length > 1 ? 'Countries of origin' : 'Country of origin' } {prodArray}</p>
     else return <p>{ prodInfo.length > 1 ? 'Production companies' : 'Production company' } {prodArray}</p>
@@ -145,7 +146,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     for (let i = 0; i < spokenLang.length; i += 1) {
       if (i === 3) break;
       languages.push(<span key={`lang${i}`}>{ spokenLang[i].english_name}</span>);
-      if (i !== spokenLang.length - 1) languages.push(<BsCircleFill key={`langB${i}`}/>)
+      if (i !== 2 && spokenLang[i + 1]) languages.push(<BsCircleFill key={`langB${i}`}/>)
     }
     return (
       <p>{spokenLang.length > 1 ? 'Languages' : 'Language'} {languages}</p>
@@ -195,6 +196,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
             </div> }
             { !atLeastOneDetailAvailable() && <p>Details for the movie have yet to be added.</p>}
            </div>
+           <MoreLikeThis id={movieInfo.id} collection={movieInfo.belongs_to_collection} genres={movieInfo.genresList}/>
           </section>
         </div>
       }

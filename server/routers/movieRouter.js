@@ -58,4 +58,9 @@ router.get('/user-reviews', movieDbController.getUserReviews, (req, res) => {
   res.status(200).json(res.locals);
 })
 
+// If the selected movie is part of a 'collection' queries for other movies that are in the same colection and get other movies that are similar to the selected movie.
+router.get('/more-movies', movieApiController.getMoreLikeThis, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
 module.exports = router;

@@ -253,7 +253,10 @@ movieApiController.movieInfo = (req, res, next) => {
         data.is_released = isReleased(data.release_date);
         data.release_date = movieApiMethods.newDateFormat(data.release_date);
       }
-      if (data.genres.length) data.genres = movieApiMethods.getGenres(data.genres);
+      if (data.genres.length) {
+        data.genresList = data.genres;
+        data.genres = movieApiMethods.getGenres(data.genres);
+      }
       if (data.poster_path) data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
       if (data.runtime) data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
       data.videos = movieApiMethods.getMovieTrailer(data.videos.results);
@@ -265,8 +268,52 @@ movieApiController.movieInfo = (req, res, next) => {
       return next();
     })
     .catch(err => {
-      return next({ message: 'Error has occured when querying data for Movie Info in movieApiController.' });
+      return next({ message: 'Error has occured when querying data for Movie Info in movieApiController.movieInfo' });
     })
+}
+
+/*
+-------- QUERIES MOVIES IN SELECTED MOVIE'S COLLECTION AND SIMILAR MOVIES --------
+*/
+movieApiController.getMoreLikeThis = async (req, res, next) => {
+  const { id, collection, genres } = req.query;
+  // console.log('Inside getMoreLikeThis!!!! ', id, collection, genres);
+  // console.log(typeof collection)
+  const allMoreMovies = [];
+  const moviesId = { id: true };
+
+
+  if (collection !== 'null') {
+    await fetch(`https://api.themoviedb.org/3/collection/${collection}?api_key=${api_key}&language=en-US`)
+      .then(res => res.json())
+      .then(data => {
+        for (const movie of data.parts) {
+          if (allMoreMovies.length === 15) break;
+          moviesId[movie.id] = true;
+          if (movie.vote_average) movie.vote_average = movie.vote_average.toFixed(1);
+          if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+          allMoreMovies.push(movie);
+        }
+      })
+      .catch(err => {
+        return next({ message: 'Error has occured when querying data for Movie Info in movieApiController.getMoreLikeThis' });
+      })
+  }
+
+  let page = 1;
+  while (allMoreMovies.length < 15) {
+    const results = await movieApiMethods.getMoreSimilarMovies(page, genres);
+    page += 1;
+    for (const movie of results) {
+      if (allMoreMovies.length === 15) break;
+      if (!moviesId.hasOwnProperty(movie.id)) {
+        if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+        allMoreMovies.push(movie); 
+      }
+    }
+  }
+  res.locals.moviesMoreLikeThis = allMoreMovies;
+  return next();
 }
 
 module.exports = movieApiController;

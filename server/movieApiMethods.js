@@ -123,8 +123,8 @@ movieApiMethods.getMovieTrailer = (videoResults) => {
   for (const video of videoResults) {
     // If both trailer and teaser are assigned a src string we no longer need to keep iterating. So break out of the loop
     if (trailer && teaser) break;
-    if (video.type === 'Trailer' && !trailer) trailer = `https://www.youtube.com/embed/${video.key}`;
-    if (video.type === 'Teaser' && !teaser) teaser = `https://www.youtube.com/embed/${video.key}`;
+    if (video.type === 'Trailer' && !trailer) trailer = `https://www.youtube-nocookie.com/embed/${video.key}`;
+    if (video.type === 'Teaser' && !teaser) teaser = `https://www.youtube-nocookie.com/embed/${video.key}`;
   }
 
   if (trailer) return trailer;
@@ -136,8 +136,6 @@ movieApiMethods.newDateFormat = (date) => {
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   return `${monthNames[Number(date.slice(5, 7)) - 1]} ${Number(date.slice(8, 10))}, ${date.slice(0, 4)}`;
 }
-
-
 
 
 /************ METHODS TO ENSURE THE CORRECT DATA IS SENT TO THE CLIENT SIDE FOR ALL PAGES ************/
@@ -225,4 +223,16 @@ movieApiMethods.getTopMovies = async (page) => {
   return currPageResults;
 } 
 
+movieApiMethods.getMoreSimilarMovies = async (page, genres) => {
+  let results;
+  await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=${page}&with_watch_monetization_types=flatrate&with_genres=${genres}`)
+    .then(res => res.json())
+    .then(data => {
+      results = data.results;
+    })
+    .catch(err => {
+      return next({ message: 'Error has occured when querying data for Movie Info in movieApiMethods.getMoreSimilarMovies' });
+    })
+  return results;
+}
 module.exports = movieApiMethods;
