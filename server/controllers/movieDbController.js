@@ -2,9 +2,8 @@ const { IoCompassSharp } = require('react-icons/io5');
 const db = require('../model');
 
 function getCurrentDate() {
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const date = new Date();
-  const month = monthNames[date.getMonth()];
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   let year = date.getFullYear();
   return `${month} ${day}, ${year}`;

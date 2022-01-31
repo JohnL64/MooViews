@@ -84,7 +84,8 @@ a {
   margin-right: 0.2rem;
 }
 
-.loadingDots {
+.loadingDots,
+.smallLoadDots {
   width: 5em;
   display: flex;
   flex-flow: row nowrap;
@@ -92,19 +93,38 @@ a {
   justify-content: space-between;
 }
 
-.loadingDots div {
-  width: 1.2em;
-  height: 1.2em;
+.loadingDots {
+  width: 5em;
+}
+
+.smallLoadDots {
+  width: 2.6em;
+}
+
+.loadingDots div,
+.smallLoadDots div {
   border-radius: 50%;
   background-color: rgb(27, 27, 27);
   animation: fade 0.8s ease-in-out alternate infinite;
 }
 
-.loadingDots div:nth-of-type(1) {
+.loadingDots div {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.smallLoadDots div {
+  width: 0.6em;
+  height: 0.6em;
+}
+
+.loadingDots div:nth-of-type(1),
+.smallLoadDots div:nth-of-type(1) {
   animation-delay: -0.4s;
 }
 
-.loadingDots div:nth-of-type(2) {
+.loadingDots div:nth-of-type(2),
+.smallLoadDots div:nth-of-type(2) {
   animation-delay: -0.2s;
 }
 

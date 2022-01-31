@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import css from "../styles/MovieInfo.module.css";
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
-import { BsFillPersonFill } from 'react-icons/bs';
+import { BsFillPersonFill, BsCircleFill } from 'react-icons/bs';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 import UserReviews from '../components/MovieInfo/UserReviews.jsx';
 
@@ -126,7 +126,36 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     }
   }
 
-  
+  function getProductionInfo(production) {
+    const prodInfo = movieInfo[production];
+    const prodArray = [];
+    for (let i = 0; i < prodInfo.length; i += 1) {
+      if (i === 3) break;
+      if (prodInfo[i].name === "United States of America") prodInfo[i].name = 'United States';
+      prodArray.push(<span key={`${production[13]}${i}`}>{prodInfo[i].name}</span>);
+      if (i !== prodInfo.length - 1) prodArray.push(<BsCircleFill key={`${production[13]}B${i}`}/>)
+    }
+    if (production === 'production_countries') return <p>{ prodInfo.length > 1 ? 'Countries of origin' : 'Country of origin' } {prodArray}</p>
+    else return <p>{ prodInfo.length > 1 ? 'Production companies' : 'Production company' } {prodArray}</p>
+  }
+
+  function getLanguages() {
+    const spokenLang = movieInfo.spoken_languages
+    const languages = [];
+    for (let i = 0; i < spokenLang.length; i += 1) {
+      if (i === 3) break;
+      languages.push(<span key={`lang${i}`}>{ spokenLang[i].english_name}</span>);
+      if (i !== spokenLang.length - 1) languages.push(<BsCircleFill key={`langB${i}`}/>)
+    }
+    return (
+      <p>{spokenLang.length > 1 ? 'Languages' : 'Language'} {languages}</p>
+    )
+  }
+
+  function atLeastOneDetailAvailable() {
+    if (movieInfo.release_date || movieInfo.production_countries.length > 0 || movieInfo.production_companies.length > 0 || movieInfo.spoken_languages.length > 0) return true;
+    else return false;
+  }
 
   return (
     <div className={css.movieInfo}>
@@ -155,6 +184,18 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
             <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} validatedUser={validatedUser}/>
           </section>
 
+          <section className={css.detailsAndMore}>
+           <div className={css.details}>
+            <h2 className={css.detailsTitle}>Details</h2>
+            { atLeastOneDetailAvailable() && <div className={css.movieDetails}>
+              { movieInfo.release_date && <p>Release date <span>{movieInfo.release_date}</span></p>}
+              { movieInfo.production_countries.length > 0 && getProductionInfo('production_countries')}
+              { (movieInfo.spoken_languages.length > 0 && movieInfo.spoken_languages[0].english_name !== 'No Language') && getLanguages()}
+              { movieInfo.production_companies.length > 0 && getProductionInfo('production_companies')}
+            </div> }
+            { !atLeastOneDetailAvailable() && <p>Details for the movie have yet to be added.</p>}
+           </div>
+          </section>
         </div>
       }
     </div>

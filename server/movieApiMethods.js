@@ -130,8 +130,13 @@ movieApiMethods.getMovieTrailer = (videoResults) => {
   if (trailer) return trailer;
   else if (teaser) return teaser;
   else return null;
-
 }
+
+movieApiMethods.newDateFormat = (date) => {
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  return `${monthNames[Number(date.slice(5, 7)) - 1]} ${Number(date.slice(8, 10))}, ${date.slice(0, 4)}`;
+}
+
 
 
 

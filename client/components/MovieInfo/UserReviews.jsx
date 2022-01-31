@@ -11,6 +11,7 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
   const [userReviews, setUserReviews] = useState([]);
   const [reviewMovie, setReviewMovie] = useState(false);
   const [fullReview, setFullReview] = useState({});
+  const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const history = useHistory();
 
   // Once component is mounted checks to see if the 'review' text has overflowed in the p element. The overflowed p elements will be added to fullReview object which is checked to see if a user review should have the "show full review" button and once clicked also referenced to determine if the full review should be showed.
@@ -43,9 +44,11 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
   }, [userReviews]);
 
   function getMoreUserReviews() {
-    fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=20&reviewsShown=${userReviews.length}`)
+    setLoadingMoreReviews(true);
+    fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=12&reviewsShown=${userReviews.length}`)
       .then(res => res.json())
       .then(data => {
+        setLoadingMoreReviews(false);
         setUserReviews([...userReviews, ...data.reviewsToDisplay]);
       })
   }
@@ -84,7 +87,15 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
       <div>
         {reviewsArr}
         <p className={css.reviewsDisplayed}>Showing {userReviews.length} of {movieInfo.dbRating.review_count} review{movieInfo.dbRating.review_count > 1 && 's'}</p>
-        { (movieInfo.dbRating.review_count > 1 && userReviews.length < movieInfo.dbRating.review_count) && <div className={css.showMoreOnly} onClick={getMoreUserReviews}><p>See more reviews</p></div> }
+        { (userReviews.length < movieInfo.dbRating.review_count) && <div className={css.showMoreOnly} onClick={getMoreUserReviews}>
+          { !loadingMoreReviews && <p>See more reviews</p> }
+          { loadingMoreReviews && <div className="smallLoadDots">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>}
+        </div> }
+        
       </div>
     )
   }

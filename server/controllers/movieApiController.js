@@ -251,6 +251,7 @@ movieApiController.movieInfo = (req, res, next) => {
       if (data.release_date) {
         data.year = data.release_date.slice(0, 4);
         data.is_released = isReleased(data.release_date);
+        data.release_date = movieApiMethods.newDateFormat(data.release_date);
       }
       if (data.genres.length) data.genres = movieApiMethods.getGenres(data.genres);
       if (data.poster_path) data.poster_path = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
@@ -258,7 +259,7 @@ movieApiController.movieInfo = (req, res, next) => {
       data.videos = movieApiMethods.getMovieTrailer(data.videos.results);
       data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew);
       if (data.vote_count > 999) data.vote_count = movieApiMethods.newVoteCountFormat(data.vote_count);
-      if (!data.overview) data.overview = 'The plot is currently unknown.'
+      if (!data.overview) data.overview = 'The plot is currently unknown.';
 
       res.locals.movieInfo = data;
       return next();
