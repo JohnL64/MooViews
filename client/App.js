@@ -12,6 +12,16 @@ import './styles/index.css';
 
 
 function App() {
+  const [validatedUser, setValidatedUser] = useState(null);
+  useEffect(() => {
+    fetch('/isAuthenticatedUser')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setValidatedUser(data.isValidated);
+        // if (location !== '/') history.push('/');
+      })
+  }, [])
   // adds the movie's id to imagesUnavailable object when an error occurs trying to fetch an image with given src. Once the id is added to imagesUnavailable the image error will then be displayed
   function imageErrorHandler(e, movieId, imageErrors, setImageErrors) {
     e.target.onerror = null;
@@ -23,8 +33,8 @@ function App() {
 
   return (
     <Router>
-      <div className='app'>
-        <Navbar imageErrorHandler={imageErrorHandler}/>
+      { (validatedUser !== null) && <div className='app'>
+        <Navbar imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} />
         <Switch>
           <Route exact path='/'>
             <Home imageErrorHandler={imageErrorHandler} />
@@ -39,16 +49,16 @@ function App() {
             <Signup />
           </Route>
           <Route path='/login'>
-            <Login />
+            <Login setValidatedUser={setValidatedUser} />
           </Route>
           <Route path='/movie/:movie'>
-            <MovieInfo />
+            <MovieInfo imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>
           </Route>
           <Route path='/all-results/:keyWord'>
             <AllResults imageErrorHandler={imageErrorHandler}/>
           </Route>
         </Switch>
-      </div>
+      </div> }
     </Router>
   )
 }

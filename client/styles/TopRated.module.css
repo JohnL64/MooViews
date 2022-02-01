@@ -89,6 +89,10 @@
   margin: 0.3rem 0 0;
 }
 
+.columnTitles .colRankAndTitle {
+  margin-left: 1rem;
+}
+
 .rankAndTitle,
 .colRankAndTitle {
   box-sizing: border-box;

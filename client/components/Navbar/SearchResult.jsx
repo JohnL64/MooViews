@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import css from '../../styles/Navbar.module.css';
 import { GiFilmProjector } from 'react-icons/gi';
 
-const SearchResult = ({ searchResult, keyword, showAllResults, imageErrorHandler }) => {
+const SearchResult = ({ searchResult, keyword, setKeyword, setSignout, showAllResults, imageErrorHandler }) => {
   const [SRimageErrors, setSRimageErrors] = useState({});
   const history = useHistory();
+  const location = useLocation().pathname;
   const topResults = [];
 
   let numOfMovies = 8;
   if (searchResult.length < 8) numOfMovies = searchResult.length;
 
+  function showMovieInfo(movieId) {
+    if (location.indexOf('/movie') !== -1) {
+      history.replace(`/movie/${movieId}`);
+      history.go(0);
+    } else {
+      history.push(`/movie/${movieId}`);
+      setKeyword('');
+      setSignout(false);
+    }
+  }
+
   if (searchResult.length > 0) {
     for (let i = 0; i < numOfMovies; i += 1) {
       const movie = searchResult[i];
       topResults.push(
-        <div className={css.result} key={movie.id} onMouseDown={() => history.push(`/movie/${movie.id}`)}>
+        <div className={css.result} key={movie.id} onMouseDown={() => showMovieInfo(movie.id)}>
           { (movie.poster_path && !SRimageErrors[movie.id]) && <img className={css.SRimage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, SRimageErrors, setSRimageErrors)}/> }
           { (!movie.poster_path || SRimageErrors[movie.id]) && 
             <div className={css.SRimageUnavailable}>
