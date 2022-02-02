@@ -276,7 +276,8 @@ movieApiController.movieInfo = (req, res, next) => {
 -------- QUERIES MOVIES IN SELECTED MOVIE'S COLLECTION AND SIMILAR MOVIES --------
 */
 movieApiController.getMoreLikeThis = async (req, res, next) => {
-  const { id, collection, genres } = req.query;
+  const { collection, genres } = req.query;
+  let id = Number(req.query.id);
   // console.log('Inside getMoreLikeThis!!!! ', id, collection, genres);
   // console.log(typeof collection)
   const allMoreMovies = [];
@@ -288,12 +289,14 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
       .then(res => res.json())
       .then(data => {
         for (const movie of data.parts) {
-          if (allMoreMovies.length === 15) break;
+          if (movie.id === id) continue;
+          if (allMoreMovies.length === 16) break;
           moviesId[movie.id] = true;
           if (movie.vote_average) movie.vote_average = movie.vote_average.toFixed(1);
           if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
           allMoreMovies.push(movie);
         }
+        console.log(allMoreMovies)
       })
       .catch(err => {
         return next({ message: 'Error has occured when querying data for Movie Info in movieApiController.getMoreLikeThis' });
@@ -301,12 +304,12 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
   }
 
   let page = 1;
-  while (allMoreMovies.length < 15) {
+  while (allMoreMovies.length < 16) {
     const results = await movieApiMethods.getMoreSimilarMovies(page, genres);
     page += 1;
     for (const movie of results) {
-      if (allMoreMovies.length === 15) break;
-      if (!moviesId.hasOwnProperty(movie.id)) {
+      if (allMoreMovies.length === 16) break;
+      if (!moviesId.hasOwnProperty(movie.id) && movie.id !== id) {
         if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
         allMoreMovies.push(movie); 
       }

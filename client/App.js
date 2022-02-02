@@ -51,9 +51,7 @@ function App() {
           <Route path='/login'>
             <Login setValidatedUser={setValidatedUser} />
           </Route>
-          <Route path='/movie/:movie'>
-            <MovieInfo imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>
-          </Route>
+          <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>)}/>
           <Route path='/all-results/:keyWord'>
             <AllResults imageErrorHandler={imageErrorHandler}/>
           </Route>

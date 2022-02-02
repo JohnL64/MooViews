@@ -6,7 +6,6 @@ import RateMovie from './RateMovie.jsx';
 import { useHistory } from 'react-router-dom';
 
 const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUserRating, updateOrAddReviewAndMovie }) => {
-  console.log('Movie id: ', movieInfo.id);
   const [showRateMovie, setShowRateMovie] = useState(false);
   const history = useHistory();
   
