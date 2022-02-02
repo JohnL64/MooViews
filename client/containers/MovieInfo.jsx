@@ -14,8 +14,6 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
   const [userRating, setUserRating] = useState(null);
-  console.log('USER RATING: ', userRating);
-  console.log('MOVIE INFO: ', movieInfo);
 
   useEffect(async () => {
     await fetch(`/movie/movie-info?id=${movie}`)
@@ -28,17 +26,17 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
           console.log(err);
       })
 
-      if (validatedUser) {
-        fetch(`/movie/user-rating?id=${movie}`)
-          .then(res => res.json())
-          .then(data => {
-            // console.log('USER RATING: ', data.userRating);
-            setUserRating(data.userRating);
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      }
+    if (validatedUser) {
+      fetch(`/movie/user-rating?id=${movie}`)
+        .then(res => res.json())
+        .then(data => {
+          // console.log('USER RATING: ', data.userRating);
+          setUserRating(data.userRating);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
   }, []);
 
   function getCast(castArr) {
@@ -196,7 +194,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
             </div> }
             { !atLeastOneDetailAvailable() && <p>Details for the movie have yet to be added.</p>}
            </div>
-           <MoreLikeThis id={movieInfo.id} collection={movieInfo.belongs_to_collection} genres={movieInfo.genresList}/>
+           <MoreLikeThis id={movieInfo.id} collection={movieInfo.belongs_to_collection} genres={movieInfo.genresList} imageErrorHandler={imageErrorHandler}/>
           </section>
         </div>
       }

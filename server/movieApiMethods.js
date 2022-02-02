@@ -123,8 +123,8 @@ movieApiMethods.getMovieTrailer = (videoResults) => {
   for (const video of videoResults) {
     // If both trailer and teaser are assigned a src string we no longer need to keep iterating. So break out of the loop
     if (trailer && teaser) break;
-    if (video.type === 'Trailer' && !trailer) trailer = `https://www.youtube-nocookie.com/embed/${video.key}`;
-    if (video.type === 'Teaser' && !teaser) teaser = `https://www.youtube-nocookie.com/embed/${video.key}`;
+    if (video.type === 'Trailer' && !trailer) trailer = `https://www.youtube.com/embed/${video.key}`;
+    if (video.type === 'Teaser' && !teaser) teaser = `https://www.youtube.com/embed/${video.key}`;
   }
 
   if (trailer) return trailer;
