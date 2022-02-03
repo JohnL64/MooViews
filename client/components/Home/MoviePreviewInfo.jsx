@@ -30,7 +30,7 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
       {error && <p>{error}</p>}
       { previewGeneralInfo &&
         <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
-            <IoClose className={css.previewClose} color='white' onClick={() => close(null)}/>
+            <IoClose className={css.previewClose} onClick={() => close(null)}/>
             <p className={css.previewInfoTitle}><Link to={`/movie/${id}`}>{title}</Link></p>
             <p className={css.allPreviewGeneralInfo}> 
               <span>{previewGeneralInfo.rating}</span> 

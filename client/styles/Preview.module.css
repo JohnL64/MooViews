@@ -143,21 +143,30 @@ h2 {
 
 .previous,
 .next {
-  visibility: hidden;
   position: absolute;
   top: 28%;
-  height: 3.4375rem;
-  width: 3.4375rem;
+  height: 4.2rem;
+  width: 4.2rem;
   padding: auto;
   background-color: rgba(7, 7, 7, 0.541);
+  border: rgba(255, 255, 255, 0.575) 1px solid;
   border-radius: 50%;
-  border-color: white;
   z-index: 1;
+}
+
+.previous {
+  visibility: hidden;
+  left: -1rem;
+}
+
+.next {
+  right: 0;
+  right: -1rem;
 }
 
 .previousIcon,
 .nextIcon {
-  font-size: 1.875rem
+  font-size: 2rem;
 }
 
 .previous:hover,
@@ -168,10 +177,6 @@ h2 {
 .innerPreview:hover .previous,
 .innerPreview:hover .next {
   visibility: visible;
-}
-
-.next {
-  right: 0;
 }
 
 .previewInfoBox {
@@ -199,7 +204,8 @@ h2 {
   flex-direction: column;
   align-items: center;
   width: 30%;
-  min-width: 360px;
+  min-width: 500px;
+  max-width: 576px;
 }
 
 .backdropImg {
@@ -219,11 +225,11 @@ h2 {
   justify-content: center;
   align-items: center;
   position: absolute;
-  height: 1.4rem;
-  width: 1.4rem;
+  height: 1.6rem;
+  width: 1.6rem;
   border-radius: 50%;
   right: 0.5rem;
-  top: -2.45rem;
+  top: -2.55rem;
   padding: 0.4375rem;
   /******** Props for testing ********/
   /* height: auto;
@@ -337,12 +343,6 @@ p a:hover {
   .infoBtnIcon {
     font-size: 1.55rem;
   }
-  .previewInfoContent {
-    width: 38%;
-  }
-  .preInfoImageUnavailable {
-    height: 225px;
-  }
 }
 
 @media screen and (max-width: 1138px) {
@@ -353,11 +353,5 @@ p a:hover {
     --preview-width: 920px;
     --preview-movie-width: 140px;
     --preview-movie-height: 210px;
-  }
-  .previewInfoContent {
-    width: 42%;
-  }
-  .preInfoImageUnavailable {
-    height: 195px;
   }
 }
