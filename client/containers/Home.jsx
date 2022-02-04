@@ -6,6 +6,7 @@ import 'regenerator-runtime/runtime.js';
 
 const Home = ({ imageErrorHandler }) => {
   document.body.style.backgroundColor = 'black';
+  document.title = 'MooViews: Movie Reviews and Ratings';
   // using state to store movie data for preview and main. Also used to render components once data is received from server.
   const [preview, setPreview] = useState(null);
   const [main, setMain] = useState(null);

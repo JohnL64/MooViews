@@ -9,6 +9,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 const AllResults = ({ imageErrorHandler }) => {
   document.body.style.backgroundColor = 'white';
   const { keyWord } = useParams();
+  document.title = `Search Results for \"${keyWord}\"`;
   const [keyword, setKeyword] = useState(keyWord);
   const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(0)
