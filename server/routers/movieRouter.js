@@ -63,4 +63,9 @@ router.get('/more-movies', movieApiController.getMoreLikeThis, (req, res) => {
   res.status(200).json(res.locals);
 })
 
+// =Queries movie API for selected movie in "More Like This" section on Movie Info page.
+router.get('/more-info', movieApiController.getMoreInfo, (req, res) => {
+  res.status(200).json(res.locals);
+})
+
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import css from '../../styles/MovieInfo.module.css';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { IoClose, IoConstructOutline } from 'react-icons/io5';
+import { IoClose } from 'react-icons/io5';
 
 const RateMovie = ({ userRating, setShowRateMovie, movieInfo, updateOrAddReviewAndMovie }) => {
   document.body.style.overflow = 'hidden';

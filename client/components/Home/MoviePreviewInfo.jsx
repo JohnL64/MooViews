@@ -25,6 +25,18 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
       })
   }, [])
 
+  function addAvailableGeneralInfo() {
+    const infoArr = [previewGeneralInfo.rating, releaseDate, genres, previewGeneralInfo.runtime];
+    const infoToRender = [];
+    for (let i = 0; i < infoArr.length; i += 1) {
+      if (infoArr[i]) {
+        infoToRender.push(<span key={`info${i}`}>{infoArr[i]}</span>);
+        if (infoArr[i + 1]) infoToRender.push(<span key={`break${i}`}>|</span>);
+      }
+    }
+    return infoToRender;
+  }
+
   return (
     <div className={css.previewInfoBox} onClick={() => close(null)}>
       {error && <p>{error}</p>}
@@ -33,13 +45,7 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
             <IoClose className={css.previewClose} onClick={() => close(null)}/>
             <p className={css.previewInfoTitle}><Link to={`/movie/${id}`}>{title}</Link></p>
             <p className={css.allPreviewGeneralInfo}> 
-              <span>{previewGeneralInfo.rating}</span> 
-              <span>|</span>
-              <span>{releaseDate}</span>
-              <span>|</span>
-              <span>{genres}</span>
-              <span>|</span>
-              <span>{previewGeneralInfo.runtime}</span> 
+              {addAvailableGeneralInfo()}
             </p>
             { !preInfoImageErrors[id] && <img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/>}
             { preInfoImageErrors[id] && <div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div>}
