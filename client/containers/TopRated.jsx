@@ -6,6 +6,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 
 const TopRated = ({ imageErrorHandler }) => {
   document.body.style.backgroundColor = 'white';
+  document.title = 'Top 100 Movies - MooViews';
   const [topRated, setTopRated] = useState(null);
   const [TRimageErrors, setTRimageErrors] = useState({});
 

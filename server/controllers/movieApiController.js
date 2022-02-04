@@ -55,8 +55,8 @@ movieApiController.home = async (req, res, next) => {
 
   // Queries for a list of movies that are now playing in theaters for preview.
   if (content === "preview") {
-        let urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
-        let urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2&region=US`;
+        let urlQuery = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1`;
+        let urlQueryTwo = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=2`;
 
     await fetch(urlQuery)
     .then(res => res.json())
@@ -263,6 +263,9 @@ movieApiController.movieInfo = (req, res, next) => {
       data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew);
       if (data.vote_count > 999) data.vote_count = movieApiMethods.newVoteCountFormat(data.vote_count);
       if (!data.overview) data.overview = 'The plot is currently unknown.';
+      /*********************** Testing  *****************************/
+      data.backdrop_path = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+      /*********************** Testing  *****************************/
 
       res.locals.movieInfo = data;
       return next();

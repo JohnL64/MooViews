@@ -20,6 +20,9 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
       .then(res => res.json())
       .then(data => {
         // console.log('MOVIE INFO: ', data.movieInfo);
+        let docTitle = data.movieInfo.title;
+        if (data.movieInfo.year) docTitle += ` (${data.movieInfo.year})`;
+        document.title = docTitle;
         setMovieInfo(data.movieInfo);
       })
       .catch(err => {
