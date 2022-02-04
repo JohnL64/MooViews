@@ -82,7 +82,7 @@ movieApiMethods.topCastAndCrew = (castArr, crewArr) => {
   return { topCast, director, directorTitle };
 }
 
-movieApiMethods.fullCastAndCrew = (cast, crew) => {
+movieApiMethods.fullCastAndCrew = (cast, crew, queryingFor) => {
   const updatedCast = [];
   const updatedCrew = {
     Director: [],
@@ -90,16 +90,19 @@ movieApiMethods.fullCastAndCrew = (cast, crew) => {
     Producer: []
   };
   for (let i = 0; i < cast.length; i += 1) {
-    if (i === 16) break;
+    if (i === 16 || (queryingFor === 'moreInfo' && i === 3)) break;
     if (cast[i].profile_path) cast[i].profile_path = `https://image.tmdb.org/t/p/w185/${cast[i].profile_path}`;
     const { id, name, character, profile_path } = cast[i];
     updatedCast.push({ id, name, character, profile_path });
   }
 
   for (const member of crew) {
-    if (member.job === 'Producer' || member.job === 'Writer' || member.job === 'Director') updatedCrew[member.job].push(member.name);
-    else if (member.job === 'Screenplay') updatedCrew.Writer.push(member.name);
-
+    if (queryingFor !== 'moreInfo') {
+      if (member.job === 'Producer' || member.job === 'Writer' || member.job === 'Director') updatedCrew[member.job].push(member.name);
+      else if (member.job === 'Screenplay') updatedCrew.Writer.push(member.name);
+    } else {
+      if (member.job === 'Director') updatedCrew[member.job].push(member.name);
+    }
   }
   return { updatedCast, updatedCrew };
 }

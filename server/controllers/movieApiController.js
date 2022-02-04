@@ -319,4 +319,30 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
   return next();
 }
 
+
+/*
+-------- QUERIES FOR MORE INFO ON SELECTED MOVIE IN MORE LIKE THIS SECTION IN MOVIE INFO PAGE --------
+*/
+movieApiController.getMoreInfo = async (req, res, next) => {
+  console.log('INSIDE OF GET MORE INFO: ', req.query.id);
+  fetch(`https://api.themoviedb.org/3/movie/${req.query.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.release_dates.results.length > 0) data.rating = movieApiMethods.findMpaaRating(data.release_dates.results);
+      data.release_dates = null;
+      if (data.release_date) {
+        data.year = data.release_date.slice(0, 4);
+      }
+      if (data.runtime) data.runtime = movieApiMethods.changeRuntimeFormat(data.runtime);
+      data.credits = movieApiMethods.fullCastAndCrew(data.credits.cast, data.credits.crew, 'moreInfo');
+
+      res.locals.movieInfo = data;
+      return next();
+    })
+    .catch(err => {
+      return next({ message: 'Error has occured when querying data for MovieInfo in movieApiController.getMoreInfo' });
+    })
+  
+}
+
 module.exports = movieApiController;

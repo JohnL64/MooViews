@@ -4,15 +4,16 @@ import { Link } from 'react-router-dom';
 import { AiFillStar, AiOutlineInfoCircle } from 'react-icons/ai';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { GiFilmProjector } from 'react-icons/gi';
+import MoreInfo from './MoreInfo.jsx';
 
 
 const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
   const [moreMovies, setMoreMovies] = useState(null);
   const [display, setDisplay] = useState({first: 0, last: 3})
   const [moreImageErrors, setMoreImageErrors] = useState({});
+  const [moreInfo, setMoreInfo] = useState(null);
 
   function getGenres() {
-    // console.log('Genres LIST: ', genres)
     let genreIds = '';
     for (let i = 0; i < genres.length; i += 1) {
       if (i === 3) break;
@@ -23,22 +24,19 @@ const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
   }
 
   if (collection) collection = collection.id;
-  if (genres.length > 0) genres = getGenres();
+  if (genres) genres = getGenres();
   else genres = null;
-  // console.log('Collection id: ', collection);
 
   useEffect(() => {
-    // console.log('In use effect!!!!!!!!!!');
     fetch(`/movie/more-movies?id=${id}&collection=${collection}&genres=${genres}`)
       .then(res => res.json())
       .then(data => {
-        // console.log('More like this!!!!!: ', data.moviesMoreLikeThis);
+        console.log('More like this!!!!!: ', data.moviesMoreLikeThis);
         setMoreMovies(data.moviesMoreLikeThis);
       })
       .catch(err => {
         console.log(err);
       })
-    // console.log('Current location', window.pageYOffset)
   }, [])
 
   function changeRenderedMovies(direction) {
@@ -64,7 +62,7 @@ const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
           <div className={css.similarMovieInfo}>
             <p className={css.similarMovieRating}><AiFillStar /> {movie.vote_average}</p>
             <Link to={`/movie/${movie.id}`}><p className={css.similarMovieTitle}>{movie.title}</p></Link>
-            <div><button><AiOutlineInfoCircle /></button></div>
+            <div><button onClick={() => setMoreInfo(movie)}><AiOutlineInfoCircle /></button></div>
           </div>
         </div>
       )
@@ -82,6 +80,7 @@ const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
     <div className={css.moreLikeThis}>
       <h2 className={css.moreTitle}>More like this</h2>
       { moreMovies &&  renderMoreMovies()}
+      { moreInfo && <MoreInfo moreInfo={moreInfo} setMoreInfo={setMoreInfo} imageErrorHandler={imageErrorHandler}/>}
     </div>
    );
 }
