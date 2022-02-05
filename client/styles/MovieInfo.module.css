@@ -446,12 +446,12 @@ iframe {
 }
 
 .starInfo p {
-  margin: 0;
+  margin: 0.5rem 0 0;
   color: rgb(95, 95, 95);
 }
 
-.starInfo p:first-child{
-  margin-bottom: 0.5rem;
+.starInfo p:first-child {
+  margin: 0;
   font-weight: 700;
   color: black;
 }
