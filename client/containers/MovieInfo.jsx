@@ -42,21 +42,6 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
     }
   }, []);
 
-  function getCast(castArr) {
-    return castArr.map(star => {
-      return (
-        <div className={css.star} key={star.name}>
-          { star.profile_path && !MIimageErrors.hasOwnProperty(star.id) && <img src={star.profile_path} onError={(e) => imageErrorHandler(e, star.id, MIimageErrors, setMIimageErrors)}/>}
-          { (!star.profile_path || MIimageErrors.hasOwnProperty(star.id)) && <div className={css.starImgUnavailable}><BsFillPersonFill className={css.personIcon} /></div>}
-          <div className={css.starInfo}>
-            <p>{star.name}</p>
-            <p>as {star.character}</p>
-          </div>
-        </div>
-      )
-    })
-  }
-
   async function updateOrAddReviewAndMovie(ratingOrReview, actionAfterSubmit, rating, headline, review) {
     // console.log('Inside updateOrAdd: !!!!!!', rating, headline, review);
     const { dbRating, id, tmdb_vote_count, vote_average } = movieInfo;
@@ -126,6 +111,21 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
       const reqBody = { dbRating, id, rating, previousUserRating, previousUserReview, ratingOrReview};
       customFetch('/movie/movie-info', 'PATCH', reqBody, 'updateMovie');
     }
+  }
+
+  function getCast(castArr) {
+    return castArr.map(star => {
+      return (
+        <div className={css.star} key={star.name}>
+          { star.profile_path && !MIimageErrors.hasOwnProperty(star.id) && <img src={star.profile_path} onError={(e) => imageErrorHandler(e, star.id, MIimageErrors, setMIimageErrors)}/>}
+          { (!star.profile_path || MIimageErrors.hasOwnProperty(star.id)) && <div className={css.starImgUnavailable}><BsFillPersonFill className={css.personIcon} /></div>}
+          <div className={css.starInfo}>
+            <p>{star.name}</p>
+            {star.character && <p>as {star.character}</p>}
+          </div>
+        </div>
+      )
+    })
   }
 
   function getProductionInfo(production) {

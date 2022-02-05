@@ -124,7 +124,7 @@ movieApiController.comingSoon = (req, res, next) => {
 
   // Updates spefic data for each movie that will be displayed.
   function updateCSinfo(movie) {
-    if (movie.overview === 'Coming Soon') movie.overview = 'The plot is currently unknown.'
+    if (!movie.overview) movie.overview = 'The plot is currently unknown.'
     if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
     movie.genres = movieApiMethods.getGenres(movie.genre_ids);                      
   }
