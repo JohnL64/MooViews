@@ -6,7 +6,7 @@ const PageNavigator = ({ page, numOfPages, content }) => {
   page = Number(page);
   // If the container that is rendering PageNavigator is "Home" this function will ensure that certain elements will have a different class name so that the styling can be dynamically applied.
   function selectorName(name) {
-    if (content) return css[name];
+    if (content === 'popular') return css[name];
     return name;
   }
 
@@ -15,7 +15,7 @@ const PageNavigator = ({ page, numOfPages, content }) => {
   let lastNum;
 
   function regBtn(pageNum) {
-    return <Link to={`/popular/${pageNum}`} key={`pL${pageNum}`}><button className='pageNavBtn' key={pageNum} >{pageNum}</button></Link>
+    return <Link to={`/${content}/${pageNum}`} key={`pL${pageNum}`}><button className='pageNavBtn' key={pageNum} >{pageNum}</button></Link>
   };
 
   function currBtn(pageNum) {
@@ -56,11 +56,11 @@ const PageNavigator = ({ page, numOfPages, content }) => {
   return (
     <div className={selectorName('pageNavigator')}> 
 
-      <Link to={`/popular/${page - 1}`}><button disabled={page === 1} className={selectorName('pageNavNextPrev')} key='navPrevious' >Previous</button></Link>
+      <Link to={`/${content}/${page - 1}`}><button disabled={page === 1} className={selectorName('pageNavNextPrev')} key='navPrevious' >Previous</button></Link>
       <div className="pageNumBtns">
         {pageNumbers}
       </div>
-      <Link to={`/popular/${page + 1}`}><button disabled={page === numOfPages} className={selectorName('pageNavNextPrev')} key="navNext" >Next</button></Link>
+      <Link to={`/${content}/${page + 1}`}><button disabled={page === numOfPages} className={selectorName('pageNavNextPrev')} key="navNext" >Next</button></Link>
 
     </div>
   );

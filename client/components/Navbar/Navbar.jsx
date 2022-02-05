@@ -68,7 +68,7 @@ const Navbar = ({ imageErrorHandler, validatedUser }) => {
           </div> }
         { error && <p>{error}</p>}
       </div>
-      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon', location)} to='/coming-soon'>Coming Soon</Link>
+      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon/1', location)} to='/coming-soon/1'>Coming Soon</Link>
       <Link className={css.navlink} onClick={() => conditionalPageRefresh('/top-rated', location)} to='/top-rated'>Top Rated</Link>
       { !validatedUser && <Link className={css.navlink} onClick={() => conditionalPageRefresh('/login', location)} to='/login'>Sign In</Link>}
       { validatedUser && <ConfirmSignout signout={signout} setSignout={setSignout} /> }

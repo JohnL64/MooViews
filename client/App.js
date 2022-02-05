@@ -43,7 +43,7 @@ function App() {
           <Route path='/top-rated'>
             <TopRated imageErrorHandler={imageErrorHandler} />
           </Route>
-          <Route path='/coming-soon'>
+          <Route path='/coming-soon/:page' render={(props) => (<ComingSoon key ={props.match.params.page} imageErrorHandler={imageErrorHandler}/>)}>
             <ComingSoon imageErrorHandler={imageErrorHandler} />
           </Route>
           <Route path='/signup'>
