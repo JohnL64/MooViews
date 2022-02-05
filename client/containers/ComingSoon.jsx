@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import css from '../styles/ComingSoon.module.css';
 import PageNavigator from '../components/PageNavigator.jsx';
 import ExpandInfo from '../components/ExpandInfo.jsx';
@@ -9,37 +9,30 @@ import { GiFilmProjector } from 'react-icons/gi';
 const ComingSoon = ({ imageErrorHandler }) => {
   document.body.style.backgroundColor = 'white';
   document.title = 'Coming Soon - MooViews';
+  window.scrollTo(0, 0);
+  const page = Number(useParams().page);
   // Using state to store coming soon movie data retreived from server
   const [comingSoon, setComingSoon] = useState(null);
-  const [renderPage, setRenderPage] = useState(false);
-  const [page, setPage] = useState(1);
   const [numOfPages, setNumOfPages] = useState(null);
-  const [comingSoonError, setComingSoonError] = useState(null);
   const [CSimageErrors, setCSimageErrors] = useState({});
   // Making a request to the server for coming soon movie data after components first render
   useEffect(() => {
     const abortCont = new AbortController();
-    if (!comingSoon) {
-      fetch(`/movie/coming-soon?content=comingSoon`, { signal: abortCont.signal })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Coming Soon ', data.comingSoon);
-          setNumOfPages(Math.ceil(data.comingSoon.length / 20));
-          setComingSoon(data.comingSoon);
-          setRenderPage(true);
-        })
-        .catch(err => {
-          if (err.name === 'AbortError') {
-            console.log('Fetch Aborted');
-          }
-          // console.log(err);
-        })
-    } else {
-      setRenderPage(true);
-    }
+    fetch(`/movie/coming-soon?content=comingSoon`, { signal: abortCont.signal })
+      .then(res => res.json())
+      .then(data => {
+        setNumOfPages(Math.ceil(data.comingSoon.length / 20));
+        setComingSoon(data.comingSoon);
+      })
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted');
+        }
+        // console.log(err);
+      })
 
     return () => abortCont.abort();
-  }, [page])
+  }, [])
 
   function getMonthName(month) {
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -48,7 +41,6 @@ const ComingSoon = ({ imageErrorHandler }) => {
   }
 
   function comingSoonMovies() {
-    console.log(comingSoon.length, numOfPages)
     const moviesByDates = [];
     const datesObj = {};
     let firstMovie = (page - 1) * 20;
@@ -88,7 +80,6 @@ const ComingSoon = ({ imageErrorHandler }) => {
     }
     for (const key in datesObj) {
       const date = getMonthName((key.slice(5, 7)) - 1) + ' ' + Number(key.slice(8, 10));
-      console.log(date);
       moviesByDates.push(
         <div className={css.moviesByDay} key={date}>
           <div className={css.outerDayTitle}>
@@ -99,11 +90,6 @@ const ComingSoon = ({ imageErrorHandler }) => {
       )
     }
     return moviesByDates;
-  }
-
-  function renderNewPage(pageNum) {
-    setRenderPage(false);
-    setPage(pageNum);
   }
 
   function createCSloadingBox() {
@@ -126,12 +112,12 @@ const ComingSoon = ({ imageErrorHandler }) => {
       <div className={css.CStitle}>
         <h3 className={css.innerTitle}>Coming Soon</h3>
       </div>
-      { renderPage &&
+      { comingSoon &&
         <div className={css.innerCS}>
           {comingSoonMovies(comingSoon, page)}
-          <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
+          <PageNavigator page={page} numOfPages={numOfPages} content='coming-soon'/>
         </div> }
-        { !renderPage && createCSloadingBox() }
+        { !comingSoon && createCSloadingBox() }
     </div> 
   );
 }

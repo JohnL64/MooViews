@@ -67,7 +67,7 @@ const Main = ({ main, page, imageErrorHandler }) => {
           </div> }
         { main && mainContent }
       </div>
-      {main && <PageNavigator page={page} numOfPages={30} content='Home'/>}
+      {main && <PageNavigator page={page} numOfPages={30} content='popular'/>}
     </div>
    );
 }
