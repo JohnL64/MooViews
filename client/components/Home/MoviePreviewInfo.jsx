@@ -5,6 +5,8 @@ import { IoClose } from 'react-icons/io5';
 import { GiFilmProjector } from 'react-icons/gi';
 
 const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
+  // disables scrolling when modal is open 
+  document.body.style.overflow = 'hidden';
   const { backdrop, releaseDate, id, title, overview, genres } = movieToShowInfo;
   // using state to store general inforamtion of selected movie (data received from the server). After receiving the data state will be updated and will display the movie preview information.
   const [previewGeneralInfo, setPreviewGeneralInfo] = useState(null);
@@ -23,6 +25,9 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
         console.log(err.cause)
         setError('An error has occured when loading general information for selected movie. Please try again or try again at a later time')
       })
+    return () => {
+      document.body.style.overflow = 'auto';
+    }
   }, [])
 
   function addAvailableGeneralInfo() {
@@ -47,8 +52,8 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
             <p className={css.allPreviewGeneralInfo}> 
               {addAvailableGeneralInfo()}
             </p>
-            { !preInfoImageErrors[id] && <img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/>}
-            { preInfoImageErrors[id] && <div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div>}
+            { !preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/></Link>}
+            { preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div></Link>}
             <p className={css.previewOverview}>{overview}</p>
         </div> }
     </div>

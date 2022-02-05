@@ -5,7 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import PageNavigator from '../PageNavigator.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 
-const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, createPageNavigator }) => {
+const Main = ({ main, page, imageErrorHandler }) => {
   // using state to render a message when an error occurs trying to display an image for a movie. 
   const [mainImageErrors, setMainImageErrors] = useState({});
   const mainContent = [];
@@ -56,14 +56,6 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
     )
   }
 
-  // changes state for preview, main, and page when a number is clicked in page navigator
-  function renderNewPage(pageNum) {
-    setPreview(null)
-    setMain(null);
-    setPage(pageNum);
-  }
-
-
   return (
     <div className={css.outerMain}>
       <h2>Most Popular</h2>
@@ -75,7 +67,7 @@ const Main = ({ main, setMain, setPreview, page, setPage, imageErrorHandler, cre
           </div> }
         { main && mainContent }
       </div>
-      {main && <PageNavigator page={page} numOfPages={30} renderNewPage={renderNewPage} content='Home'/>}
+      {main && <PageNavigator page={page} numOfPages={30} content='Home'/>}
     </div>
    );
 }

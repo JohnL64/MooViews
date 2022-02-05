@@ -3,15 +3,16 @@ import css from '../styles/Preview.module.css';
 import Preview from '../components/Home/Preview.jsx';
 import Main from '../components/Home/Main.jsx';
 import 'regenerator-runtime/runtime.js';
+import { useParams } from 'react-router-dom';
 
 const Home = ({ imageErrorHandler }) => {
   document.body.style.backgroundColor = 'black';
   document.title = 'MooViews: Movie Reviews and Ratings';
+  let { page } = useParams();
+  if (!page) page = 1;
   // using state to store movie data for preview and main. Also used to render components once data is received from server.
   const [preview, setPreview] = useState(null);
   const [main, setMain] = useState(null);
-  //
-  const [page, setPage] = useState(1);
 
   const [mainError, setMainError] = useState('');
   const [previewError, setPreviewError] = useState('');
@@ -49,14 +50,14 @@ const Home = ({ imageErrorHandler }) => {
       })
 
     return () => abortCont.abort();
-  }, [page])
+  }, [])
 
   return (
     <div className={css.movies}>
       {previewError && <p>{previewError}</p>}
       {preview && <Preview preview={preview} imageErrorHandler={imageErrorHandler}/>}
       {mainError && <p >{mainError}</p>}
-      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} setPage={setPage} imageErrorHandler={imageErrorHandler} />}
+      {preview && <Main main={main} setMain={setMain} setPreview={setPreview} page={page} imageErrorHandler={imageErrorHandler} />}
     </div>
   )
 }

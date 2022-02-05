@@ -39,6 +39,7 @@ function App() {
           <Route exact path='/'>
             <Home imageErrorHandler={imageErrorHandler} />
           </Route>
+          <Route path='/popular/:page' render={(props) => (<Home key={props.match.params.page} imageErrorHandler={imageErrorHandler} />)}/>
           <Route path='/top-rated'>
             <TopRated imageErrorHandler={imageErrorHandler} />
           </Route>

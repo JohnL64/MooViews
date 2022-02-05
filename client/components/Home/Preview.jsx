@@ -52,9 +52,6 @@ const Preview = ({ preview, imageErrorHandler }) => {
     direction === 'next' ? setDisplayed([displayed[0] + 6, displayed[1] + 6]): setDisplayed([displayed[0] - 6, displayed[1] - 6])
   }
 
-  // disables scrolling when modal is open 
-  movieToShowInfo ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'auto';
-
   return (
     <div className={css.outerPreview}>
       <h2>In Theaters</h2>
