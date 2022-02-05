@@ -1,7 +1,9 @@
 import React from 'react';
 import css from '../styles/Main.module.css';
+import { Link } from 'react-router-dom';
 
-const PageNavigator = ({ page, numOfPages, renderNewPage, content }) => {
+const PageNavigator = ({ page, numOfPages, content }) => {
+  page = Number(page);
   // If the container that is rendering PageNavigator is "Home" this function will ensure that certain elements will have a different class name so that the styling can be dynamically applied.
   function selectorName(name) {
     if (content) return css[name];
@@ -13,7 +15,7 @@ const PageNavigator = ({ page, numOfPages, renderNewPage, content }) => {
   let lastNum;
 
   function regBtn(pageNum) {
-    return <button className='pageNavBtn' key={pageNum} onClick={() => renderNewPage(pageNum)}>{pageNum}</button>
+    return <Link to={`/popular/${pageNum}`} key={`pL${pageNum}`}><button className='pageNavBtn' key={pageNum} >{pageNum}</button></Link>
   };
 
   function currBtn(pageNum) {
@@ -53,11 +55,13 @@ const PageNavigator = ({ page, numOfPages, renderNewPage, content }) => {
 
   return (
     <div className={selectorName('pageNavigator')}> 
-      <button disabled={page === 1} className={selectorName('pageNavNextPrev')} key='navPrevious' onClick={() => renderNewPage(page - 1)}>Previous</button>
+
+      <Link to={`/popular/${page - 1}`}><button disabled={page === 1} className={selectorName('pageNavNextPrev')} key='navPrevious' >Previous</button></Link>
       <div className="pageNumBtns">
         {pageNumbers}
       </div>
-      <button disabled={page === numOfPages} className={selectorName('pageNavNextPrev')} key="navNext" onClick={() => renderNewPage(page + 1)}>Next</button>
+      <Link to={`/popular/${page + 1}`}><button disabled={page === numOfPages} className={selectorName('pageNavNextPrev')} key="navNext" >Next</button></Link>
+
     </div>
   );
 }
