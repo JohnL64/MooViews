@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router";
 import css from "../styles/MovieInfo.module.css";
+import 'regenerator-runtime/runtime.js';
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill, BsCircleFill } from 'react-icons/bs';
