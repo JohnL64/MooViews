@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './containers/Home.jsx';
-import Login from './containers/Login.jsx';
-import Signup from './containers/Signup.jsx';
+// import Home from './containers/Home.jsx';
+const Home = lazy(() => import('./containers/Home.jsx'));
+const Login = lazy(() => import('./containers/Login.jsx'));
+const Signup = lazy(() => import('./containers/Signup.jsx'));
 import Navbar from './components/Navbar/Navbar.jsx';
-import MovieInfo from './containers/MovieInfo.jsx';
-import ComingSoon from './containers/ComingSoon.jsx';
-import TopRated from './containers/TopRated.jsx';
-import AllResults from './containers/AllResults.jsx';
+const MovieInfo = lazy(() => import('./containers/MovieInfo.jsx'));
+const ComingSoon = lazy(() => import('./containers/ComingSoon.jsx'));
+const TopRated = lazy(() => import('./containers/TopRated.jsx'));
+const AllResults = lazy(() => import('./containers/AllResults.jsx'));
 import './styles/index.css';
 
 
@@ -36,26 +37,28 @@ function App() {
       { (validatedUser !== null) && <div className='app'>
         <Navbar imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} />
         <Switch>
-          <Route exact path='/'>
-            <Home imageErrorHandler={imageErrorHandler} />
-          </Route>
-          <Route path='/popular/:page' render={(props) => (<Home key={props.match.params.page} imageErrorHandler={imageErrorHandler} />)}/>
-          <Route path='/top-rated'>
-            <TopRated imageErrorHandler={imageErrorHandler} />
-          </Route>
-          <Route path='/coming-soon/:page' render={(props) => (<ComingSoon key ={props.match.params.page} imageErrorHandler={imageErrorHandler}/>)}>
-            <ComingSoon imageErrorHandler={imageErrorHandler} />
-          </Route>
-          <Route path='/signup'>
-            <Signup />
-          </Route>
-          <Route path='/login'>
-            <Login setValidatedUser={setValidatedUser} />
-          </Route>
-          <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>)}/>
-          <Route path='/all-results/:keyWord'>
-            <AllResults imageErrorHandler={imageErrorHandler}/>
-          </Route>
+          <Suspense fallback={<div></div>}>
+            <Route exact path='/'>
+              <Home imageErrorHandler={imageErrorHandler} />
+            </Route>
+            <Route path='/popular/:page' render={(props) => (<Home key={props.match.params.page} imageErrorHandler={imageErrorHandler} />)}/>
+            <Route path='/top-rated'>
+              <TopRated imageErrorHandler={imageErrorHandler} />
+            </Route>
+            <Route path='/coming-soon/:page' render={(props) => (<ComingSoon key ={props.match.params.page} imageErrorHandler={imageErrorHandler}/>)}>
+              <ComingSoon imageErrorHandler={imageErrorHandler} />
+            </Route>
+            <Route path='/signup'>
+              <Signup />
+            </Route>
+            <Route path='/login'>
+              <Login setValidatedUser={setValidatedUser} />
+            </Route>
+            <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>)}/>
+            <Route path='/all-results/:keyWord'>
+              <AllResults imageErrorHandler={imageErrorHandler}/>
+            </Route>
+          </Suspense>
         </Switch>
       </div> }
     </Router>
