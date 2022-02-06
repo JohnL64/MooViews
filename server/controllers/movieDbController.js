@@ -163,7 +163,6 @@ movieDbController.addMovie = (req, res, next) => {
 movieDbController.updateMovie = (req, res, next) => {
   const { dbRating, id, rating, previousUserReview, ratingOrReview } = req.body;
   let previousUserRating = req.body.previousUserRating;
-  console.log('In UPDATE MOVIE: ', previousUserReview, ratingOrReview, !previousUserReview && ratingOrReview === 'review');
 
   function getAverage(dbObj) {
     let sum = dbObj.custom_count * dbObj.custom_star;
@@ -189,9 +188,7 @@ movieDbController.updateMovie = (req, res, next) => {
       dbRating[`star_${previousUserRating}`] -= 1;
     }
     dbRating.rating = getAverage(dbRating);
-    console.log('OVERALL RATING: ', dbRating.rating);
     if (!previousUserReview && ratingOrReview === 'review') {
-      console.log('INCREMENTING REVIEW COUNT BY ONE');
       dbRating.review_count += 1; 
     }
 
@@ -210,12 +207,9 @@ movieDbController.updateMovie = (req, res, next) => {
 
     db.query(query, values, (err, updatedMovie) => {
       if (err) {
-        console.log('Error occured when making query in update movie');
-        console.log(err);
         return next({ message: 'Error has occured when updating movie in movieDbController.updateMovie' });
       }
       updatedMovie.rows[0].rating = Number(updatedMovie.rows[0].rating);
-      console.log("AFTER QUERY IN UPDATE MOVIE: ", updatedMovie.rows[0]);
       res.locals.newDbRating = updatedMovie.rows[0];
       return next();
     })

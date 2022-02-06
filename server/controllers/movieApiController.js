@@ -119,8 +119,6 @@ movieApiController.home = async (req, res, next) => {
 */
 movieApiController.comingSoon = (req, res, next) => {
   const { content, id } = req.query;
-  console.log('Content ', content);
-  // console.log('Page ', page);
 
   // Updates spefic data for each movie that will be displayed.
   function updateCSinfo(movie) {
@@ -299,7 +297,6 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
           if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
           allMoreMovies.push(movie);
         }
-        console.log(allMoreMovies)
       })
       .catch(err => {
         return next({ message: 'Error has occured when querying data for Movie Info in movieApiController.getMoreLikeThis' });
@@ -327,7 +324,6 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
 -------- QUERIES FOR MORE INFO ON SELECTED MOVIE IN MORE LIKE THIS SECTION IN MOVIE INFO PAGE --------
 */
 movieApiController.getMoreInfo = async (req, res, next) => {
-  console.log('INSIDE OF GET MORE INFO: ', req.query.id);
   fetch(`https://api.themoviedb.org/3/movie/${req.query.id}?api_key=${api_key}&language=en-US&append_to_response=release_dates,credits`)
     .then(res => res.json())
     .then(data => {
