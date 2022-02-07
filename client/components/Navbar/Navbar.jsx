@@ -5,15 +5,13 @@ import SearchResult from './SearchResult.jsx';
 import { AiOutlineSearch } from 'react-icons/ai';
 import ConfirmSignout from './ConfirmSignout.jsx';
 
-const Navbar = ({ imageErrorHandler, validatedUser }) => {
-  const [keyword, setKeyword] = useState('');
+const Navbar = ({ keyword, setKeyword, signout, setSignout, imageErrorHandler, validatedUser }) => {
   // using state to store search results from movie api to ensure data is dispayed in SearchResult component
   const [searchResult, setSearchResult] = useState(null);
   // using state to track whether search bar is focused and to determine if SearchResult component should be rendered
   const [focused, setFocused] = useState(false);
   // using state to ensure if an error does occur the error will be displayed
   const [error, setError] = useState(null);
-  const [signout, setSignout] = useState(false);
 
   const history = useHistory();
   const location = useLocation().pathname;

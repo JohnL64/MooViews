@@ -9,7 +9,7 @@ import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 import UserReviews from '../components/MovieInfo/UserReviews.jsx';
 import MoreLikeThis from '../components/MovieInfo/MoreLikeThis.jsx';
 
-const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
+const MovieInfo = ({ imageErrorHandler, validatedUser, resetNavbar}) => {
   document.body.style.backgroundColor = 'white';
   const { movie } = useParams();
   const [movieInfo, setMovieInfo] = useState(null);
@@ -17,6 +17,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser}) => {
   const [userRating, setUserRating] = useState(null);
 
   useEffect(async () => {
+    resetNavbar();
     await fetch(`/movie/movie-info?id=${movie}`)
       .then(res => res.json())
       .then(data => {

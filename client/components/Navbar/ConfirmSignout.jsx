@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from '../../styles/Navbar.module.css';
 import { useHistory} from 'react-router-dom';
+import { IoClose } from 'react-icons/io5';
 
 const ConfirmSignout = ({ signout, setSignout }) => {
+	const [signingOut, setSigningOut] = useState(false);
 	const history = useHistory();
 
-	function selectorName(name) {
-		if (document.body.style.backgroundColor === 'black') return css[name];
-		else return css[name + 'Alt'];
-	}
-
 	function logOutUser() {
+		setSigningOut(true);
 		fetch('/signout')
 			.then(res => res.json())
 			.then(data => {
@@ -20,18 +18,40 @@ const ConfirmSignout = ({ signout, setSignout }) => {
 			})
 	}
 
+	function changeSignoutAndScroll(signoutChoice) {
+		if (signoutChoice) {
+			document.body.style.overflow = 'hidden';
+			setSignout(true);
+		} else {
+			document.body.style.overflow = 'auto';
+			setSignout(false);
+		}
+	}
+
 	return (
 		<div className={css.outerSO}>
-			<div className={css.signOutBox} onClick={() => setSignout(true)}>
+			<div className={css.signOutBox} onClick={() => changeSignoutAndScroll(true)}>
 				<p>Sign Out</p>
 			</div>
-				{ signout && 
-				<div className={selectorName('confirmSO')}>
-					<p>Are you sure?</p>
-					<p>
-						<span onClick={logOutUser}>Yes</span>
-						<span onClick={() => setSignout(false)}>No</span>
-					</p>
+				{ signout && <div className={css.outerConfirmSO} onClick={() => changeSignoutAndScroll(false)}>
+					<div className={css.confirmSO} onClick={(e) => e.stopPropagation()}>
+						<IoClose className={css.closeSO} onClick={() => changeSignoutAndScroll(false)}/> 
+						<p className={css.mooViewsTitle}>Moo<span>Views</span></p>
+						{!signingOut && <div className={css.SOcontent}>
+							<p className={css.confirmQ}>Are you sure you want to sign out?</p>
+							<div className={css.SOchoice}>
+								<p className={css.confirmYesNo} onClick={logOutUser}>Yes</p>
+								<p className={css.confirmYesNo} onClick={() => changeSignoutAndScroll(false)}>No</p>
+							</div>
+						</div>} 
+						{signingOut && <div className={css.signingOut}> 
+							<div className='loadingDots' id={css.SOdots}>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+						</div>}
+					</div>
 				</div>}
 		</div>
 	)

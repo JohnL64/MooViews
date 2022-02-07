@@ -14,6 +14,9 @@ import './styles/index.css';
 
 function App() {
   const [validatedUser, setValidatedUser] = useState(null);
+  const [keyword, setKeyword] = useState('');
+  const [signout, setSignout] = useState(false);
+
   useEffect(() => {
     fetch('/isAuthenticatedUser')
       .then(res => res.json())
@@ -31,30 +34,34 @@ function App() {
     setImageErrors(newImageErrors);
   }
 
+  function resetNavbar() {
+    setKeyword('');
+    setSignout(false);
+  }
 
   return (
     <Router>
       { (validatedUser !== null) && <div className='app'>
-        <Navbar imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} />
+        <Navbar keyword={keyword} setKeyword={setKeyword} signout={signout} setSignout={setSignout} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>
         <Switch>
           <Suspense fallback={<div></div>}>
             <Route exact path='/'>
-              <Home imageErrorHandler={imageErrorHandler} />
+              <Home imageErrorHandler={imageErrorHandler} resetNavbar={resetNavbar}/>
             </Route>
-            <Route path='/popular/:page' render={(props) => (<Home key={props.match.params.page} imageErrorHandler={imageErrorHandler} />)}/>
+            <Route path='/popular/:page' render={(props) => (<Home key={props.match.params.page} imageErrorHandler={imageErrorHandler} resetNavbar={resetNavbar}/>)}/>
             <Route path='/top-rated'>
-              <TopRated imageErrorHandler={imageErrorHandler} />
+              <TopRated imageErrorHandler={imageErrorHandler}/>
             </Route>
-            <Route path='/coming-soon/:page' render={(props) => (<ComingSoon key ={props.match.params.page} imageErrorHandler={imageErrorHandler}/>)}>
-              <ComingSoon imageErrorHandler={imageErrorHandler} />
+            <Route path='/coming-soon/:page'>
+              <ComingSoon imageErrorHandler={imageErrorHandler}/>
             </Route>
             <Route path='/signup'>
-              <Signup />
+              <Signup resetNavbar={resetNavbar}/>
             </Route>
             <Route path='/login'>
-              <Login setValidatedUser={setValidatedUser} />
+              <Login setValidatedUser={setValidatedUser} resetNavbar={resetNavbar}/>
             </Route>
-            <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser}/>)}/>
+            <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar}/>)}/>
             <Route path='/all-results/:keyWord'>
               <AllResults imageErrorHandler={imageErrorHandler}/>
             </Route>

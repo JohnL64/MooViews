@@ -5,7 +5,7 @@ import Main from '../components/Home/Main.jsx';
 import 'regenerator-runtime/runtime.js';
 import { useParams } from 'react-router-dom';
 
-const Home = ({ imageErrorHandler }) => {
+const Home = ({ imageErrorHandler, resetNavbar }) => {
   document.body.style.backgroundColor = 'black';
   document.title = 'MooViews: Movie Reviews and Ratings';
   let { page } = useParams();
@@ -19,6 +19,7 @@ const Home = ({ imageErrorHandler }) => {
 
   // making a request to the server to fetch movie data for both preview and main components. The type of content that should be displayed is sent with the request. Two different request are made so preview content will be rendered quickly and wouldn't need to wait for main content data to be received.
   useEffect(async () => {
+    resetNavbar();
     const abortCont = new AbortController();
     await fetch(`/movie/home?content=preview`, { signal: abortCont.signal })
       .then(res => res.json())
