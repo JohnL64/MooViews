@@ -56,7 +56,7 @@ function App() {
               <ComingSoon imageErrorHandler={imageErrorHandler}/>
             </Route>
             <Route path='/signup'>
-              <Signup resetNavbar={resetNavbar}/>
+              <Signup setValidatedUser={setValidatedUser} resetNavbar={resetNavbar}/>
             </Route>
             <Route path='/login'>
               <Login setValidatedUser={setValidatedUser} resetNavbar={resetNavbar}/>

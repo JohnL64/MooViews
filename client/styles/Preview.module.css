@@ -16,7 +16,7 @@
   --preview-movie-height: 275px;
 }
 
-h2 {
+.movies h2 {
   font-size: 1.6rem;
   border-left: solid var(--text-color-pink) .25rem;
   padding-left: .45rem;

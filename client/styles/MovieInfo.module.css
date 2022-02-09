@@ -379,8 +379,9 @@ iframe {
 }
 
 .innerMovieInfo h2 {
-  border-left: solid var(--text-color-lightPink) 0.25rem;
+  border-left: solid var(--text-color-lightPink) 0.28rem;
   font-size: 2rem;
+  padding-left: 0.5rem;
 }
 
 .castTitle,

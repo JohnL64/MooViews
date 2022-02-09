@@ -24,7 +24,6 @@ userController.createAccount = (req, res, next) => {
         if (err.constraint === 'users_username_key') errorType = 'Username is already in use'
         return next({ message: 'Error has occured at userController.createAccount', errorType })
       }
-      res.locals.validAccount = true;
       return next();
     })
 }

@@ -5,7 +5,7 @@ import { AiFillStar } from 'react-icons/ai';
 import { BsCircleFill } from 'react-icons/bs';
 import { FaChevronDown } from 'react-icons/fa';
 import ReviewMovie from './ReviewMovie.jsx';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validatedUser }) => {
   const [userReviews, setUserReviews] = useState([]);
@@ -13,6 +13,7 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
   const [fullReview, setFullReview] = useState({});
   const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const history = useHistory();
+  const location = useLocation().pathname;
 
   // Once component is mounted checks to see if the 'review' text has overflowed in the p element. The overflowed p elements will be added to fullReview object which is checked to see if a user review should have the "show full review" button and once clicked also referenced to determine if the full review should be showed.
   function addOverflowingReviews() {
@@ -102,7 +103,10 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
 
   function authorizedUserForReview() {
     if (validatedUser) setReviewMovie(true);
-    else history.push('/login');
+    else {
+      sessionStorage.setItem('lastPage', location);
+      history.push('/login');
+    }
   }
 
   return ( 
@@ -114,14 +118,14 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
           <p>Review</p>
         </div>}
       </div>
-      {(movieInfo.dbRating && movieInfo.dbRating.review_count && userReviews.length > 0) && renderUserReviews()}
-      {(movieInfo.dbRating && movieInfo.dbRating.review_count && userReviews.length < 1) && <div className={css.loadingReviews}>
+      {(movieInfo.dbRating && movieInfo.dbRating.review_count && userReviews.length > 0) ? renderUserReviews() : null}
+      {(movieInfo.dbRating && movieInfo.dbRating.review_count && userReviews.length < 1) ? <div className={css.loadingReviews}>
         <div className="loadingDots">
           <div></div>
           <div></div>
           <div></div>
         </div>
-      </div>}
+      </div> : null}
       { (movieInfo.is_released && (!movieInfo.dbRating || !movieInfo.dbRating.review_count)) && <p className={css.noReviews}>There are no reviews for this movie yet. Be the first one to write one!</p>}
       { !movieInfo.is_released && <p className={css.notReleased}>This movie can't be reviewed at this current time. Come back to write a review once it has been released!</p>}
       { reviewMovie && <ReviewMovie setReviewMovie={setReviewMovie} setUserReviews={setUserReviews} posterPath={movieInfo.poster_path} title={movieInfo.title} year={movieInfo.year} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} /> }

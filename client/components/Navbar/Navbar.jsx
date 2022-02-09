@@ -30,11 +30,15 @@ const Navbar = ({ keyword, setKeyword, signout, setSignout, imageErrorHandler, v
     } else setSearchResult(null);
   }
 
-  function conditionalPageRefresh(route, currLocation) {
+  function conditionalPageRefresh(route) {
     // Changing keyword to empty string to clear search input field everytime page is changed or refreshed.
     setKeyword('');
     setSignout(false);
-    if (route === currLocation) history.go(0);
+    if (location !== '/login' && location !== '/signup') {
+      console.log('Changing session storage!!!!');
+      sessionStorage.setItem('lastPage', location); 
+    }
+    if (route === location) history.go(0);
   }
 
   function showAllResults(e) {
@@ -54,7 +58,7 @@ const Navbar = ({ keyword, setKeyword, signout, setSignout, imageErrorHandler, v
 
   return (
     <nav className={css.navbar}>
-      <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/', location)} to='/' ><span className={css.moo}>Moo</span><span className={css.views}>Views</span></Link>
+      <Link className={css.navMooViews} onClick={() => conditionalPageRefresh('/')} to='/' ><span className={css.moo}>Moo</span><span className={css.views}>Views</span></Link>
       <div className={css.searchBar} onFocus={(e) => setFocused(true)} onBlur={(e) => setFocused(false)}>
         <div className={css.inputAndIcon}>
           <input type='text' placeholder="Search movies" className={css.searchInput} onChange={onSearch} value={keyword} onKeyPress={showAllResults}></input>
@@ -66,9 +70,9 @@ const Navbar = ({ keyword, setKeyword, signout, setSignout, imageErrorHandler, v
           </div> }
         { error && <p>{error}</p>}
       </div>
-      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon/1', location)} to='/coming-soon/1'>Coming Soon</Link>
-      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/top-rated', location)} to='/top-rated'>Top Rated</Link>
-      { !validatedUser && <Link className={css.navlink} onClick={() => conditionalPageRefresh('/login', location)} to='/login'>Sign In</Link>}
+      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/coming-soon/1')} to='/coming-soon/1'>Coming Soon</Link>
+      <Link className={css.navlink} onClick={() => conditionalPageRefresh('/top-rated')} to='/top-rated'>Top Rated</Link>
+      { !validatedUser && <Link className={css.navlink} onClick={() => conditionalPageRefresh('/login')} to='/login'>Sign In</Link>}
       { validatedUser && <ConfirmSignout signout={signout} setSignout={setSignout} /> }
     </nav>
   )

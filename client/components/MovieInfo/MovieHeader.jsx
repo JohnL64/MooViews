@@ -3,11 +3,12 @@ import css from "../../styles/MovieInfo.module.css";
 import { BsCircleFill } from 'react-icons/bs';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import RateMovie from './RateMovie.jsx';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUserRating, updateOrAddReviewAndMovie }) => {
   const [showRateMovie, setShowRateMovie] = useState(false);
   const history = useHistory();
+  const location = useLocation().pathname;
   
   function createGenInfo() {
     let genInfoArr = [];
@@ -37,7 +38,10 @@ const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUs
 
   function conditionalRating() {
     if (validatedUser) setShowRateMovie(true);
-    else history.push('/login');
+    else {
+      sessionStorage.setItem('lastPage', location);
+      history.push('/login');
+    }
   }
 
   return ( 

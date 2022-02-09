@@ -4,9 +4,7 @@ const userController = require('../controllers/userController');
 const passport = require('passport');
 
 
-router.post('/createAccount', userController.createAccount, (req, res) => {
-  res.status(200).json(res.locals);
-});
+router.post('/createAccount', userController.createAccount, userController.verifyAccount);
 
 router.post('/verifyAccount', userController.verifyAccount);
 

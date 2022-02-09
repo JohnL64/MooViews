@@ -39,10 +39,9 @@ const UserForm = ({ action, setValidatedUser}) => {
     .then(data => {
       // if error occurs on the server side run code in catch method
       if (data.errorType) throw new Error('Error', { cause: data.errorType });
-      if (action === 'verifyAccount') {
-        setValidatedUser(true);
-        history.goBack('/');
-      } else history.push('/login');
+      console.log('Inside of userform after signing up!!!!', data);
+      setValidatedUser(true);
+      history.push(sessionStorage.getItem('lastPage'));
     })
     .catch(err => {
       // if an err has occurred update userError to the given cause to be displayed
