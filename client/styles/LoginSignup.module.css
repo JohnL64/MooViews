@@ -28,7 +28,7 @@
   justify-content: center;
 }
 
-.innerForm * {
+.innerForm input {
   height: 30px;
   margin: 1.5% 0;
   border: solid 1px lightgray;
@@ -61,4 +61,17 @@
 
 .loginSignupLink a {
   color: rgb(250, 140, 157)
+}
+
+.userLSerror {
+  display: flex;
+  align-items: center;
+  color: #BA0933;
+  font-size: 14px;
+  margin: 14px 0 0;
+}
+
+.userLSerror svg {
+  font-size: 18px;
+  margin-right: 4px;
 }
