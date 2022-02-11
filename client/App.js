@@ -16,6 +16,8 @@ function App() {
   const [validatedUser, setValidatedUser] = useState(null);
   const [keyword, setKeyword] = useState('');
   const [signout, setSignout] = useState(false);
+  
+  const [test, setTest] = useState(true);
 
   useEffect(() => {
     fetch('/isAuthenticatedUser')
@@ -61,7 +63,8 @@ function App() {
             <Route path='/login'>
               <Login setValidatedUser={setValidatedUser} resetNavbar={resetNavbar}/>
             </Route>
-            <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar}/>)}/>
+            {/* <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar}/>)}/> */}
+            <Route path='/movie/:movie' render={(props) => (test && <MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar} setTest={setTest}/>)}/>
             <Route path='/all-results/:keyWord'>
               <AllResults imageErrorHandler={imageErrorHandler}/>
             </Route>

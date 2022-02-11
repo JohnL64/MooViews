@@ -25,7 +25,7 @@ const TopRated = ({ imageErrorHandler }) => {
         console.log(err);
       })
     
-    return () => abortCont.abort()
+    return () => abortCont.abort();
   }, [])
 
   function createTRloadingBox() {

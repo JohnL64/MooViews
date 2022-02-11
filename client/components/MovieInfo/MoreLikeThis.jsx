@@ -7,7 +7,7 @@ import { GiFilmProjector } from 'react-icons/gi';
 import MoreInfo from './MoreInfo.jsx';
 
 
-const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
+const MoreLikeThis = ({ id, collection, genres, imageErrorHandler }) => {
   const [moreMovies, setMoreMovies] = useState(null);
   const [display, setDisplay] = useState({first: 0, last: 3})
   const [moreImageErrors, setMoreImageErrors] = useState({});
@@ -28,15 +28,20 @@ const MoreLikeThis = ({ id, collection, genres, imageErrorHandler}) => {
   else genres = null;
 
   useEffect(() => {
-    fetch(`/movie/more-movies?id=${id}&collection=${collection}&genres=${genres}`)
+    const abortCont = new AbortController();
+    fetch(`/movie/more-movies?id=${id}&collection=${collection}&genres=${genres}`, { signal: abortCont.signal })
       .then(res => res.json())
       .then(data => {
         console.log('More like this!!!!!: ', data.moviesMoreLikeThis);
         setMoreMovies(data.moviesMoreLikeThis);
       })
       .catch(err => {
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted in moreLikeThis!!!')
+        }
         console.log(err);
       })
+    return () => abortCont.abort();
   }, [])
 
   function changeRenderedMovies(direction) {

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router";
 import css from "../styles/MovieInfo.module.css";
-import 'regenerator-runtime/runtime.js';
 import CrewAndSummary from '../components/MovieInfo/CrewAndSummary.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 import { BsFillPersonFill, BsCircleFill } from 'react-icons/bs';
@@ -9,40 +8,51 @@ import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 import UserReviews from '../components/MovieInfo/UserReviews.jsx';
 import MoreLikeThis from '../components/MovieInfo/MoreLikeThis.jsx';
 
-const MovieInfo = ({ imageErrorHandler, validatedUser, resetNavbar}) => {
+const MovieInfo = ({ imageErrorHandler, validatedUser, resetNavbar }) => {
   document.body.style.backgroundColor = 'white';
   const { movie } = useParams();
   const [movieInfo, setMovieInfo] = useState(null);
   const [MIimageErrors, setMIimageErrors] = useState({});
   const [userRating, setUserRating] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     resetNavbar();
-    await fetch(`/movie/movie-info?id=${movie}`)
-      .then(res => res.json())
-      .then(data => {
-        // console.log('MOVIE INFO: ', data.movieInfo);
-        let docTitle = data.movieInfo.title;
-        if (data.movieInfo.year) docTitle += ` (${data.movieInfo.year})`;
-        document.title = docTitle;
-        setMovieInfo(data.movieInfo);
-      })
-      .catch(err => {
-          console.log(err);
-      })
+    const abortCont = new AbortController();
+    if (!movieInfo) {
+      fetch(`/movie/movie-info?id=${movie}`, { signal: abortCont.signal })
+        .then(res => res.json())
+        .then(data => {
+          // console.log('MOVIE INFO: ', data.movieInfo);
+          let docTitle = data.movieInfo.title;
+          if (data.movieInfo.year) docTitle += ` (${data.movieInfo.year})`;
+          document.title = docTitle;
+          setMovieInfo(data.movieInfo);
+        })
+        .catch(err => {
+          if (err.name === 'AbortError') {
+            console.log('Fetch Aborted in movieInfo fetch req')
+          }
+            console.log(err);
+        })
+    }
 
-    if (validatedUser) {
-      fetch(`/movie/user-rating?id=${movie}`)
+    if (validatedUser && movieInfo) {
+      fetch(`/movie/user-rating?id=${movie}`, { signal: abortCont.signal })
         .then(res => res.json())
         .then(data => {
           // console.log('USER RATING: ', data.userRating);
           setUserRating(data.userRating);
         })
         .catch(err => {
+          if (err.name === 'AbortError') {
+            console.log('Fetch Aborted in userRating fetch req')
+          }
           console.log(err);
         })
     }
-  }, []);
+    
+    return () => abortCont.abort();
+  }, [movieInfo]);
 
   async function updateOrAddReviewAndMovie(ratingOrReview, actionAfterSubmit, rating, headline, review) {
     // console.log('Inside updateOrAdd: !!!!!!', rating, headline, review);
@@ -185,7 +195,7 @@ const MovieInfo = ({ imageErrorHandler, validatedUser, resetNavbar}) => {
                 {getCast(movieInfo.credits.updatedCast)}
               </div> : <p>The cast has yet to be added.</p>}
             </div>
-            <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} validatedUser={validatedUser}/>
+            <UserReviews movieInfo={movieInfo} userRating={userRating} updateOrAddReviewAndMovie={updateOrAddReviewAndMovie} validatedUser={validatedUser} />
           </section>
 
           <section className={css.detailsAndMore}>

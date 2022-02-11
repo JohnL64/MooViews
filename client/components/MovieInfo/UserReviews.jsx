@@ -33,26 +33,45 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
   // window.addEventListener('onresize', addOverflowingReviews);
   window.onresize = addOverflowingReviews;
 
+  // const abortCont = new AbortController();
+  // const abortContTwo = new AbortController();
+
   useEffect(() => {
+    const abortCont = new AbortController();
     if (userReviews.length < 1 && (movieInfo.dbRating && movieInfo.dbRating.review_count)) {
-      fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=3&reviewsShown=${userReviews.length}`)
+      fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=3&reviewsShown=${userReviews.length}`, { signal: abortCont.signal })
         .then(res => res.json())
         .then(data => {
           setUserReviews(data.reviewsToDisplay);
         })
+        .catch(err => {
+          if (err.name === 'AbortError') {
+            console.log('Fetch Aborted when fetching for userReviews')
+          }
+        })
     } 
     addOverflowingReviews();
+
+    return () => abortCont.abort();
   }, [userReviews]);
 
-  function getMoreUserReviews() {
-    setLoadingMoreReviews(true);
-    fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=12&reviewsShown=${userReviews.length}`)
-      .then(res => res.json())
-      .then(data => {
-        setLoadingMoreReviews(false);
-        setUserReviews([...userReviews, ...data.reviewsToDisplay]);
-      })
-  }
+  useEffect(() => {
+    const abortContTwo = new AbortController();
+    if (loadingMoreReviews) {
+      fetch(`/movie/user-reviews?id=${movieInfo.id}&limit=12&reviewsShown=${userReviews.length}`, { signal: abortContTwo.signal })
+        .then(res => res.json())
+        .then(data => {
+          setLoadingMoreReviews(false);
+          setUserReviews([...userReviews, ...data.reviewsToDisplay]);
+        })
+        .catch(err => {
+          if (err.name === 'AbortError') {
+            console.log('Fetch Aborted when fetching for more userReviews')
+          }
+        })
+    }
+    return () => abortContTwo.abort();
+  }, [loadingMoreReviews])
 
   function showFullReview(review) {
     const newFullReview = { ...fullReview };
@@ -88,7 +107,7 @@ const UserReviews = ({ movieInfo, userRating, updateOrAddReviewAndMovie, validat
       <div>
         {reviewsArr}
         <p className={css.reviewsDisplayed}>Showing {userReviews.length} of {movieInfo.dbRating.review_count} review{movieInfo.dbRating.review_count > 1 && 's'}</p>
-        { (userReviews.length < movieInfo.dbRating.review_count) && <div className={css.showMoreOnly} onClick={getMoreUserReviews}>
+        { (userReviews.length < movieInfo.dbRating.review_count) && <div className={css.showMoreOnly} onClick={() => setLoadingMoreReviews(true)}>
           { !loadingMoreReviews && <p>See more reviews</p> }
           { loadingMoreReviews && <div className="smallLoadDots">
             <div></div>
