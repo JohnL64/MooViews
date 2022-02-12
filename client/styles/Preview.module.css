@@ -300,6 +300,17 @@
   margin-right: 0.3125rem;
 }
 
+.loadingPreGI {
+  width: 92%;
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 15px;
+}
+
+#MPIdots div {
+  background-color: rgb(206, 206, 206);
+}
+
 p a:hover {
   text-decoration: underline;
 }
