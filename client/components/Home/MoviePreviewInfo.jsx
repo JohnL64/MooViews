@@ -15,17 +15,23 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
   const[preInfoImageErrors, setPreInfoImageErrors ] = useState({})
 
   useEffect(() => {
-    fetch(`/movie/home?content=generalInfo&id=${id}`)
+    const abortCont = new AbortController;
+    fetch(`/movie/home?content=generalInfo&id=${id}`, { signal: abortCont.signal })
       .then(res => res.json())
       .then(data => {
         if (data.status) throw new Error('Error', { cause: data.message });
         setPreviewGeneralInfo(data.generalInfo);
       })
       .catch(err => {
-        console.log(err.cause)
-        setError('An error has occured when loading general information for selected movie. Please try again or try again at a later time')
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted in MoviePreviewInfo')
+        } else {
+          console.log(err.cause)
+          setError('An error has occured when loading general information for selected movie. Please try again or try again at a later time')
+        }
       })
     return () => {
+      abortCont.abort();
       document.body.style.overflow = 'auto';
     }
   }, [])
@@ -45,17 +51,21 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
   return (
     <div className={css.previewInfoBox} onClick={() => close(null)}>
       {error && <p>{error}</p>}
-      { previewGeneralInfo &&
-        <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
-            <IoClose className={css.previewClose} onClick={() => close(null)}/>
-            <p className={css.previewInfoTitle}><Link to={`/movie/${id}`}>{title}</Link></p>
-            <p className={css.allPreviewGeneralInfo}> 
-              {addAvailableGeneralInfo()}
-            </p>
-            { !preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/></Link>}
-            { preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div></Link>}
-            <p className={css.previewOverview}>{overview}</p>
-        </div> }
+      <div className={css.previewInfoContent} onClick={(e) => e.stopPropagation()}>
+        <IoClose className={css.previewClose} onClick={() => close(null)}/>
+        <p className={css.previewInfoTitle}><Link to={`/movie/${id}`}>{title}</Link></p>
+        { previewGeneralInfo && <p className={css.allPreviewGeneralInfo}>{addAvailableGeneralInfo()}</p>}
+        { !previewGeneralInfo && <div className={css.loadingPreGI}>
+          <div className='smallLoadDots' id={css.MPIdots}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>}
+        { !preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/></Link>}
+        { preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div></Link>}
+        <p className={css.previewOverview}>{overview}</p>
+      </div>
     </div>
   )
 }
