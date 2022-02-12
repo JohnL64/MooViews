@@ -6,12 +6,10 @@ import PageNavigator from '../components/PageNavigator.jsx';
 import { GiFilmProjector } from 'react-icons/gi';
 
 
-const AllResults = ({ imageErrorHandler }) => {
+const AllResults = ({ imageErrorHandler, setTest }) => {
   document.body.style.backgroundColor = 'white';
-  const { keyWord } = useParams();
-  document.title = `Search Results for \"${keyWord}\"`;
-  const [keyword, setKeyword] = useState(keyWord);
-  const [page, setPage] = useState(1);
+  const { keyword, page } = useParams();
+  document.title = `Search Results for \"${keyword}\"`;
   const [numOfPages, setNumOfPages] = useState(0)
   const [allResults, setAllResults] = useState(null);
   const [ARimageErrors, setARimageErrors] = useState({});
@@ -27,18 +25,13 @@ const AllResults = ({ imageErrorHandler }) => {
       })
       .catch(err => {
         if (err.name === 'AbortError') {
-          console.log('Fetch Aborted')
+          console.log('Fetch Aborted in All Results!!!!!')
         }
         console.log(err);
       })
-
     return () => abortCont.abort();
-  }, [page]);
+  }, []);
 
-  function renderNewPage(newPageNum) {
-    setAllResults(null);
-    setPage(newPageNum);
-  }
 
   return ( 
     <div className={css.allResults}>
@@ -58,7 +51,6 @@ const AllResults = ({ imageErrorHandler }) => {
                     <GiFilmProjector className={css.filmIcon} />
                   </div>
                 }
-                {/* <Link to={`/movie/${movie.id}`}><img className={css.image}src={movie.poster_path}/></Link> */}
                 <div className={css.movieInfo}>
                   <div className={css.titleYear}>
                     <p className={css.title}><Link to={`/movie/${movie.id}`} className={css.titleLink}>{movie.title}</Link></p> 
@@ -69,7 +61,7 @@ const AllResults = ({ imageErrorHandler }) => {
               </div>
             )
           })}
-          <PageNavigator page={page} numOfPages={numOfPages} renderNewPage={renderNewPage}/>
+          <PageNavigator page={page} numOfPages={numOfPages} content={`all-results/${keyword}`}/>
         </div> }
     </div>
    );

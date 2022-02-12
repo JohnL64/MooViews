@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Home from './containers/Home.jsx';
 const Home = lazy(() => import('./containers/Home.jsx'));
 const Login = lazy(() => import('./containers/Login.jsx'));
 const Signup = lazy(() => import('./containers/Signup.jsx'));
@@ -25,7 +24,6 @@ function App() {
       .then(data => {
         console.log(data);
         setValidatedUser(data.isValidated);
-        // if (location !== '/') history.push('/');
       })
   }, [])
   // adds the movie's id to imagesUnavailable object when an error occurs trying to fetch an image with given src. Once the id is added to imagesUnavailable the image error will then be displayed
@@ -63,11 +61,8 @@ function App() {
             <Route path='/login'>
               <Login setValidatedUser={setValidatedUser} resetNavbar={resetNavbar}/>
             </Route>
-            {/* <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar}/>)}/> */}
-            <Route path='/movie/:movie' render={(props) => (test && <MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar} setTest={setTest}/>)}/>
-            <Route path='/all-results/:keyWord'>
-              <AllResults imageErrorHandler={imageErrorHandler}/>
-            </Route>
+            <Route path='/movie/:movie' render={(props) => (<MovieInfo key={props.match.params.movie} imageErrorHandler={imageErrorHandler} validatedUser={validatedUser} resetNavbar={resetNavbar}/>)}/>
+            <Route path='/all-results/:keyword/:page' render={(props) => (<AllResults key={`${props.match.params.keyword}${props.match.params.page}`} imageErrorHandler={imageErrorHandler} />)}/>
           </Suspense>
         </Switch>
       </div> }
