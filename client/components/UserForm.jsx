@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import css from '../styles/LoginSignup.module.css';
 import { Link } from 'react-router-dom';
 import { IoAlertCircleSharp } from 'react-icons/io5';
 
-const UserForm = ({ action, setValidatedUser}) => {
+const UserForm = ({ action, setValidatedUser }) => {
   // Using state to store user inputted email, username, and password to display changes to the correct input field and to send user data to server.
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -28,6 +28,12 @@ const UserForm = ({ action, setValidatedUser}) => {
   // Method used to navigate to a different react route (container component)
   const history = useHistory();
 
+  const abortCont = new AbortController;
+
+  useEffect(() => {
+    return () => abortCont.abort();
+  })
+
   // Method invoked when login/signup button is clicked
   const validAccount = (e) => {
     e.preventDefault();
@@ -36,7 +42,8 @@ const UserForm = ({ action, setValidatedUser}) => {
       fetch(`/user/${action}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( { email, username, password })
+        body: JSON.stringify( { email, username, password }),
+        signal: abortCont.signal
       })
       .then(res => res.json())
       .then(data => {
@@ -46,11 +53,15 @@ const UserForm = ({ action, setValidatedUser}) => {
         history.push(sessionStorage.getItem('lastPage'));
       })
       .catch(err => {
-        // if an err has occurred update userError to the given cause to be displayed
-        setUserError(err.cause);
-        // clear input fields when error occurs
-        setUsername('');
-        setPassword('');
+        if (err.name === 'AbortError') {
+          console.log('Fetch Aborted in UserForm!!!')
+        } else {
+          // if an err has occurred update userError to the given cause to be displayed
+          setUserError(err.cause);
+          // clear input fields when error occurs
+          setUsername('');
+          setPassword('');
+        }
       })
     } else setUserError('Passwords must match.')
   }
