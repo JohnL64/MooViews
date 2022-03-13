@@ -7,6 +7,7 @@ import { BsFillPersonFill, BsCircleFill } from 'react-icons/bs';
 import MovieHeader from '../components/MovieInfo/MovieHeader.jsx';
 import UserReviews from '../components/MovieInfo/UserReviews.jsx';
 import MoreLikeThis from '../components/MovieInfo/MoreLikeThis.jsx';
+import regeneratorRuntime from "regenerator-runtime";
 
 const MovieInfo = ({ imageErrorHandler, validatedUser, resetNavbar }) => {
   document.body.style.backgroundColor = 'white';

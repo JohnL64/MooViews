@@ -92,5 +92,7 @@ app.use((err, req, res, next) => {
 })
 
 // server will listen on port '3000'
-app.listen(0);
+if (process.env.NODE_ENV === 'production') {
+  app.listen(0);
+} else app.listen(3000);
 
