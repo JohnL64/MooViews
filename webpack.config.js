@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = {
   mode: process.env.NODE_ENV,
+  devtool: 'inline-source-map',
   entry: './client/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -21,7 +22,30 @@ module.exports = {
         },
       },
       {
+        test: /\.module\.css$/i,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              esModule: false,
+            },
+          }
+        ]
+      },
+      {
         test: /\.css$/i,
+        exclude: /\.module\.css$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader'
+        ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
         use: [
           // Creates `style` nodes from JS strings
           'style-loader',
