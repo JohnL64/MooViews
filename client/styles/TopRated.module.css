@@ -11,7 +11,7 @@
   max-width: 680px;
 }
 
-.TRtitle {
+.topRatedTitle {
   color: black;
   width: 96%;
   border: solid white 1px;
@@ -20,7 +20,7 @@
   border-bottom: solid 1px rgba(0, 0, 0, 0.178);
 }
 
-.innerTR {
+.innerTopRated {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +33,7 @@
   margin-bottom: 2.5rem;
 }
 
-.TRmovie,
+.topRatedMovie,
 .columnNames {
   display: flex;
   width: 96%;
@@ -46,15 +46,15 @@
   /* border-bottom: solid 1px; */
 }
 
-.TRmovie:nth-child(even) {
+.topRatedMovie:nth-child(even) {
   background-color: #f6f6f5;
 }
 
-.TRmovie:nth-child(odd) {
+.topRatedMovie:nth-child(odd) {
   background-color: #fbfbfb;
 }
 
-.TRimage,
+.topRatedImage,
 .colImage {
   /* width: 6.5rem; */
   width: 4.5rem;
@@ -64,18 +64,18 @@
   vertical-align: top;
 }
 
-.TRimage {
+.topRatedImage {
   height: 6.75rem;
 }
 
-.TRmovieInfo,
+.topRatedMovieInfo,
 .columnTitles {
   display: flex;
   /* border: solid purple 3px; */
   width: 100%;
 }
 
-.TRmovieInfo {
+.topRatedMovieInfo {
   align-items: center;
 }
 
@@ -149,7 +149,7 @@
   margin-top: 1.8rem;
 }
 
-.TRimageUnavailable {
+.topRatedImageUnavailable {
   /* width: 4.5rem; */
   height: 6.75rem;
   display: flex;

@@ -17,13 +17,13 @@ const SearchResult = ({ searchResult, keyword, showAllResults, imageErrorHandler
       const movie = searchResult[i];
       topResults.push(
         <div className={css.result} key={movie.id} onMouseDown={() => history.push(`/movie/${movie.id}`)}>
-          { (movie.poster_path && !SRimageErrors[movie.id]) && <img className={css.SRimage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, SRimageErrors, setSRimageErrors)}/> }
+          { (movie.poster_path && !SRimageErrors[movie.id]) && <img className={css.searchResultImage} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, SRimageErrors, setSRimageErrors)}/> }
           { (!movie.poster_path || SRimageErrors[movie.id]) && 
-            <div className={css.SRimageUnavailable}>
-              <GiFilmProjector className={css.SRmovieIcon} />
+            <div className={css.searchResultImageUnavailable}>
+              <GiFilmProjector className={css.searchResultMovieIcon} />
             </div> }
-          <div className={css.SRinfo}>
-            <p className={css.SRtitle}>{movie.title}</p>
+          <div className={css.searchResultInfo}>
+            <p>{movie.title}</p>
             <p className={css.date}>{movie.release_date}</p>
           </div>
         </div>

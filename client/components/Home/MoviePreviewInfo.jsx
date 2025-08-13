@@ -55,15 +55,15 @@ const MoviePreviewInfo = ({ close, movieToShowInfo, imageErrorHandler }) => {
         <IoClose className={css.previewClose} onClick={() => close(null)}/>
         <p className={css.previewInfoTitle}><Link to={`/movie/${id}`}>{title}</Link></p>
         { previewGeneralInfo && <p className={css.allPreviewGeneralInfo}>{addAvailableGeneralInfo()}</p>}
-        { !previewGeneralInfo && <div className={css.loadingPreGI}>
-          <div className='smallLoadDots' id={css.MPIdots}>
+        { !previewGeneralInfo && <div className={css.loadingPreGeneralInfo}>
+          <div className='smallLoadDots' id={css.generalInfoDots}>
             <div></div>
             <div></div>
             <div></div>
           </div>
         </div>}
         { !preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><img className={css.backdropImg} src={backdrop} onError={(e) => imageErrorHandler(e, id, preInfoImageErrors, setPreInfoImageErrors)}/></Link>}
-        { preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.MPIfilmIcon} /></div></Link>}
+        { preInfoImageErrors[id] && <Link to={`/movie/${id}`} className={css.backdropLink}><div className={css.preInfoImageUnavailable}><GiFilmProjector className={css.moviePreviewInfoFilmIcon} /></div></Link>}
         <p className={css.previewOverview}>{overview}</p>
       </div>
     </div>

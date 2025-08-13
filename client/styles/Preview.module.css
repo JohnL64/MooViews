@@ -5,12 +5,6 @@
 }
 
 .outerPreview {
-  /* margin-top: 2.5rem; */
-  /******** properties for testing ********/
-  /* background-color: white; */
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
   --preview-width: 1210px;
   --preview-movie-width: 183.33px;
   --preview-movie-height: 275px;
@@ -22,8 +16,6 @@
   padding-left: .45rem;
   box-sizing: border-box;
   margin-top: 3.5rem;
-  /******** properties for testing ********/
-  /* width: 92%; */
 }
 
 .innerPreview {
@@ -31,19 +23,6 @@
   justify-content: space-between;
   width: var(--preview-width);
   position: relative;
-  /******** properties for testing ********/
-  /* box-sizing: border-box; */
-  /* width: 92%; */
-  /* border: solid yellow 2px; */
-  /* background-color: white; */
-}
-
-.innerPreview *{
-  /******** properties for testing ********/
-  /* box-sizing: border-box; */
-  /* width: 92%; */
-  /* border: solid yellow 1px; */
-  /* background-color: white; */
 }
 
 .moviePreview {
@@ -51,10 +30,7 @@
   color: white;
   max-width: var(--preview-movie-width);
   border-radius: 8px;
-  /******** properties for testing ********/
   box-sizing: border-box;
-  /* width: 16%; */
-  /* border: white solid 2px; */
   position: relative;
 }
 
@@ -62,36 +38,18 @@
   box-sizing: border-box;
   height: var(--preview-movie-height);
   width: var(--preview-movie-width);
-  /******** properties for testing ********/
-  /* width: 100%; */
-  /* height: 285px; */
-  /* width: 190px; */
-   /* height: 225px; */
-  /* width: 190px; */
-  /* border:solid white 1px; */
 }
 
 .moviePreviewRating,
 .moviePreviewTitle {
   width: 90%;
-  /******** properties for testing ********/
-  /* width: 100%; */
-  /* height: 285px; */
-  /* width: 190px; */
-   /* height: 225px; */
-  /* width: 190px; */
-  /* box-sizing: border-box;
-  border:solid white 1px; */
 }
 
 .moviePreviewRating {
   display: flex;
   align-items: center;
-  /* max-width: 165px; */
   margin: .75rem auto; 
-  /******** properties for testing ********/
   box-sizing: border-box;
-  /* border: white 1px solid;  */
 }
 
 .starRating {
@@ -107,9 +65,6 @@
   overflow: hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  /******** properties for testing ********/
-  /* box-sizing: border-box; */
-  /* border: white 1px solid;  */
 }
 
 .moviePreviewTitle a {
@@ -121,13 +76,7 @@
   background-color: transparent;
   border: none;
   margin: .4rem auto 1rem;
-  /* padding: 10px; */
-  /******** properties for testing ********/
-  /* box-sizing: border-box; */
-  /* border: white 1px solid; */
   padding: .65rem;
-  /* position: absolute;
-  bottom: 2px; */
 }
 
 .previewInfoBtn:hover {
@@ -195,11 +144,7 @@
 .previewInfoContent {
   background-color: rgb(20, 20, 20);
   border-radius: 15px;
-  /* padding: 0 25px; */
-  /* padding: 0 1.5625rem; */
   position: relative;
-  /* max-height: 625px; */
-  /******** Props for testing ********/
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -229,10 +174,6 @@
   right: 0.5rem;
   top: -2.55rem;
   padding: 0.4375rem;
-  /******** Props for testing ********/
-  /* height: auto;
-  width: 15%; */
-  /* font-size: 1rem; */
 }
 
 .previewClose:hover {
@@ -255,12 +196,9 @@
   overflow-y: auto;
   line-height: 1.4;
   padding-right: 0.5rem;
-  /******** Props for testing ********/
-  /* border: white solid 1px; */
 }
 
 .previewOverview::-webkit-scrollbar {
-  /* margin-left: 3rem; */
   border-radius: 10px;
   width: 0.5625rem;
   background-color: rgb(102, 102, 102);
@@ -291,7 +229,6 @@
 
 .allPreviewGeneralInfo {
   color: rgb(126, 126, 126);
-  /* margin-top: 5px; */
   margin: 0 0 0.625rem;
   font-size: 0.8125rem;
 }
@@ -300,14 +237,14 @@
   margin-right: 0.3125rem;
 }
 
-.loadingPreGI {
+.loadingPreGeneralInfo {
   width: 92%;
   display: flex;
   justify-content: center;
   margin: 12px 0 15px;
 }
 
-#MPIdots div {
+#generalInfoDots div {
   background-color: rgb(206, 206, 206);
 }
 
@@ -330,7 +267,6 @@ p a:hover {
 }
 
 .preInfoImageUnavailable {
-  /* border: white solid 1px; */
   color: black;
   background-color: rgba(255, 255, 255, 0.739);
   width: 100%;
@@ -340,7 +276,7 @@ p a:hover {
   align-items: center;
 }
 
-.MPIfilmIcon {
+.moviePreviewInfoFilmIcon {
   font-size: 4.5rem;
 }
 

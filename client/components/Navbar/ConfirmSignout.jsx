@@ -29,23 +29,23 @@ const ConfirmSignout = ({ signout, setSignout }) => {
 	}
 
 	return (
-		<div className={css.outerSO}>
+		<div className={css.outerSignOut}>
 			<div className={css.signOutBox} onClick={() => changeSignoutAndScroll(true)}>
 				<p>Sign Out</p>
 			</div>
-				{ signout && <div className={css.outerConfirmSO} onClick={() => changeSignoutAndScroll(false)}>
-					<div className={css.confirmSO} onClick={(e) => e.stopPropagation()}>
-						<IoClose className={css.closeSO} onClick={() => changeSignoutAndScroll(false)}/> 
+				{ signout && <div className={css.outerConfirmSignOut} onClick={() => changeSignoutAndScroll(false)}>
+					<div className={css.confirmSignOut} onClick={(e) => e.stopPropagation()}>
+						<IoClose className={css.closeSignOut} onClick={() => changeSignoutAndScroll(false)}/> 
 						<p className={css.mooViewsTitle}>Moo<span>Views</span></p>
-						{!signingOut && <div className={css.SOcontent}>
+						{!signingOut && <div className={css.signOutContent}>
 							<p className={css.confirmQ}>Are you sure you want to sign out?</p>
-							<div className={css.SOchoice}>
+							<div className={css.signOutChoice}>
 								<p className={css.confirmYesNo} onClick={logOutUser}>Yes</p>
 								<p className={css.confirmYesNo} onClick={() => changeSignoutAndScroll(false)}>No</p>
 							</div>
 						</div>} 
 						{signingOut && <div className={css.signingOut}> 
-							<div className='loadingDots' id={css.SOdots}>
+							<div className='loadingDots' id={css.signOutDots}>
 								<div></div>
 								<div></div>
 								<div></div>

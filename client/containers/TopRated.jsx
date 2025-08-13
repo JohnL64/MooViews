@@ -30,7 +30,7 @@ const TopRated = ({ imageErrorHandler }) => {
 
   function createTRloadingBox() {
     return (
-      <div className={css.innerTR}>
+      <div className={css.innerTopRated}>
         <div className={css.loadingTRmovie}>
           <div className="loadingDots">
             <div></div>
@@ -44,9 +44,9 @@ const TopRated = ({ imageErrorHandler }) => {
 
   return ( 
     <div className={css.topRated}>
-      <div className={css.outerTitle}><h3 className={css.TRtitle}>Top 100 Movies</h3></div>
+      <div className={css.outerTitle}><h3 className={css.topRatedTitle}>Top 100 Movies</h3></div>
       { topRated && 
-        <div className={css.innerTR}>
+        <div className={css.innerTopRated}>
           <div className={css.columnNames}>
             <div><div className={css.colImage}></div></div>
             <div className={css.columnTitles}>
@@ -57,16 +57,16 @@ const TopRated = ({ imageErrorHandler }) => {
           </div>
           {topRated.map((movie, ind) => {
             return (
-              <div className={css.TRmovie} key={movie.id}>
+              <div className={css.topRatedMovie} key={movie.id}>
                 { !TRimageErrors[movie.id] &&
                   <Link to={`/movie/${movie.id}`} className={css.TRimageLink}>
-                    <img src={movie.poster_path} className={css.TRimage} onError={(e) => imageErrorHandler(e, movie.id, TRimageErrors, setTRimageErrors)}/>
+                    <img src={movie.poster_path} className={css.topRatedImage} onError={(e) => imageErrorHandler(e, movie.id, TRimageErrors, setTRimageErrors)}/>
                   </Link> }
                 {TRimageErrors[movie.id] && 
-                  <div className={css.TRimageUnavailable}>
+                  <div className={css.topRatedImageUnavailable}>
                     <GiFilmProjector className={css.movieIcon} />
                   </div> }
-                <div className={css.TRmovieInfo}>
+                <div className={css.topRatedMovieInfo}>
                   <p className={css.rankAndTitle}> 
                     <span>{ind + 1}.</span>
                     <span><Link to={`/movie/${movie.id}`}>{movie.title}</Link></span>
@@ -78,8 +78,8 @@ const TopRated = ({ imageErrorHandler }) => {
               </div>
             )
           })}
-        </div> }
-        { !topRated && createTRloadingBox()}
+      </div> }
+      { !topRated && createTRloadingBox()}
     </div>
    );
 }

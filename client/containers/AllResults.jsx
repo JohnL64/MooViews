@@ -40,14 +40,14 @@ const AllResults = ({ imageErrorHandler, setTest }) => {
           <h3 className={css.resultsTitle}>Showing results for <span>"{keyword}"</span></h3>
           {allResults.map(movie => {
             return (
-              <div className={css.ARmovie} key={movie.id}>
+              <div className={css.resultMovie} key={movie.id}>
                 { 
                   (movie.poster_path && !ARimageErrors[movie.id]) &&  
                   <Link to={`/movie/${movie.id}`}><img className={css.image} src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, ARimageErrors, setARimageErrors)}/></Link> 
                 }
                 {
                   (!movie.poster_path || ARimageErrors[movie.id]) &&
-                  <div className={css.ARimageUnavailable}>
+                  <div className={css.resultImageUnavailable}>
                     <GiFilmProjector className={css.filmIcon} />
                   </div>
                 }

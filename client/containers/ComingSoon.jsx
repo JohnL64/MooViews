@@ -54,13 +54,13 @@ const ComingSoon = ({ imageErrorHandler }) => {
       const movie = comingSoon[i];
       if (!datesObj.hasOwnProperty(movie.release_date)) datesObj[movie.release_date] = [];
       datesObj[movie.release_date].push(
-        <div className={css.CSmovie} key={movie.id}>
+        <div className={css.comingSoonMovie} key={movie.id}>
           {(movie.poster_path && !CSimageErrors[movie.id]) &&
             <Link to={`/movie/${movie.id}`} className={css.imageLink}>
-              <img src={movie.poster_path} className={css.CSimage} onError={(e) => imageErrorHandler(e, movie.id, CSimageErrors, setCSimageErrors)}/> 
+              <img src={movie.poster_path} className={css.comingSoonImage} onError={(e) => imageErrorHandler(e, movie.id, CSimageErrors, setCSimageErrors)}/> 
             </Link> }
           {(!movie.poster_path || CSimageErrors[movie.id]) && 
-            <div className={css.CSimageUnavailable}>
+            <div className={css.comingSoonImageUnavailable}>
               <GiFilmProjector className={css.movieIcon} />
             </div> }
           <div className={css.movieInfo}>
@@ -94,9 +94,9 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   function createCSloadingBox() {
     return (
-      <div className={css.innerCS}>
+      <div className={css.innerComingSoon}>
         <div className={css.loadingDayTitle}></div>
-          <div className={css.CSloadingBox}>
+          <div className={css.comingSoonLoadingBox}>
             <div className="loadingDots">
               <div></div>
               <div></div>
@@ -109,11 +109,11 @@ const ComingSoon = ({ imageErrorHandler }) => {
 
   return ( 
     <div className={css.comingSoon}>
-      <div className={css.CStitle}>
+      <div className={css.comingSoonTitle}>
         <h3 className={css.innerTitle}>Coming Soon</h3>
       </div>
       { comingSoon &&
-        <div className={css.innerCS}>
+        <div className={css.innerComingSoon}>
           {comingSoonMovies(comingSoon, page)}
           <PageNavigator page={page} numOfPages={numOfPages} content='coming-soon'/>
         </div> }

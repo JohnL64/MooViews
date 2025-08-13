@@ -24,7 +24,7 @@
   font-weight: 800;
 }
 
-.ARmovie {
+.resultMovie {
   font-size: 15px;
   width: 96%;
   display: flex;
@@ -76,7 +76,7 @@
   -webkit-box-orient: vertical;
 }
 
-.ARimageUnavailable {
+.resultImageUnavailable {
   height: 9rem;
   background-color: #cecece;
   display: flex;
@@ -89,7 +89,7 @@
 }
 
 @media screen and (max-width: 1480px) {
-  .ARmovie {
+  .resultMovie {
     font-size: 14px;
   }
 }

@@ -6,20 +6,20 @@
   color: black;
 }
 
-.CStitle {
+.comingSoonTitle {
   width: 60%;
   margin: 2.5rem 0 0.85rem;
   max-width: 810px;
   min-width: 715px;
 }
 
-.CStitle h3{
+.comingSoonTitle h3{
   font-size: 1.8rem;
   width: 94%;
   margin: auto;
 }
 
-.innerCS {
+.innerComingSoon {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,7 +62,7 @@
   font-size: 1rem;
 }
 
-.CSmovie {
+.comingSoonMovie {
   box-sizing: border-box;
   display: flex;
   padding: 0.8rem;
@@ -70,15 +70,15 @@
   margin-bottom: 0.3rem;
 }
 
-.CSmovie:nth-child(even) {
+.comingSoonMovie:nth-child(even) {
   background-color: #f6f6f5;
 }
 
-.CSmovie:nth-child(odd) {
+.comingSoonMovie:nth-child(odd) {
   background-color: #fbfbfb;
 }
 
-.CSimage {
+.comingSoonImage {
   width: 8.75rem;
   height: 13.125rem;
   vertical-align: top;
@@ -180,7 +180,7 @@
   color: black;
 }
 
-.CSimageUnavailable {
+.comingSoonImageUnavailable {
   display: flex;
   align-items: center;
   height: 13.125rem;
@@ -199,7 +199,7 @@
   margin: 0.7rem 0;
 }
 
-.CSloadingBox {
+.comingSoonLoadingBox {
   display: flex;
   justify-content: center;
   width: 94%;
