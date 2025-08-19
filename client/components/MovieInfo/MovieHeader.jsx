@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatRating } from '../../utils/utils.js';
 import css from "../../styles/MovieInfo.module.css";
 import { BsCircleFill } from 'react-icons/bs';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
@@ -56,7 +57,7 @@ const MovieHeader = ({ movieInfo, setMovieInfo, validatedUser, userRating, setUs
           <div className={css.userRating}>
             <AiFillStar className={css.starIcon}/>
             <div className={css.ratingAndCount}>
-              <p><span>{movieInfo.vote_average}</span>/10</p>
+              <p><span>{formatRating(movieInfo.vote_average)}</span>/10</p>
               <p>{movieInfo.vote_count}</p>
             </div>
           </div>

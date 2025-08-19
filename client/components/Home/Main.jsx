@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatRating } from '../../utils/utils.js';
 import css from '../../styles/Main.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar } from 'react-icons/ai';
@@ -21,7 +22,7 @@ const Main = ({ main, page, imageErrorHandler }) => {
             <span className={css.genInfo}>{movie.release_date},</span> 
             <span className={css.genInfo}>{movie.genres}</span>
           </p>
-          <p className={css.mainMovieRating}><AiFillStar className={css.starRating} />{movie.vote_average}</p>
+          <p className={css.mainMovieRating}><AiFillStar className={css.starRating} />{formatRating(movie.vote_average)}</p>
           <p className={css.mainOverview}>{movie.overview}</p>
           <p className={css.fullDetails}><Link className={css.fullDetailsLink} to={`/movie/${movie.id}`}>See full details</Link></p>
         </div>

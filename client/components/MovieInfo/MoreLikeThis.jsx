@@ -1,4 +1,5 @@
 import React, { useEffect, useState} from 'react';
+import { formatRating } from '../../utils/utils.js';
 import css from '../../styles/MovieInfo.module.css';
 import { Link } from 'react-router-dom';
 import { AiFillStar, AiOutlineInfoCircle } from 'react-icons/ai';
@@ -65,7 +66,7 @@ const MoreLikeThis = ({ id, collection, genres, imageErrorHandler }) => {
           { (movie.poster_path && !moreImageErrors[movie.id]) && <Link to={`/movie/${movie.id}`}><img src={movie.poster_path} onError={(e) => imageErrorHandler(e, movie.id, moreImageErrors, setMoreImageErrors)}/></Link>}
           { (!movie.poster_path || moreImageErrors[movie.id]) && <Link to={`/movie/${movie.id}`}><div className={css.moreImageUnavailable}><GiFilmProjector /></div></Link>}
           <div className={css.similarMovieInfo}>
-            <p className={css.similarMovieRating}><AiFillStar /> {movie.vote_average}</p>
+            <p className={css.similarMovieRating}><AiFillStar /> {formatRating(movie.vote_average)}</p>
             <Link to={`/movie/${movie.id}`}><p className={css.similarMovieTitle}>{movie.title}</p></Link>
             <div><button onClick={() => setMoreInfo(movie)}><AiOutlineInfoCircle /></button></div>
           </div>

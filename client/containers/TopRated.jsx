@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { formatRating } from '../utils/utils';
 import css from '../styles/TopRated.module.css';
 import { AiFillStar } from 'react-icons/ai';
 import { GiFilmProjector } from 'react-icons/gi';
@@ -72,7 +73,7 @@ const TopRated = ({ imageErrorHandler }) => {
                     <span><Link to={`/movie/${movie.id}`}>{movie.title}</Link></span>
                     <span>({movie.release_date})</span>
                   </p>
-                  <p className={css.rating}><AiFillStar className={css.starIcon}/> { movie.vote_average }</p>
+                  <p className={css.rating}><AiFillStar className={css.starIcon}/> { formatRating(movie.vote_average) }</p>
                   <p className={css.voteCount}> {movie.vote_count} </p>
                 </div>
               </div>
