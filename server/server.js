@@ -61,26 +61,22 @@ app.get('/signout', (req, res) => {
 app.use('/movie', movieRouter);
 app.use('/user', userRouter);
 
+app.get('/cartoon_cow.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '../cartoon_cow.png'));
+});
+
 // if NODE_ENV is production run this code
 if (process.env.NODE_ENV === 'production') {
   // If the endpoint is 'build serve static files from build directory. This endpoint is hit from the script tag on index.html
-  app.use('/build', express.static(path.join(__dirname, '../build')));
+  app.use(express.static(path.join(__dirname, '../build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build/index.html'));
+  })
+} else {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/index.html'));
+  })
 }
-
-// when a user goes to our url homepage serve html file
-app.get('/', (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
-});
-
-app.get('/cartoon_cow.png', (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../cartoon_cow.png'));
-});
-
-// handle page refreshes for pages that are not the home page as well as direct manual url requests
-app.get('/*', (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
-});
-
 
 app.use((err, req, res, next) => {
   const defaultErr = {
@@ -93,6 +89,7 @@ app.use((err, req, res, next) => {
 
 // server will listen on port '3000'
 if (process.env.NODE_ENV === 'production') {
-  app.listen(0);
+  // app.listen(0);
+  app.listen(3000);
 } else app.listen(3000);
 

@@ -1,5 +1,6 @@
 /* eslint-disable linebreak-style */
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
@@ -65,6 +66,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './client/index.html', // points to your original HTML file
+      filename: 'index.html',           // output file in your build folder
+    }),
+  ],
   devServer: {
     publicPath: '/build/',
     contentBase: path.join(__dirname, 'client'),
