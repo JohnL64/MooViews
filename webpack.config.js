@@ -2,6 +2,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 module.exports = {
   mode: process.env.NODE_ENV,
   devtool: 'inline-source-map',
@@ -9,6 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
+    publicPath: isProd ? '/' : '/build/',
   },
   module: {
     rules: [
