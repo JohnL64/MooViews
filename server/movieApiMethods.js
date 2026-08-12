@@ -234,7 +234,7 @@ movieApiMethods.getMoreSimilarMovies = async (page, genres) => {
       results = data.results;
     })
     .catch(err => {
-      return next({ message: 'Error has occured when querying data for Movie Info in movieApiMethods.getMoreSimilarMovies' });
+      console.error(err);
     })
   return results;
 }

@@ -87,9 +87,8 @@ app.use((err, req, res, next) => {
   res.status(errorObj.status).json(errorObj);
 })
 
-// server will listen on port '3000'
-if (process.env.NODE_ENV === 'production') {
-  // app.listen(0);
-  app.listen(3000);
-} else app.listen(3000);
+const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});

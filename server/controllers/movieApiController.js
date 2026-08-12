@@ -307,7 +307,7 @@ movieApiController.getMoreLikeThis = async (req, res, next) => {
   while (allMoreMovies.length < 16) {
     const results = await movieApiMethods.getMoreSimilarMovies(page, genres);
     page += 1;
-    for (const movie of results) {
+    for (const movie of results || []) {
       if (allMoreMovies.length === 16) break;
       if (!moviesId.hasOwnProperty(movie.id) && movie.id !== id) {
         if (movie.poster_path) movie.poster_path = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
